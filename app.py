@@ -10,6 +10,7 @@ import streamlit.components.v1 as components
 import html
 from msg_templates import get_template
 
+
 # ============================================================
 # 00. セリフ生成（工程1：テンプレート / 工程2：AI）
 # ============================================================
