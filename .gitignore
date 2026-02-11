@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# VSCode
+.vscode/
+
+# Secrets（超重要）
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db

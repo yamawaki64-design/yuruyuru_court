@@ -1,0 +1,22 @@
+<snacks>
+  <snack>
+    <name>粘ったカンロ飴</name>
+    <taste>sweet</taste>
+  </snack>
+  <snack>
+    <name>溶けかけポッキー</name>
+    <taste>sweet</taste>
+  </snack>
+  <snack>
+    <name>湿気たえびせんべい</name>
+    <taste>salty</taste>
+  </snack>
+  <snack>
+    <name>残り3粒のラムネ</name>
+    <taste>sweet</taste>
+  </snack>
+  <snack>
+    <name>賞味期限ギリギリのポテチのりしお</name>
+    <taste>salty</taste>
+  </snack>
+</snacks>

@@ -1,0 +1,37 @@
+<snacks>
+  <snack>
+    <maker>明治</maker>
+    <name>チョコレート</name>
+    <temp>normal</temp>
+    <fresh>false</fresh>
+    <taste>sweet</taste>  <!-- 追加 -->
+  </snack>
+  <snack>
+    <maker>カルビー</maker>
+    <name>ポテトチップス</name>
+    <temp>normal</temp>
+    <fresh>false</fresh>
+    <taste>salty</taste>  <!-- 追加 -->
+  </snack>
+  <snack>
+    <maker>コンビニ</maker>
+    <name>シュークリーム</name>
+    <temp>cold</temp>
+    <fresh>true</fresh>
+    <taste>sweet</taste>  <!-- 追加 -->
+  </snack>
+  <snack>
+    <maker>亀田製菓</maker>
+    <name>柿の種</name>
+    <temp>normal</temp>
+    <fresh>false</fresh>
+    <taste>salty</taste>  <!-- 追加 -->
+  </snack>
+  <snack>
+    <maker>森永</maker>
+    <name>ラムネ</name>
+    <temp>normal</temp>
+    <fresh>false</fresh>
+    <taste>sweet</taste>  <!-- 追加 -->
+  </snack>
+</snacks>
