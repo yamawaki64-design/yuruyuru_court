@@ -831,18 +831,19 @@ def build_escort_script() -> list[dict]:
         "player_text": st.session_state.player_text if not silent else None,
     }
     
-    # situation を決める（判決 × 発言有無）
+    # ★ 外の様子（最初の一言）← 追加
+    script = [{"speaker": "def", "text": generate_line("def", "escort_greeting", {})}]
+    
+    # 判決に応じたメッセージ（2件目）
     if v == "not_guilty":
         situation = "escort_not_guilty_silent" if silent else "escort_not_guilty_spoke"
     elif v == "lenient":
         situation = "escort_lenient_silent" if silent else "escort_lenient_spoke"
-    else:  # guilty
+    else:
         situation = "escort_guilty_silent" if silent else "escort_guilty_spoke"
     
-    # 弁護士の一言を生成
     msg = generate_line("def", situation, context)
-    
-    script = [{"speaker": "def", "text": msg}]
+    script.append({"speaker": "def", "text": msg})
     
     # レアイベントが起きていたら匂わせる
     if st.session_state.rare_event_triggered:
@@ -1224,14 +1225,18 @@ elif st.session_state.scene == "escort":
 
         # ★ 全部出し切った後に、質問があるかチェック
         elif st.session_state.escort_taste_asking:
-            # 質問文を追加
-            st.session_state.escort_script.append({
-                "speaker": "def",
-                "text": generate_line("def", "ask_taste", {})
-            })
-            st.session_state.taste_asked = True
-            st.session_state.escort_phase = "asking_taste"
-            st.rerun()
+            dock = dock_area("escort_dock")
+            with dock:
+                if st.button("›", key="escort_next", type="primary", use_container_width=True):
+
+                    # 質問文を追加
+                    st.session_state.escort_script.append({
+                        "speaker": "def",
+                        "text": generate_line("def", "ask_taste", {})
+                    })
+                    st.session_state.taste_asked = True
+                    st.session_state.escort_phase = "asking_taste"
+                    st.rerun()
         
         else:
             # 質問もなく、全部出し切った
@@ -1252,7 +1257,9 @@ elif st.session_state.scene == "escort":
                     st.session_state.escort_taste_asking = False
                     # おやつ処理を追加
                     st.session_state.escort_script.extend(build_escort_snack_part())
-                    st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加（おやつの最初から表示）
+                    # st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加（おやつの最初から表示）
+                    st.session_state.escort_idx += 2    # 甘いしょっぱい選択後、1つずつ出す 
+
                     st.session_state.escort_phase = "showing"
                     st.rerun()
             with c2:
@@ -1261,8 +1268,10 @@ elif st.session_state.scene == "escort":
                     st.session_state.escort_taste_asking = False
                     # おやつ処理を追加
                     st.session_state.escort_script.extend(build_escort_snack_part())
-                    st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加
-                    st.session_state.escort_phase = "showing"
+                    # st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加
+                    st.session_state.escort_idx += 2    # 甘いしょっぱい選択後、1つずつ出す
+
+                    st.session_state.escort_phase = "showing"                  
                     st.rerun()
 
     if st.session_state.escort_phase == "done":
