@@ -8,8 +8,28 @@ from streamlit_float import float_init
 
 import streamlit.components.v1 as components
 import html
+import requests
 from msg_templates import get_template
 
+
+# ============================================================
+# 00. 毎回走らせるもの
+# ============================================================
+
+# lang属性を日本語に変更するスクリプト
+def set_lang_ja():
+    components.html(
+        """
+        <script>
+            try {
+                window.top.document.documentElement.lang = "ja";
+            } catch(e) {}
+        </script>
+        """,
+        height=1,
+    )
+
+set_lang_ja()
 
 # ============================================================
 # 00. セリフ生成（工程1：テンプレート / 工程2：AI）
@@ -53,6 +73,148 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
         st.session_state.ai_call_count += 1
     
     return line
+
+def decide_verdict() -> str:
+    """
+    判決を決定する
+    工程1：ランダム
+    工程2：この中身をAI補助 + ルールベースに差し替える
+    
+    Returns:
+        "not_guilty" | "lenient" | "guilty"
+    """
+    # 工程2でここを差し替える
+    return random.choice(["not_guilty", "lenient", "guilty"])
+
+# ============================================================
+# 00. 天気API（Open-Meteo）
+# ============================================================
+
+def fetch_weather() -> dict:
+    """
+    現在地の天気を取得（Open-Meteo）
+    登録不要・完全無料
+    失敗時は空dictを返す（フォールバック用）
+    """
+    try:
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            "?latitude=34.69&longitude=135.50"  # 大阪
+            "&current=temperature_2m,weathercode"
+            "&timezone=Asia%2FTokyo"
+        )
+        res = requests.get(url, timeout=3)
+        data = res.json()
+        current = data.get("current", {})
+        
+        # ★ 説明文を追加しておく（工程2でAIに渡す用）
+        code = current.get("weathercode")
+        if code is not None:
+            current["weather_description"] = weather_code_to_description(code)
+        
+        return current
+    except Exception:
+        # API失敗時は空dict（テンプレートにフォールバック）
+        return {}
+    
+def weather_code_to_description(code: int) -> str:
+    """
+    天気コードを日本語説明に変換
+    工程2でAIに渡す context に使う
+    """
+    if code == 0:
+        return "快晴"
+    elif code in (1, 2, 3):
+        return "曇り"
+    elif code in (45, 48):
+        return "霧"
+    elif code in range(51, 68):
+        return "雨"
+    elif code in range(71, 78):
+        return "雪"
+    elif code in range(80, 83):
+        return "にわか雨"
+    elif code in range(95, 100):
+        return "雷雨"
+    else:
+        return "不明"
+
+def weather_to_comment(weather: dict) -> str:
+    """
+    天気コードをセリフに変換
+    失敗 or 不明 → テンプレートからランダム
+    
+    Open-Meteoの天気コード（WMO）：
+    0        : 快晴
+    1, 2, 3  : 晴れ〜曇り
+    45, 48   : 霧
+    51〜67   : 雨
+    71〜77   : 雪
+    80〜82   : にわか雨
+    95〜99   : 雷雨
+    """
+    code = weather.get("weathercode")
+    temp = weather.get("temperature_2m")
+
+    # 天気取得失敗 → テンプレートにフォールバック
+    if code is None:
+        return generate_line("def", "escort_greeting", {})
+
+    # 天気コード → セリフ
+    if code == 0:
+        base = random.choice([
+            "いい天気ですね。",
+            "……きれいに晴れてますね。",
+            "外、明るいですね。",
+        ])
+    elif code in (1, 2, 3):
+        base = random.choice([
+            "……曇ってますね。",
+            "なんか、どんよりしてますね。",
+            "晴れてるんだか曇ってるんだか。",
+        ])
+    elif code in (45, 48):
+        base = random.choice([
+            "霧が出てますね。",
+            "……靄がかかってますね。",
+        ])
+    elif code in range(51, 68):
+        base = random.choice([
+            "雨ですねー。",
+            "……降ってますね。",
+            "傘、持ってきましたか？",
+        ])
+    elif code in range(71, 78):
+        base = random.choice([
+            "……雪ですね。",
+            "雪、積もりそうですね。",
+        ])
+    elif code in range(80, 83):
+        base = random.choice([
+            "にわか雨ですね。",
+            "急に降ってきましたね。",
+        ])
+    elif code in range(95, 100):
+        base = random.choice([
+            "……雷、鳴ってますね。",
+            "雷雨ですね。早めに帰った方がいいですよ。",
+        ])
+    else:
+        # 不明なコード → テンプレートにフォールバック
+        return generate_line("def", "escort_greeting", {})
+
+    # 気温コメントを追加
+    if temp is not None:
+        if temp <= 3:
+            base += " 凍えますね。"
+        elif temp <= 10:
+            base += " 寒いですね。"
+        elif temp >= 35:
+            base += " 危険な暑さですね。"
+        elif temp >= 28:
+            base += " 暑いですね。"
+
+    return base
 
 # ============================================================
 # 0. 定数・CSS（UI）
@@ -382,25 +544,6 @@ html, body{
   }
 </style>
 """
-
-# ============================================================
-# 00. 毎回走らせるもの
-# ============================================================
-
-# lang属性を日本語に変更するスクリプト
-def set_lang_ja():
-    components.html(
-        """
-        <script>
-          try {
-            window.top.document.documentElement.lang = "ja";
-          } catch(e) {}
-        </script>
-        """,
-        height=1,
-    )
-
-set_lang_ja()
 
 def inject_global_css():
     st.markdown(CHAT_CSS, unsafe_allow_html=True)
@@ -831,8 +974,11 @@ def build_escort_script() -> list[dict]:
         "player_text": st.session_state.player_text if not silent else None,
     }
     
-    # ★ 外の様子（最初の一言）← 追加
-    script = [{"speaker": "def", "text": generate_line("def", "escort_greeting", {})}]
+    # ★ 天気コメント（API取得 or フォールバック）
+    weather = fetch_weather()
+    greeting = weather_to_comment(weather)
+    
+    script = [{"speaker": "def", "text": greeting}]
     
     # 判決に応じたメッセージ（2件目）
     if v == "not_guilty":
@@ -1057,7 +1203,7 @@ elif st.session_state.scene == "court":
         elif phase == "verdict":
 
             if st.session_state.verdict is None:
-                st.session_state.verdict = random.choice(["not_guilty", "lenient", "guilty"])
+                st.session_state.verdict = decide_verdict()
             
             # コンテキスト準備
             context = {}
@@ -1255,10 +1401,12 @@ elif st.session_state.scene == "escort":
                 if st.button("甘い", use_container_width=True, key="escort_taste_sweet"):
                     st.session_state.taste_pref = "sweet"
                     st.session_state.escort_taste_asking = False
+                    # おやつを追加する前の長さを記録
+                    before_len = len(st.session_state.escort_script)
                     # おやつ処理を追加
                     st.session_state.escort_script.extend(build_escort_snack_part())
-                    # st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加（おやつの最初から表示）
-                    st.session_state.escort_idx += 2    # 甘いしょっぱい選択後、1つずつ出す 
+                    # ★ おやつの1件目（before_len の位置）から表示開始
+                    st.session_state.escort_idx = before_len
 
                     st.session_state.escort_phase = "showing"
                     st.rerun()
@@ -1266,10 +1414,12 @@ elif st.session_state.scene == "escort":
                 if st.button("しょっぱい", use_container_width=True, key="escort_taste_salty"):
                     st.session_state.taste_pref = "salty"
                     st.session_state.escort_taste_asking = False
+                    # おやつを追加する前の長さを記録
+                    before_len = len(st.session_state.escort_script)
                     # おやつ処理を追加
                     st.session_state.escort_script.extend(build_escort_snack_part())
-                    # st.session_state.escort_idx = len(st.session_state.escort_script) - 1  # ← 追加
-                    st.session_state.escort_idx += 2    # 甘いしょっぱい選択後、1つずつ出す
+                    # ★ おやつの1件目（before_len の位置）から表示開始
+                    st.session_state.escort_idx = before_len
 
                     st.session_state.escort_phase = "showing"                  
                     st.rerun()
