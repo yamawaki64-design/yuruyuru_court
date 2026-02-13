@@ -145,7 +145,7 @@ def weather_to_comment(weather: dict) -> str:
         base = random.choice([
             "いい天気ですね。",
             "……きれいに晴れてますね。",
-            "外、明るいですね。",
+            "雨じゃなくてよかったです。",
         ])
     elif code in (1, 2, 3):
         base = random.choice([
@@ -531,25 +531,16 @@ def inject_global_css():
 inject_global_css()
 
 def set_lang_ja():
-    components.html(
-        """
-        <script>
-            function applyLang() {
-                try {
-                    const doc = window.top ? window.top.document : window.parent.document;
-                    if (doc && doc.documentElement) {
-                        doc.documentElement.lang = "ja";
-                    }
-                } catch(e) {}
-            }
-            // 即時 + 遅延の両方で実行
-            applyLang();
-            setTimeout(applyLang, 500);
-        </script>
-        """,
-        height=0,  # ← 1より0の方がStreamlit側のCSS干渉が少ない
+    # JS不要。HTMLのmeta + CSS hintで翻訳ポップアップを抑制
+    st.markdown(
+        '''
+        <meta name="google" content="notranslate">
+        <style>
+            html { -webkit-text-size-adjust: 100%; }
+        </style>
+        ''',
+        unsafe_allow_html=True
     )
-
 set_lang_ja()
 
 # ============================================================
@@ -763,42 +754,53 @@ def render_chat(messages: list[dict], auto_scroll: bool = True, mode: str = "cou
 
     nonce = len(messages)  # ← これが毎回変わる
 
-    # 自動スクロール（wrapの中を最下部へ）
     if auto_scroll:
-
-        # render_chat 内のスクロール部分
         components.html(
             f"""
             <script>
-                (function() {{
-                    const wrapId = "{wrap_id}";
-                    const nonce = "{nonce}";
+            (function() {{
+                var wrapId = "{wrap_id}";
+                var attempts = 0;
+                var maxAttempts = 30;
 
-                    // window.top / window.parent の両方を試す
-                    function getDoc() {{
-                        try {{ if (window.top && window.top.document) return window.top.document; }} catch(e) {{}}
-                        try {{ if (window.parent && window.parent.document) return window.parent.document; }} catch(e) {{}}
-                        return null;
+                function getParentDoc() {{
+                    // Safari対策：複数経路を試す
+                    var docs = [];
+                    try {{ if (window.parent && window.parent !== window) docs.push(window.parent.document); }} catch(e) {{}}
+                    try {{ if (window.top && window.top !== window) docs.push(window.top.document); }} catch(e) {{}}
+                    // 見つからなければ自分自身（フォールバック）
+                    docs.push(document);
+                    return docs[0] || null;
+                }}
+
+                function tryScroll() {{
+                    attempts++;
+                    var doc = getParentDoc();
+                    if (!doc) {{
+                        if (attempts < maxAttempts) requestAnimationFrame(tryScroll);
+                        return;
                     }}
-
-                    function scrollToBottom() {{
-                        const doc = getDoc();
-                        if (!doc) return false;
-                        const wrap = doc.getElementById(wrapId);
-                        if (!wrap) return false;
-                        wrap.scrollTop = wrap.scrollHeight;
-                        return true;
+                    var wrap = doc.getElementById(wrapId);
+                    if (!wrap) {{
+                        if (attempts < maxAttempts) setTimeout(tryScroll, 50);
+                        return;
                     }}
+                    // Safari は scrollTop より scrollTo の方が効くことがある
+                    wrap.scrollTo({{ top: wrap.scrollHeight, behavior: "instant" }});
+                    wrap.scrollTop = wrap.scrollHeight;
 
-                    // 最大20回・50msごとにリトライ（=最大1秒）
-                    let count = 0;
-                    const id = setInterval(function() {{
-                        if (scrollToBottom() || ++count >= 20) clearInterval(id);
-                    }}, 50);
-                }})();
+                    // 高さが変わったらもう1回（画像や遅延レンダリング対策）
+                    if (attempts < maxAttempts) {{
+                        setTimeout(tryScroll, 100);
+                    }}
+                }}
+
+                // rAF で開始（Safari でのiframe初期化待ち）
+                requestAnimationFrame(tryScroll);
+            }})();
             </script>
             """,
-            height=0,
+            height=50,  # ← 0や1だとSafariがスキップする。50以上推奨
         )
 
 # ============================================================
