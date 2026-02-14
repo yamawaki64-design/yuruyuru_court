@@ -341,11 +341,10 @@ html, body{
   }
 </style>
 """
-
+# CSS呼び出し関数定義
 def inject_global_css():
     st.markdown(CHAT_CSS, unsafe_allow_html=True)
 
-inject_global_css()
 
 # ============================================================
 # 00. 毎回走らせるもの
@@ -353,18 +352,20 @@ inject_global_css()
 
 # lang属性を日本語に変更するスクリプト
 def set_lang_ja():
-    components.html(
-        """
-        <script>
-            try {
-                window.top.document.documentElement.lang = "ja";
-            } catch(e) {}
-        </script>
-        """,
-        height=1,
-    )
+    # components.html(
+    #     """
+    #     <script>
+    #         try {
+    #             window.top.document.documentElement.lang = "ja";
+    #         } catch(e) {}
+    #     </script>
+    #     """,
+    #     height=1,
 
-set_lang_ja()
+        st.markdown(
+        '<meta name="google" content="notranslate">',
+        unsafe_allow_html=True
+    )
 
 # ============================================================
 # 00. セリフ生成（工程1：テンプレート / 工程2：AI）
@@ -606,8 +607,6 @@ def snack_attr_text(s: dict) -> str:
         parts.append("生" if fresh == "true" else "日持ち")
     return " / ".join(parts)
 
-
-
 def lawyer_snack_comment(snack: dict, taste_pref: str | None) -> str:
     """おやつコメント生成"""
     name = snack.get("name", "")
@@ -764,52 +763,88 @@ def render_chat(messages: list[dict], auto_scroll: bool = True, mode: str = "cou
 
     # 自動スクロール（wrapの中を最下部へ）
     if auto_scroll:
+
+# render_chat 内のスクロール部分（768行目付近）
+
         components.html(
             f"""
             <script>
-                const nonce = "{nonce}"; // ← これが入るだけで再実行されやすくなる
-                const wrapId = "{wrap_id}";
-                const bottomId = "{bottom_id}";
-                const doc = (window.parent && window.parent.document) ? window.parent.document : window.top.document;
+                (function() {{
+                    const wrapId = "{wrap_id}";
+                    const nonce = "{nonce}";
 
-                function scrollToBottom() {{
-                    const wrap = doc.getElementById(wrapId);
-                    const bottom = doc.getElementById(bottomId);
-                    if (!wrap || !bottom) return;
-
-                    // ①まずwrap内部を最下部へ
-                    wrap.scrollTop = wrap.scrollHeight;
-
-                    // ②念のためアンカーを見える位置へ（補助）
-                    bottom.scrollIntoView({{ block: "end" }});
-                }}
-
-                // まず即時＆遅延
-                setTimeout(scrollToBottom, 0);
-                setTimeout(scrollToBottom, 80);
-                setTimeout(scrollToBottom, 200);
-                setTimeout(scrollToBottom, 400);
-
-                // ★高さが変わるまで数回監視（最大1秒）
-                let last = -1;
-                let tries = 0;
-                const timer = setInterval(() => {{
-                    const wrap = doc.getElementById(wrapId);
-                    if (!wrap) return;
-
-                    const h = wrap.scrollHeight;
-                    if (h !== last) {{
-                        last = h;
-                        scrollToBottom();
+                    // window.top / window.parent の両方を試す
+                    function getDoc() {{
+                        try {{ if (window.top && window.top.document) return window.top.document; }} catch(e) {{}}
+                        try {{ if (window.parent && window.parent.document) return window.parent.document; }} catch(e) {{}}
+                        return null;
                     }}
-                    tries += 1;
-                    if (tries >= 10) clearInterval(timer);
-                }}, 100);
+
+                    function scrollToBottom() {{
+                        const doc = getDoc();
+                        if (!doc) return false;
+                        const wrap = doc.getElementById(wrapId);
+                        if (!wrap) return false;
+                        wrap.scrollTop = wrap.scrollHeight;
+                        return true;
+                    }}
+
+                    // 最大20回・50msごとにリトライ（=最大1秒）
+                    let count = 0;
+                    const id = setInterval(function() {{
+                        if (scrollToBottom() || ++count >= 20) clearInterval(id);
+                    }}, 50);
+                }})();
             </script>
             """,
-            height=1,
+            height=0,
         )
 
+        # components.html(
+        #     f"""
+        #     <script>
+        #         const nonce = "{nonce}"; // ← これが入るだけで再実行されやすくなる
+        #         const wrapId = "{wrap_id}";
+        #         const bottomId = "{bottom_id}";
+        #         const doc = (window.parent && window.parent.document) ? window.parent.document : window.top.document;
+
+        #         function scrollToBottom() {{
+        #             const wrap = doc.getElementById(wrapId);
+        #             const bottom = doc.getElementById(bottomId);
+        #             if (!wrap || !bottom) return;
+
+        #             // ①まずwrap内部を最下部へ
+        #             wrap.scrollTop = wrap.scrollHeight;
+
+        #             // ②念のためアンカーを見える位置へ（補助）
+        #             bottom.scrollIntoView({{ block: "end" }});
+        #         }}
+
+        #         // まず即時＆遅延
+        #         setTimeout(scrollToBottom, 0);
+        #         setTimeout(scrollToBottom, 80);
+        #         setTimeout(scrollToBottom, 200);
+        #         setTimeout(scrollToBottom, 400);
+
+        #         // ★高さが変わるまで数回監視（最大1秒）
+        #         let last = -1;
+        #         let tries = 0;
+        #         const timer = setInterval(() => {{
+        #             const wrap = doc.getElementById(wrapId);
+        #             if (!wrap) return;
+
+        #             const h = wrap.scrollHeight;
+        #             if (h !== last) {{
+        #                 last = h;
+        #                 scrollToBottom();
+        #             }}
+        #             tries += 1;
+        #             if (tries >= 10) clearInterval(timer);
+        #         }}, 100);
+        #     </script>
+        #     """,
+        #     height=1,
+        # )
 
 # ============================================================
 # 3. state（初期化・リセット・遷移）
@@ -947,7 +982,6 @@ def dock_area(key: str):
     return dock
 
 
-
 # タイトルバー
 def render_titlebar(text: str):
     st.markdown(f"""
@@ -1011,6 +1045,11 @@ def build_escort_script() -> list[dict]:
 init_state()
 float_init()
 
+#CSS設定
+inject_global_css()
+#日本語化
+set_lang_ja()
+
 # ------------------------------------------------------------
 # ① intro
 # ------------------------------------------------------------
@@ -1031,7 +1070,6 @@ if st.session_state.scene == "intro":
     if st.button("開廷", disabled=not can_start):
         reset_for_new_trial()
         go("court")
-
 
 # ------------------------------------------------------------
 # ② court
