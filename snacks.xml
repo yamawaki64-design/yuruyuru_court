@@ -21,16 +21,16 @@
   <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
   <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
 
-  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ローソン</maker><name>からあげクン</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ローソン</maker><name>からあげクン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
 
   <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
@@ -38,7 +38,7 @@
   <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
   <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
@@ -84,7 +84,6 @@
   <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
   <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
   <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>やおきん</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
   <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
 
   <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
@@ -108,5 +107,4 @@
   <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
   <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
   <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-
 </snacks>

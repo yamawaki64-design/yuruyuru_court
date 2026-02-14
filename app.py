@@ -9,6 +9,7 @@ from streamlit_float import float_init
 import streamlit.components.v1 as components
 import html
 import requests
+from groq import Groq
 from msg_templates import get_template
 
 
@@ -374,45 +375,184 @@ def set_lang_ja():
 # ============================================================
 # 00. セリフ生成（工程1：テンプレート / 工程2：AI）
 # ============================================================
+# ============================================================
+# 00-A. Groq AI呼び出し（工程2）
+# ============================================================
+
+SYSTEM_PROMPT = """あなたは軽いユーモアを持つ会話生成エンジンです。
+法的判断を行わず、娯楽としての裁判会話を生成します。
+
+制約：
+- 1〜2文以内
+- 2文目は生活感 or 体感をクッションでつなぐ
+- 最大80文字程度
+- プレイヤーの入力を無視しない
+- 説教禁止
+- 指導禁止
+- 解決提案禁止
+- プライバシー質問禁止
+- 前回の裁判を記憶しない
+- 出力はセリフ本文のみ（役名・Markdown・改行・記号装飾なし）"""
+
+ROLE_PROMPTS = {
+    "pros": """あなたは検察官です。
+神経質で細部にこだわる。長引くと飽きる。雑な解決策を出すことがある。
+関心：問題点・違和感・過去発言の矛盾。
+崩れ時：投げやり・極論・しらんけど（低頻度）。""",
+
+    "def": """あなたは弁護士です。柴犬を飼っている。
+基本肯定。熱意にムラがある。雑。
+関心：擁護・美化・共感。
+崩れ時：調子に乗る・寂しがる・投げやり同調。""",
+
+    "judge": """あなたは裁判官です。聞いてないようで聞いている。
+関心：場の流れ・時間・天気・おやつ在庫。
+崩れ時：独り言・テレビ・眠気。
+本気モード：短く鋭い、直後に照れる。""",
+}
+
+def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
+    """
+    Groq APIを呼び出してセリフを生成する。
+    失敗時は None を返す（呼び出し元でフォールバック）。
+    """
+    try:
+        api_key = st.secrets.get("GROQ_API_KEY", "")
+        if not api_key:
+            return None
+
+        client = Groq(api_key=api_key)
+
+        # コンテキストをユーザープロンプトに組み立て
+        case = context.get("case", "")
+        turn_count = context.get("turn_count", 0)
+        said = context.get("said", "")
+        verdict = context.get("verdict", "")
+        weather = context.get("weather_description", "")
+        temperature = context.get("temperature", "")
+
+        situation_map = {
+            "exchange": "通常の応酬ターン",
+            "tired":    "疲れ・関心が逸れている状態",
+            "rare_sharp": "珍しく本気で鋭いツッコミ",
+            "rare_shy":   "鋭いことを言った直後の照れ隠し",
+            "opening":  "裁判の開廷直後の挨拶",
+        }
+        situation_ja = situation_map.get(situation, situation)
+
+        lines = []
+        if case:
+            lines.append(f"事案：「{case}」")
+        if turn_count:
+            lines.append(f"現在{turn_count}ターン目")
+        if said:
+            lines.append(f"プレイヤーの発言：「{said}」")
+        if verdict:
+            lines.append(f"判決：{verdict}")
+        if weather:
+            lines.append(f"今日の天気：{weather}")
+        if temperature:
+            lines.append(f"気温：{temperature}℃")
+        lines.append(f"状況：{situation_ja}")
+        lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
+
+        user_prompt = "\n".join(lines)
+
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": SYSTEM_PROMPT + "\n\n" + ROLE_PROMPTS.get(speaker, ""),
+                },
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=120,
+            temperature=0.85,
+        )
+
+        text = response.choices[0].message.content.strip()
+
+        # 出力バリデーション（改行・Markdown・空文字を弾く）
+        if not text or "\n" in text or text.startswith("#") or text.startswith("```"):
+            return None
+
+        # 長すぎる場合もフォールバック（200文字超は異常出力とみなす）
+        if len(text) > 200:
+            return None
+
+        return text
+
+    except Exception as e:
+        st.write(f"🔴 Groqエラー: {e}")
+        return None
+
+    # except Exception:
+    #     return None
 
 def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
     """
-    セリフを生成する（工程1はテンプレート、工程2でAI化）
-    
+    セリフを生成する。
+    - AIを使う場面：exchange / tired / rare_sharp / rare_shy
+    - それ以外：テンプレート固定
+    - AI失敗 or 上限超過：テンプレートにフォールバック
+
     Args:
-        speaker: "pros" | "judge" | "def"
-        situation: "opening" | "exchange" | "tired" | "noise" | "rare_sharp" | "rare_shy" | "stock"
-        context: {
-            "case_text": str,
-            "turn_count": int,
-            "messages": list,
-            "player_text": str | None,
-            ...
-        }
-    
+        speaker:   "pros" | "judge" | "def"
+        situation: "opening" | "exchange" | "tired" | "noise" | "rare_sharp" | "rare_shy" | "stock" など
+        context:   {"case": str, "turn_count": int, "said": str, ...}
+
     Returns:
-        生成されたセリフ
+        生成されたセリフ文字列
     """
     if context is None:
         context = {}
     
-    # 工程1：テンプレートから選ぶ
-    # 工程2：ここを AI呼び出しに差し替える
-    
-    # AI呼び出し回数チェック（工程2用の準備）
-    if "ai_call_count" in st.session_state and st.session_state.ai_call_count >= st.session_state.get("ai_max_calls", 8):
-        # 上限超過：テンプレートにフォールバック
+    # ── AIを使わないsituationは即テンプレ ──────────────────
+    NO_AI_SITUATIONS = {
+        "noise", "stock", "opening",
+        "escort_greeting", "escort_not_guilty_silent", "escort_not_guilty_spoke",
+        "escort_lenient_silent", "escort_lenient_spoke",
+        "escort_guilty_silent", "escort_guilty_spoke",
+        "escort_rare_event", "escort_snack_comment",
+        "escort_snack_cold", "escort_snack_warm", "escort_snack_fresh",
+        "ask_taste", "ask_player",
+        "verdict_reason_silent", "verdict_reason_spoke", "verdict_declaration",
+    }
+    if situation in NO_AI_SITUATIONS:
         return get_template(speaker, situation, **context)
     
-    # 工程1：すべてテンプレート
     # （工程2ではここで AI を呼ぶ）
-    line = get_template(speaker, situation, **context)
-    
-    # カウント増加（工程2用の準備）
-    if "ai_call_count" in st.session_state and situation in ["exchange", "rare_sharp"]:
-        st.session_state.ai_call_count += 1
-    
-    return line
+    # ── 呼び出し上限チェック ────────────────────────────────
+    ai_count = st.session_state.get("ai_call_count", 0)
+    ai_max   = st.session_state.get("ai_max_calls", 8)
+    if ai_count >= ai_max:
+        return get_template(speaker, situation, **context)
+
+    # ── 状況別AI使用確率 ────────────────────────────────────
+    turn_count  = st.session_state.get("turn_count", 0)
+    target      = st.session_state.get("target_turns", 8)
+    is_late     = turn_count >= target * 0.6
+    rare_on     = st.session_state.get("rare_event_triggered", False)
+
+    if situation in ("rare_sharp", "rare_shy"):
+        ai_prob = 1.0       # レアイベント：必ずAI
+    elif situation == "tired" and rare_on:
+        ai_prob = 1.0       # 疲れ崩れ直後：必ずAI
+    elif is_late:
+        ai_prob = 0.6       # 終盤：60%
+    else:
+        ai_prob = 0.8       # 通常応酬：80%
+
+    # ── AI呼び出し ──────────────────────────────────────────
+    if random.random() < ai_prob:
+        result = _call_groq_api(speaker, situation, context)
+        if result:
+            st.session_state.ai_call_count = ai_count + 1
+            return result
+
+    # ── フォールバック：テンプレート ────────────────────────
+    return get_template(speaker, situation, **context)
 
 def decide_verdict() -> str:
     """
@@ -669,7 +809,7 @@ def build_escort_snack_part() -> list[dict]:
         "name": "水",
         "temp": "normal",
         "fresh": "false",
-        "taste": "neutral"
+        "taste": "neutral",
     }
     
     # しょぼおやつ
@@ -723,8 +863,7 @@ def render_chat(messages: list[dict], auto_scroll: bool = True, mode: str = "cou
 
     wrap_class = "chat-wrap chat-escort" if mode == "escort" else "chat-wrap"
 
-    parts = []
-    parts.append(f'<div id="{wrap_id}" class="{wrap_class}">')
+    parts = [f'<div id="{wrap_id}" class="{wrap_class}">']
 
     if mode == "escort":
         for m in messages:
@@ -1023,6 +1162,9 @@ set_lang_ja()
 # ------------------------------------------------------------
 if st.session_state.scene == "intro":
     render_titlebar("ゆるゆる裁判所")
+
+    # ── AI利用案内（工程2セーフティ表示） ──────────────────
+    st.caption("⚠️ 生成AIを利用しています。個人情報は入力しないでください。")
     st.write("何でもとりあえず裁いてしまう裁判所です。\n今日は、どんなことがありましたか。")
 
     case_text = st.text_input(
@@ -1049,29 +1191,15 @@ elif st.session_state.scene == "court":
     # ─────────────────────────────────────────
     # 0) まず phase 更新（queueを出し切った直後の遷移）
     # ─────────────────────────────────────────
-    if st.session_state.court_next_phase is not None and len(st.session_state.court_queue) == 0:
+    if (
+        st.session_state.court_next_phase is not None
+        and len(st.session_state.court_queue) == 0
+    ):
         st.session_state.phase = st.session_state.court_next_phase
         st.session_state.court_next_phase = None
 
     # ─────────────────────────────────────────
-    # 1) 次に出すセリフを queue に積む（まだmessagesへは入れない）
-    #    ※queueが空のときだけ積むのがコツ
-    # ─────────────────────────────────────────
-    pros_lines = [
-        "検察としては、ここを見逃すと秩序が崩れます。",
-        "小さいことほど、積み重なると大きいです。",
-        "本件、軽く見せかけて地味にダメージがあります。",
-    ]
-    def_lines = [
-        "弁護の立場からは、そこまでのことではないと考えます。",
-        "状況を聞くと、やむを得ない面もあります。",
-        "それは“やった”というより“起きた”に近いかもしれません。",
-    ]
-    judge_noise = [
-        "（裁判官、ペンを回している）",
-        "……寒いですね、今日。",
-        "（裁判官、書類の角を揃えている）",
-    ]
+    # 1) 次に出すセリフを queue に積む
 
     if len(st.session_state.court_queue) == 0:
         phase = st.session_state.phase
@@ -1080,6 +1208,12 @@ elif st.session_state.scene == "court":
             case = st.session_state.case_text.strip()
 
             context = {"case": case}
+
+            # 天気情報をcontextに追加（AI用）
+            weather = fetch_weather()
+            if weather:
+                context["weather_description"] = weather.get("weather_description", "")
+                context["temperature"]         = weather.get("temperature_2m", "")
             
             st.session_state.court_queue.extend([
                 {"speaker": "judge", "text": generate_line("judge", "opening", context)},
