@@ -11,190 +11,7 @@ import html
 import requests
 from msg_templates import get_template
 
-# ============================================================
-# 00. セリフ生成（工程1：テンプレート / 工程2：AI）
-# ============================================================
 
-def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
-    """
-    セリフを生成する（工程1はテンプレート、工程2でAI化）
-    
-    Args:
-        speaker: "pros" | "judge" | "def"
-        situation: "opening" | "exchange" | "tired" | "noise" | "rare_sharp" | "rare_shy" | "stock"
-        context: {
-            "case_text": str,
-            "turn_count": int,
-            "messages": list,
-            "player_text": str | None,
-            ...
-        }
-    
-    Returns:
-        生成されたセリフ
-    """
-    if context is None:
-        context = {}
-    
-    # 工程1：テンプレートから選ぶ
-    # 工程2：ここを AI呼び出しに差し替える
-    
-    # AI呼び出し回数チェック（工程2用の準備）
-    if "ai_call_count" in st.session_state and st.session_state.ai_call_count >= st.session_state.get("ai_max_calls", 8):
-        # 上限超過：テンプレートにフォールバック
-        return get_template(speaker, situation, **context)
-    
-    # 工程1：すべてテンプレート
-    # （工程2ではここで AI を呼ぶ）
-    line = get_template(speaker, situation, **context)
-    
-    # カウント増加（工程2用の準備）
-    if "ai_call_count" in st.session_state and situation in ["exchange", "rare_sharp"]:
-        st.session_state.ai_call_count += 1
-    
-    return line
-
-def decide_verdict() -> str:
-    """
-    判決を決定する
-    工程1：ランダム
-    工程2：この中身をAI補助 + ルールベースに差し替える
-    
-    Returns:
-        "not_guilty" | "lenient" | "guilty"
-    """
-    # 工程2でここを差し替える
-    return random.choice(["not_guilty", "lenient", "guilty"])
-
-# ============================================================
-# 00. 天気API（Open-Meteo）
-# ============================================================
-
-def fetch_weather() -> dict:
-    """
-    現在地の天気を取得（Open-Meteo）
-    登録不要・完全無料
-    失敗時は空dictを返す（フォールバック用）
-    """
-    try:
-        url = (
-            "https://api.open-meteo.com/v1/forecast"
-            "?latitude=34.69&longitude=135.50"  # 大阪
-            "&current=temperature_2m,weathercode"
-            "&timezone=Asia%2FTokyo"
-        )
-        res = requests.get(url, timeout=3)
-        data = res.json()
-        current = data.get("current", {})
-        
-        # ★ 説明文を追加しておく（工程2でAIに渡す用）
-        code = current.get("weathercode")
-        if code is not None:
-            current["weather_description"] = weather_code_to_description(code)
-        
-        return current
-    except Exception:
-        # API失敗時は空dict（テンプレートにフォールバック）
-        return {}
-    
-def weather_code_to_description(code: int) -> str:
-    """
-    天気コードを日本語説明に変換
-    工程2でAIに渡す context に使う
-    """
-    if code == 0:
-        return "快晴"
-    elif code in (1, 2, 3):
-        return "曇り"
-    elif code in (45, 48):
-        return "霧"
-    elif code in range(51, 68):
-        return "雨"
-    elif code in range(71, 78):
-        return "雪"
-    elif code in range(80, 83):
-        return "にわか雨"
-    elif code in range(95, 100):
-        return "雷雨"
-    else:
-        return "不明"
-
-def weather_to_comment(weather: dict) -> str:
-    """
-    天気コードをセリフに変換
-    失敗 or 不明 → テンプレートからランダム
-    
-    Open-Meteoの天気コード（WMO）：
-    0        : 快晴
-    1, 2, 3  : 晴れ〜曇り
-    45, 48   : 霧
-    51〜67   : 雨
-    71〜77   : 雪
-    80〜82   : にわか雨
-    95〜99   : 雷雨
-    """
-    code = weather.get("weathercode")
-    temp = weather.get("temperature_2m")
-
-    # 天気取得失敗 → テンプレートにフォールバック
-    if code is None:
-        return generate_line("def", "escort_greeting", {})
-
-    # 天気コード → セリフ
-    if code == 0:
-        base = random.choice([
-            "いい天気ですね。",
-            "……きれいに晴れてますね。",
-            "雨じゃなくてよかったです。",
-        ])
-    elif code in (1, 2, 3):
-        base = random.choice([
-            "……曇ってますね。",
-            "なんか、どんよりしてますね。",
-            "晴れてるんだか曇ってるんだか。",
-        ])
-    elif code in (45, 48):
-        base = random.choice([
-            "霧が出てますね。",
-            "……靄がかかってますね。",
-        ])
-    elif code in range(51, 68):
-        base = random.choice([
-            "雨ですねー。",
-            "……降ってますね。",
-            "傘、持ってきましたか？",
-        ])
-    elif code in range(71, 78):
-        base = random.choice([
-            "……雪ですね。",
-            "雪、積もりそうですね。",
-        ])
-    elif code in range(80, 83):
-        base = random.choice([
-            "にわか雨ですね。",
-            "急に降ってきましたね。",
-        ])
-    elif code in range(95, 100):
-        base = random.choice([
-            "……雷、鳴ってますね。",
-            "雷雨ですね。早めに帰った方がいいですよ。",
-        ])
-    else:
-        # 不明なコード → テンプレートにフォールバック
-        return generate_line("def", "escort_greeting", {})
-
-    # 気温コメントを追加
-    if temp is not None:
-        if temp <= 3:
-            base += " 凍えますね。"
-        elif temp <= 10:
-            base += " 寒いですね。"
-        elif temp >= 35:
-            base += " 危険な暑さですね。"
-        elif temp >= 28:
-            base += " 暑いですね。"
-
-    return base
 
 # ============================================================
 # 0. 定数・CSS（UI）
@@ -530,18 +347,209 @@ def inject_global_css():
 
 inject_global_css()
 
+# ============================================================
+# 00. 毎回走らせるもの
+# ============================================================
+
+# lang属性を日本語に変更するスクリプト
 def set_lang_ja():
-    # JS不要。HTMLのmeta + CSS hintで翻訳ポップアップを抑制
-    st.markdown(
-        '''
-        <meta name="google" content="notranslate">
-        <style>
-            html { -webkit-text-size-adjust: 100%; }
-        </style>
-        ''',
-        unsafe_allow_html=True
+    components.html(
+        """
+        <script>
+            try {
+                window.top.document.documentElement.lang = "ja";
+            } catch(e) {}
+        </script>
+        """,
+        height=1,
     )
+
 set_lang_ja()
+
+# ============================================================
+# 00. セリフ生成（工程1：テンプレート / 工程2：AI）
+# ============================================================
+
+def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
+    """
+    セリフを生成する（工程1はテンプレート、工程2でAI化）
+    
+    Args:
+        speaker: "pros" | "judge" | "def"
+        situation: "opening" | "exchange" | "tired" | "noise" | "rare_sharp" | "rare_shy" | "stock"
+        context: {
+            "case_text": str,
+            "turn_count": int,
+            "messages": list,
+            "player_text": str | None,
+            ...
+        }
+    
+    Returns:
+        生成されたセリフ
+    """
+    if context is None:
+        context = {}
+    
+    # 工程1：テンプレートから選ぶ
+    # 工程2：ここを AI呼び出しに差し替える
+    
+    # AI呼び出し回数チェック（工程2用の準備）
+    if "ai_call_count" in st.session_state and st.session_state.ai_call_count >= st.session_state.get("ai_max_calls", 8):
+        # 上限超過：テンプレートにフォールバック
+        return get_template(speaker, situation, **context)
+    
+    # 工程1：すべてテンプレート
+    # （工程2ではここで AI を呼ぶ）
+    line = get_template(speaker, situation, **context)
+    
+    # カウント増加（工程2用の準備）
+    if "ai_call_count" in st.session_state and situation in ["exchange", "rare_sharp"]:
+        st.session_state.ai_call_count += 1
+    
+    return line
+
+def decide_verdict() -> str:
+    """
+    判決を決定する
+    工程1：ランダム
+    工程2：この中身をAI補助 + ルールベースに差し替える
+    
+    Returns:
+        "not_guilty" | "lenient" | "guilty"
+    """
+    # 工程2でここを差し替える
+    return random.choice(["not_guilty", "lenient", "guilty"])
+
+# ============================================================
+# 00. 天気API（Open-Meteo）
+# ============================================================
+
+def fetch_weather() -> dict:
+    """
+    現在地の天気を取得（Open-Meteo）
+    登録不要・完全無料
+    失敗時は空dictを返す（フォールバック用）
+    """
+    try:
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            "?latitude=34.69&longitude=135.50"  # 大阪
+            "&current=temperature_2m,weathercode"
+            "&timezone=Asia%2FTokyo"
+        )
+        res = requests.get(url, timeout=3)
+        data = res.json()
+        current = data.get("current", {})
+        
+        # ★ 説明文を追加しておく（工程2でAIに渡す用）
+        code = current.get("weathercode")
+        if code is not None:
+            current["weather_description"] = weather_code_to_description(code)
+        
+        return current
+    except Exception:
+        # API失敗時は空dict（テンプレートにフォールバック）
+        return {}
+    
+def weather_code_to_description(code: int) -> str:
+    """
+    天気コードを日本語説明に変換
+    工程2でAIに渡す context に使う
+    """
+    if code == 0:
+        return "快晴"
+    elif code in (1, 2, 3):
+        return "曇り"
+    elif code in (45, 48):
+        return "霧"
+    elif code in range(51, 68):
+        return "雨"
+    elif code in range(71, 78):
+        return "雪"
+    elif code in range(80, 83):
+        return "にわか雨"
+    elif code in range(95, 100):
+        return "雷雨"
+    else:
+        return "不明"
+
+def weather_to_comment(weather: dict) -> str:
+    """
+    天気コードをセリフに変換
+    失敗 or 不明 → テンプレートからランダム
+    
+    Open-Meteoの天気コード（WMO）：
+    0        : 快晴
+    1, 2, 3  : 晴れ〜曇り
+    45, 48   : 霧
+    51〜67   : 雨
+    71〜77   : 雪
+    80〜82   : にわか雨
+    95〜99   : 雷雨
+    """
+    code = weather.get("weathercode")
+    temp = weather.get("temperature_2m")
+
+    # 天気取得失敗 → テンプレートにフォールバック
+    if code is None:
+        return generate_line("def", "escort_greeting", {})
+
+    # 天気コード → セリフ
+    if code == 0:
+        base = random.choice([
+            "いい天気ですね。",
+            "……きれいに晴れてますね。",
+            "外、明るいですね。",
+        ])
+    elif code in (1, 2, 3):
+        base = random.choice([
+            "……曇ってますね。",
+            "なんか、どんよりしてますね。",
+            "晴れてるんだか曇ってるんだか。",
+        ])
+    elif code in (45, 48):
+        base = random.choice([
+            "霧が出てますね。",
+            "……靄がかかってますね。",
+        ])
+    elif code in range(51, 68):
+        base = random.choice([
+            "雨ですねー。",
+            "……降ってますね。",
+            "傘、持ってきましたか？",
+        ])
+    elif code in range(71, 78):
+        base = random.choice([
+            "……雪ですね。",
+            "雪、積もりそうですね。",
+        ])
+    elif code in range(80, 83):
+        base = random.choice([
+            "にわか雨ですね。",
+            "急に降ってきましたね。",
+        ])
+    elif code in range(95, 100):
+        base = random.choice([
+            "……雷、鳴ってますね。",
+            "雷雨ですね。早めに帰った方がいいですよ。",
+        ])
+    else:
+        # 不明なコード → テンプレートにフォールバック
+        return generate_line("def", "escort_greeting", {})
+
+    # 気温コメントを追加
+    if temp is not None:
+        if temp <= 3:
+            base += " 凍えますね。"
+        elif temp <= 10:
+            base += " 寒いですね。"
+        elif temp >= 35:
+            base += " 危険な暑さですね。"
+        elif temp >= 28:
+            base += " 暑いですね。"
+
+    return base
 
 # ============================================================
 # 1. データ（おやつXML）
@@ -754,54 +762,54 @@ def render_chat(messages: list[dict], auto_scroll: bool = True, mode: str = "cou
 
     nonce = len(messages)  # ← これが毎回変わる
 
+    # 自動スクロール（wrapの中を最下部へ）
     if auto_scroll:
         components.html(
             f"""
             <script>
-            (function() {{
-                var wrapId = "{wrap_id}";
-                var attempts = 0;
-                var maxAttempts = 30;
+                const nonce = "{nonce}"; // ← これが入るだけで再実行されやすくなる
+                const wrapId = "{wrap_id}";
+                const bottomId = "{bottom_id}";
+                const doc = (window.parent && window.parent.document) ? window.parent.document : window.top.document;
 
-                function getParentDoc() {{
-                    // Safari対策：複数経路を試す
-                    var docs = [];
-                    try {{ if (window.parent && window.parent !== window) docs.push(window.parent.document); }} catch(e) {{}}
-                    try {{ if (window.top && window.top !== window) docs.push(window.top.document); }} catch(e) {{}}
-                    // 見つからなければ自分自身（フォールバック）
-                    docs.push(document);
-                    return docs[0] || null;
-                }}
+                function scrollToBottom() {{
+                    const wrap = doc.getElementById(wrapId);
+                    const bottom = doc.getElementById(bottomId);
+                    if (!wrap || !bottom) return;
 
-                function tryScroll() {{
-                    attempts++;
-                    var doc = getParentDoc();
-                    if (!doc) {{
-                        if (attempts < maxAttempts) requestAnimationFrame(tryScroll);
-                        return;
-                    }}
-                    var wrap = doc.getElementById(wrapId);
-                    if (!wrap) {{
-                        if (attempts < maxAttempts) setTimeout(tryScroll, 50);
-                        return;
-                    }}
-                    // Safari は scrollTop より scrollTo の方が効くことがある
-                    wrap.scrollTo({{ top: wrap.scrollHeight, behavior: "instant" }});
+                    // ①まずwrap内部を最下部へ
                     wrap.scrollTop = wrap.scrollHeight;
 
-                    // 高さが変わったらもう1回（画像や遅延レンダリング対策）
-                    if (attempts < maxAttempts) {{
-                        setTimeout(tryScroll, 100);
-                    }}
+                    // ②念のためアンカーを見える位置へ（補助）
+                    bottom.scrollIntoView({{ block: "end" }});
                 }}
 
-                // rAF で開始（Safari でのiframe初期化待ち）
-                requestAnimationFrame(tryScroll);
-            }})();
+                // まず即時＆遅延
+                setTimeout(scrollToBottom, 0);
+                setTimeout(scrollToBottom, 80);
+                setTimeout(scrollToBottom, 200);
+                setTimeout(scrollToBottom, 400);
+
+                // ★高さが変わるまで数回監視（最大1秒）
+                let last = -1;
+                let tries = 0;
+                const timer = setInterval(() => {{
+                    const wrap = doc.getElementById(wrapId);
+                    if (!wrap) return;
+
+                    const h = wrap.scrollHeight;
+                    if (h !== last) {{
+                        last = h;
+                        scrollToBottom();
+                    }}
+                    tries += 1;
+                    if (tries >= 10) clearInterval(timer);
+                }}, 100);
             </script>
             """,
-            height=50,  # ← 0や1だとSafariがスキップする。50以上推奨
+            height=1,
         )
+
 
 # ============================================================
 # 3. state（初期化・リセット・遷移）
