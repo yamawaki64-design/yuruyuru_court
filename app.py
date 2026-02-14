@@ -380,15 +380,17 @@ def set_lang_ja():
 # ============================================================
 
 SYSTEM_PROMPT = """あなたは軽いユーモアを持つ会話生成エンジンです。
-法的判断を行わず、娯楽としての裁判会話を生成します。
+入力された事例について、法的判断を行わず、娯楽としての裁判会話を生成します。
 
 制約：
-- 1〜2文以内
-- 2文目は生活感 or 体感をクッションでつなぐ
+- 2文以内
+- 2文目は生活感 or 体感 or 根拠をクッションにつなぐ
+- 質問時は誰への質問かわかるようにする（敬称はつけない）
 - 最大80文字程度
-- プレイヤーの入力を無視しない
-- 優しい仕事口調
-- 攻撃的な言葉禁止
+- 入力を無視しない
+- 同じ内容を関心の方向を繰り返さない
+- 被告への質問禁止
+- 被告の性別・年齢・家族構成を決めつけて発言しないことを厳守
 - 説教禁止
 - 指導禁止
 - 解決提案禁止
@@ -397,19 +399,22 @@ SYSTEM_PROMPT = """あなたは軽いユーモアを持つ会話生成エンジ�
 - 出力はセリフ本文のみ（役名・Markdown・改行・記号装飾なし）"""
 
 ROLE_PROMPTS = {
-    "pros": """あなたは検察官です。
-神経質で細部にこだわる。長引くと飽きる。雑な解決策を出すことがある。
-関心：問題点・違和感・過去発言の矛盾。
+    "pros": """あなたは検察官です。子供は小学4年生。家事が得意。
+細部が気になる。長引くと飽きる。雑な解決策を出すことがある。
+関心の方向：問題点・別角度・掘り下げ・違和感・過去発言の矛盾・裁判官と弁護士の発言。
+好きなテレビ：スポーツ・料理・ニュース・ファッション・酒。
 崩れ時：投げやり・極論・しらんけど（低頻度）。""",
 
-    "def": """あなたは弁護士です。柴犬を飼っている。
-基本肯定。熱意にムラがある。雑。
-関心：擁護・美化・共感。
+    "def": """あなたは弁護士です。犬を飼っている。両親と姉と同居。昼はお弁当持参。
+場を丸く収めたい。被告の味方。熱意にムラがある。雑。
+関心の方向：擁護・美化・別角度・よく似たもの・共感・検事と裁判官の発言。
+好きなテレビ：旅行・食べ物・買い物・野球。
 崩れ時：調子に乗る・寂しがる・投げやり同調。""",
 
     "judge": """あなたは裁判官です。聞いてないようで聞いている。
-関心：場の流れ・時間・天気・おやつ在庫。
+関心の方向：場の流れ・時間・天気・おやつ在庫。
 崩れ時：独り言・テレビ・眠気。
+好きなテレビ：時代劇・朝ドラ・ニュース・歌。
 本気モード：短く鋭い、直後に照れる。""",
 }
 
@@ -530,7 +535,7 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     # ── 状況別AI使用確率 ────────────────────────────────────
     turn_count  = st.session_state.get("turn_count", 0)
     target      = st.session_state.get("target_turns", 8)
-    is_late     = turn_count >= target * 0.6
+    is_late     = turn_count >= target * 0.8
     rare_on     = st.session_state.get("rare_event_triggered", False)
 
     if situation in ("rare_sharp", "rare_shy"):
@@ -538,7 +543,7 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     elif situation == "tired" and rare_on:
         ai_prob = 1.0       # 疲れ崩れ直後：必ずAI
     elif is_late:
-        ai_prob = 0.6       # 終盤：60%
+        ai_prob = 0.8      # 終盤：80%
     else:
         ai_prob = 0.8       # 通常応酬：80%
 
@@ -1027,9 +1032,10 @@ def reset_for_new_trial():
     st.session_state.turn_count = 0
     st.session_state.target_turns = random.randint(4, 8)
 
-    low = max(1, int(st.session_state.target_turns * 0.4))
-    high = max(low, int(st.session_state.target_turns * 0.7))
-    st.session_state.ask_turn = random.randint(low, high)
+    # low = max(1, int(st.session_state.target_turns * 0.4))
+    # high = max(low, int(st.session_state.target_turns * 0.7))
+    # st.session_state.ask_turn = random.randint(low, high)
+    st.session_state.ask_turn = st.session_state.target_turns -1
 
     st.session_state.player_action = None
     st.session_state.player_text = ""
@@ -1228,9 +1234,9 @@ elif st.session_state.scene == "court":
                 "turn_count": st.session_state.turn_count,
             }
             
-            # ターンが進んできたら「疲れ」が出やすくする（後半30%）
-            is_late_game = st.session_state.turn_count >= st.session_state.target_turns * 0.6
-            tired_chance = 0.3 if is_late_game else 0.1
+            # ターンが進んできたら「疲れ」が出やすくする（後半20%）
+            is_late_game = st.session_state.turn_count >= st.session_state.target_turns * 0.8
+            tired_chance = 0.2 if is_late_game else 0.1
             
             # 検察の発言（疲れる可能性）
             pros_situation = "tired" if random.random() < tired_chance else "exchange"
