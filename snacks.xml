@@ -1,37 +1,112 @@
 <snacks>
-  <snack>
-    <maker>明治</maker>
-    <name>チョコレート</name>
-    <temp>normal</temp>
-    <fresh>false</fresh>
-    <taste>sweet</taste>  <!-- 追加 -->
-  </snack>
-  <snack>
-    <maker>カルビー</maker>
-    <name>ポテトチップス</name>
-    <temp>normal</temp>
-    <fresh>false</fresh>
-    <taste>salty</taste>  <!-- 追加 -->
-  </snack>
-  <snack>
-    <maker>コンビニ</maker>
-    <name>シュークリーム</name>
-    <temp>cold</temp>
-    <fresh>true</fresh>
-    <taste>sweet</taste>  <!-- 追加 -->
-  </snack>
-  <snack>
-    <maker>亀田製菓</maker>
-    <name>柿の種</name>
-    <temp>normal</temp>
-    <fresh>false</fresh>
-    <taste>salty</taste>  <!-- 追加 -->
-  </snack>
-  <snack>
-    <maker>森永</maker>
-    <name>ラムネ</name>
-    <temp>normal</temp>
-    <fresh>false</fresh>
-    <taste>sweet</taste>  <!-- 追加 -->
-  </snack>
+  <snack><maker>明治</maker><name>ミルクチョコレート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>カルビー</maker><name>ポテトチップス うすしお味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>亀田製菓</maker><name>柿の種</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>江崎グリコ</maker><name>ポッキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ロッテ</maker><name>コアラのマーチ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永製菓</maker><name>チョコボール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>明治</maker><name>たけのこの里</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>明治</maker><name>きのこの山</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ブルボン</maker><name>ルマンド</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>カルビー</maker><name>じゃがりこ サラダ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+
+  <snack><maker>赤城乳業</maker><name>ガリガリ君</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ロッテ</maker><name>雪見だいふく</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永乳業</maker><name>ピノ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ハーゲンダッツ</maker><name>バニラ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>井村屋</maker><name>あずきバー</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>明治</maker><name>エッセルスーパーカップ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>江崎グリコ</maker><name>ジャイアントコーン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永製菓</maker><name>チョコモナカジャンボ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ローソン</maker><name>からあげクン</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>hot</temp><fresh>true</fresh><taste>salty</taste></snack>
+  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>銀座コージーコーナー</maker><name>ジャンボシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>hot</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>なとり</maker><name>チータラ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>おやつカンパニー</maker><name>ベビースターラーメン</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>天乃屋</maker><name>歌舞伎揚</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>岩塚製菓</maker><name>黒豆せんべい</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>三幸製菓</maker><name>雪の宿</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>カルビー</maker><name>かっぱえびせん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>東ハト</maker><name>キャラメルコーン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>湖池屋</maker><name>ポテトチップス のり塩</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>ヤガイ</maker><name>おやつカルパス</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>春日井製菓</maker><name>グリーン豆</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+
+  <snack><maker>ブルボン</maker><name>アルフォート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ブルボン</maker><name>エリゼ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>サンリツ</maker><name>源氏パイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>東ハト</maker><name>ハーベスト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>不二家</maker><name>ホームパイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永製菓</maker><name>マリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永製菓</maker><name>ムーンライト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ギンビス</maker><name>たべっ子どうぶつ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ヤマザキビスケット</maker><name>ノアール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ロッテ</maker><name>パイの実</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>カンロ</maker><name>ピュレグミ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>明治</maker><name>果汁グミ ぶどう</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>UHA味覚糖</maker><name>シゲキックス</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ノーベル製菓</maker><name>男梅キャンデー</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>ロッテ</maker><name>キシリトールガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>森永製菓</maker><name>ハイチュウ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>不二家</maker><name>ミルキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>春日井製菓</maker><name>花のくちづけ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>三菱食品</maker><name>かむかむレモン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>クラシエ</maker><name>フリスク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>やおきん</maker><name>うまい棒 めんたい味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>菓道</maker><name>蒲焼さん太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>菓道</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>チロルチョコ</maker><name>チロルチョコ ミルク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>よっちゃん食品工業</maker><name>カットよっちゃん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>やおきん</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+
+  <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>大塚製薬</maker><name>SOYJOY ストロベリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>アサヒグループ食品</maker><name>一本満足バー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>共立食品</maker><name>ミックスナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>カルビー</maker><name>フルグラ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>亀田製菓</maker><name>ハッピーターン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>カンロ</maker><name>茎わかめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>なとり</maker><name>あたりめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>扇屋食品</maker><name>チーたら</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>デルタインターナショナル</maker><name>ロカボナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+
+  <snack><maker>石屋製菓</maker><name>白い恋人</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>六花亭</maker><name>マルセイバターサンド</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>カルビー</maker><name>じゃがポックル</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>ガトーフェスタ・ハラダ</maker><name>グーテ・デ・ロワ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>ロイズ</maker><name>生チョコレート</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <snack><maker>鎌倉紅谷</maker><name>クルミッ子</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>坂角総本舗</maker><name>ゆかり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+
 </snacks>
