@@ -483,12 +483,8 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
 
         return text
 
-    except Exception as e:
-        st.write(f"🔴 Groqエラー: {e}")
+    except Exception:
         return None
-
-    # except Exception:
-    #     return None
 
 def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
     """
