@@ -764,87 +764,51 @@ def render_chat(messages: list[dict], auto_scroll: bool = True, mode: str = "cou
     # 自動スクロール（wrapの中を最下部へ）
     if auto_scroll:
 
-# render_chat 内のスクロール部分（768行目付近）
-
         components.html(
             f"""
             <script>
-                (function() {{
-                    const wrapId = "{wrap_id}";
-                    const nonce = "{nonce}";
+                const nonce = "{nonce}"; // ← これが入るだけで再実行されやすくなる
+                const wrapId = "{wrap_id}";
+                const bottomId = "{bottom_id}";
+                const doc = (window.parent && window.parent.document) ? window.parent.document : window.top.document;
 
-                    // window.top / window.parent の両方を試す
-                    function getDoc() {{
-                        try {{ if (window.top && window.top.document) return window.top.document; }} catch(e) {{}}
-                        try {{ if (window.parent && window.parent.document) return window.parent.document; }} catch(e) {{}}
-                        return null;
+                function scrollToBottom() {{
+                    const wrap = doc.getElementById(wrapId);
+                    const bottom = doc.getElementById(bottomId);
+                    if (!wrap || !bottom) return;
+
+                    // ①まずwrap内部を最下部へ
+                    wrap.scrollTop = wrap.scrollHeight;
+
+                    // ②念のためアンカーを見える位置へ（補助）
+                    bottom.scrollIntoView({{ block: "end" }});
+                }}
+
+                // まず即時＆遅延
+                setTimeout(scrollToBottom, 0);
+                setTimeout(scrollToBottom, 80);
+                setTimeout(scrollToBottom, 200);
+                setTimeout(scrollToBottom, 400);
+
+                // ★高さが変わるまで数回監視（最大1秒）
+                let last = -1;
+                let tries = 0;
+                const timer = setInterval(() => {{
+                    const wrap = doc.getElementById(wrapId);
+                    if (!wrap) return;
+
+                    const h = wrap.scrollHeight;
+                    if (h !== last) {{
+                        last = h;
+                        scrollToBottom();
                     }}
-
-                    function scrollToBottom() {{
-                        const doc = getDoc();
-                        if (!doc) return false;
-                        const wrap = doc.getElementById(wrapId);
-                        if (!wrap) return false;
-                        wrap.scrollTop = wrap.scrollHeight;
-                        return true;
-                    }}
-
-                    // 最大20回・50msごとにリトライ（=最大1秒）
-                    let count = 0;
-                    const id = setInterval(function() {{
-                        if (scrollToBottom() || ++count >= 20) clearInterval(id);
-                    }}, 50);
-                }})();
+                    tries += 1;
+                    if (tries >= 10) clearInterval(timer);
+                }}, 100);
             </script>
             """,
-            height=0,
+            height=1,
         )
-
-        # components.html(
-        #     f"""
-        #     <script>
-        #         const nonce = "{nonce}"; // ← これが入るだけで再実行されやすくなる
-        #         const wrapId = "{wrap_id}";
-        #         const bottomId = "{bottom_id}";
-        #         const doc = (window.parent && window.parent.document) ? window.parent.document : window.top.document;
-
-        #         function scrollToBottom() {{
-        #             const wrap = doc.getElementById(wrapId);
-        #             const bottom = doc.getElementById(bottomId);
-        #             if (!wrap || !bottom) return;
-
-        #             // ①まずwrap内部を最下部へ
-        #             wrap.scrollTop = wrap.scrollHeight;
-
-        #             // ②念のためアンカーを見える位置へ（補助）
-        #             bottom.scrollIntoView({{ block: "end" }});
-        #         }}
-
-        #         // まず即時＆遅延
-        #         setTimeout(scrollToBottom, 0);
-        #         setTimeout(scrollToBottom, 80);
-        #         setTimeout(scrollToBottom, 200);
-        #         setTimeout(scrollToBottom, 400);
-
-        #         // ★高さが変わるまで数回監視（最大1秒）
-        #         let last = -1;
-        #         let tries = 0;
-        #         const timer = setInterval(() => {{
-        #             const wrap = doc.getElementById(wrapId);
-        #             if (!wrap) return;
-
-        #             const h = wrap.scrollHeight;
-        #             if (h !== last) {{
-        #                 last = h;
-        #                 scrollToBottom();
-        #             }}
-        #             tries += 1;
-        #             if (tries >= 10) clearInterval(timer);
-        #         }}, 100);
-        #     </script>
-        #     """,
-        #     height=1,
-        # )
 
 # ============================================================
 # 3. state（初期化・リセット・遷移）
