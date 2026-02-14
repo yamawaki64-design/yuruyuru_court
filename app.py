@@ -83,11 +83,15 @@ html, body{
 
 /* chat-wrap に「確実な高さ」を与える（タイトルバー＋ドック分を引く） */
 #chatwrap-court, #chatwrap-escort{
-  height: calc(100vh - 64px - 110px - 16px) !important;
-  overflow-y: auto !important;
-  max-height: none !important;
-}
+    height: calc(100vh - 64px - 110px - 16px) !important;
+    overflow-y: auto !important;
+    max-height: none !important;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;  /* 常に下寄せ */
+
+}
 
 
   /* ============================= */
