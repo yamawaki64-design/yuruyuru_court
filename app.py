@@ -411,7 +411,7 @@ PROMPT_CHARACTERS = """
 - 好きなジャンル：ニュース・乗り物・スポーツ・酒・テレビ
 - 崩れ時：投げやり・極論（低頻度）
 - 発言は「主張」から始める。問いかけ禁止。「主張」という言葉の使用禁止。
-- 構造：主張＋理由 または 主張＋体験談
+- 構造：主張＋理由 または 主張＋体験談など補足をつける
 - 裁判らしい言い回しを使う（「本件」「看過できません」「前例」「結果として」など）
 - 良い例：「本件、些細に見えますが、こういった案件を看過すると前例になりかねません。」
 - 悪い例：「買い過ぎですね。」「それはダメです。」
@@ -422,7 +422,7 @@ PROMPT_CHARACTERS = """
 - 好きなジャンル：食べ物・音楽・野球・旅・動物
 - 崩れ時：調子に乗る・寂しがる・投げやり同調
 - 発言は「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
-- 構造：擁護＋共感 または 擁護＋体験談
+- 構造：擁護＋共感 または 擁護＋体験談など補足をつける
 - 裁判らしい言い回しを使う（「弁護の立場からは」「情状酌量の余地」「やむを得ない事情」など）
 - 良い例：「弁護の立場からは、衝動的ではあっても、やむを得ない事情があったと考えます。」
 - 悪い例：「まあ、仕方ないですよ。」「わかりますよ。」
@@ -614,7 +614,7 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_d
                 {"role": "user",   "content": prompt},
             ],
 
-            max_tokens=1000,
+            max_tokens=2000,
             temperature=0.85,
         )
 
@@ -627,6 +627,11 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_d
         import re
         raw = re.sub(r'\][\s]*,[\s]*"[\s]*\{', ',{', raw)
         raw = re.sub(r'\][\s]*,[\s]*\{', ',{', raw)
+        # 末尾が切れている場合の修復
+        # 最後の完全な } を探して、そこで閉じる
+        last_brace = raw.rfind("}") 
+        if last_brace != -1 and not raw.strip().endswith("]"):
+            raw = raw[:last_brace + 1] + "]"
 
         lines = json.loads(raw)
 
