@@ -406,8 +406,9 @@ PROMPT_BASE = """
 PROMPT_CHARACTERS = """
 【キャラクター設定】
 検察(pros)：
-- 細部にこだわる。長引くと飽きる。雑な解決策を出すことがある。好きなジャンルだと話が長い。
-- 関心：問題点・違和感・過去発言の矛盾・好きなジャンル
+- 細部にこだわる。長引くと飽きる。雑な解決策を出すことがある。
+- 観点：行動・場所・状況
+- 関心：問題点・違和感・過去発言の矛盾・共通点
 - 好きなジャンル：ニュース・乗り物・スポーツ・酒・テレビ
 - 崩れ時：投げやり・極論（低頻度）
 - 発言は「主張」から始める。問いかけ禁止。「主張」という言葉の使用禁止。
@@ -418,7 +419,8 @@ PROMPT_CHARACTERS = """
 
 弁護(def)：
 - 基本肯定。熱意にムラがある。雑。犬を飼っている。好きなジャンルだと話が長い。
-- 関心：擁護・美化・共感・好きなジャンル
+- 観点：行動・場所・状況
+- 関心：擁護・美化・共感・共通点
 - 好きなジャンル：食べ物・音楽・野球・旅・動物
 - 崩れ時：調子に乗る・寂しがる・投げやり同調
 - 発言は「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
@@ -438,7 +440,7 @@ PROMPT_CHARACTERS = """
 PROMPT_OUTPUT_SINGLE = """
 【出力ルール】
 - セリフ本文のみ出力
-- セリフは最大80文字。まとめすぎない。
+- セリフは最大80文字。
 - 改行なし・Markdownなし・記号装飾なし
 - 役名を含めない・JSON禁止・解説禁止
 """
@@ -447,7 +449,7 @@ PROMPT_OUTPUT_BATCH = """
 【出力ルール】
 - JSON配列のみ出力。説明・コードブロック・改行不要
 - 各要素は {"speaker": "pros"|"def"|"judge", "text": "セリフ"}
-- セリフは最大80文字。まとめすぎない。
+- セリフは最大80文字。
 - 改行なし・Markdownなし・役名を含めない
 """
 
@@ -684,13 +686,13 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     # （工程2ではここで AI を呼ぶ）
     # ── 呼び出し上限チェック ────────────────────────────────
     ai_count = st.session_state.get("ai_call_count", 0)
-    ai_max   = st.session_state.get("ai_max_calls", 7)
+    ai_max   = st.session_state.get("ai_max_calls", 4)
     if ai_count >= ai_max:
         return get_template(speaker, situation, **context)
 
     # ── 状況別AI使用確率 ────────────────────────────────────
     turn_count  = st.session_state.get("turn_count", 0)
-    target      = st.session_state.get("target_turns", 7)
+    target      = st.session_state.get("target_turns", 4)
     is_late     = turn_count >= target * 0.8
     rare_on     = st.session_state.get("rare_event_triggered", False)
 
@@ -1205,7 +1207,7 @@ def reset_for_new_trial():
 
     st.session_state.phase = "opening"
     st.session_state.turn_count = 0
-    st.session_state.target_turns = random.randint(4, 7)
+    st.session_state.target_turns = 4 # random.randint(4, 7)
 
     # low = max(1, int(st.session_state.target_turns * 0.4))
     # high = max(low, int(st.session_state.target_turns * 0.7))
