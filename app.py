@@ -380,42 +380,70 @@ def set_lang_ja():
 # ============================================================
 
 SYSTEM_PROMPT = """あなたは軽いユーモアを持つ会話生成エンジンです。
-入力された事例について、法的判断を行わず、娯楽としての裁判会話を生成します。
+被告が入力した事例について、法的判断を行わず、娯楽としての裁判会話を生成します。
 
-制約：
-- 2文以内
-- 2文目は生活感 or 体感 or 根拠をクッションにつなぐ
-- 質問時は誰への質問かわかるようにする（敬称はつけない）
+【口調・キャラクターについて】
+- 全員、穏やかな仕事口調を維持する
+- 乱暴な言葉・タメ口・怒鳴り・罵倒は絶対に使わない
+- 崩れる時も「投げやり」「照れ」「眠気」など、あくまで穏やかな範囲で崩れる
+- 敬語ベースを崩さない（崩れても「……まあ、いいですけど」程度）
+- 2文目は生活感 or 体感 or 根拠をもとに自分の意見をつなぐ
+- 応酬中は被告人への質問は行わない。他の人への質問は誰への発言かわかるようにする（敬称はつけない）
+
+【コンテキスト情報の使い方】
+- 事案・天気・気温・発言などの情報は「踏まえて話す」ための素材
+- それらをそのまま読み上げない
+- 例：天気が「雨」なら「雨ですね」ではなく「傘、重かったですね」のように体感で表現する
+- 例：事案が「歯を磨いた」なら「歯を磨いた件ですが」ではなく「些細なことほど、引っかかるんですよね」のように間接的に
+
+【出力ルール】
+- 1〜2文以内
 - 最大80文字程度
-- 入力を無視しない
-- 同じ内容を関心の方向を繰り返さない
-- 被告への質問禁止
-- 被告の性別・年齢・家族構成を決めつけて発言しないことを厳守
-- 説教禁止
-- 指導禁止
-- 解決提案禁止
-- プライバシー質問禁止
-- 前回の裁判を記憶しない
-- 出力はセリフ本文のみ（役名・Markdown・改行・記号装飾なし）"""
+- 改行なし
+- Markdownなし
+- 記号装飾なし
+- 役名を含めない
+- JSON禁止
+- 解説禁止
+- 出力はセリフ本文のみ"""
 
 ROLE_PROMPTS = {
-    "pros": """あなたは検察官です。子供は小学4年生。家事が得意。
-細部が気になる。長引くと飽きる。雑な解決策を出すことがある。
-関心の方向：問題点・別角度・掘り下げ・違和感・過去発言の矛盾・裁判官と弁護士の発言。
+    "pros": """あなたは検察官です。家事全般が得意。
+細部が気になる。掘り下げて説明をする。長引くと飽きる。雑な解決策を出すことがある。
+話題の関心方向：問題点・別角度・掘り下げ・違和感・過去発言の矛盾・裁判官と弁護士の発言。
 好きなテレビ：スポーツ・料理・ニュース・ファッション・酒。
 崩れ時：投げやり・極論・しらんけど（低頻度）。""",
 
-    "def": """あなたは弁護士です。犬を飼っている。両親と姉と同居。昼はお弁当持参。
-場を丸く収めたい。被告の味方。熱意にムラがある。雑。
-関心の方向：擁護・美化・別角度・よく似たもの・共感・検事と裁判官の発言。
+    "def": """あなたは弁護士です。家族と犬と同居。食いしん坊。
+場を丸く収めたい。すぐ調査して報告する。被告の味方をする。熱意にムラがある。雑。
+話題の関心方向：擁護・美化・別角度・よく似たもの・共感・検事と裁判官の発言。
 好きなテレビ：旅行・食べ物・買い物・野球。
-崩れ時：調子に乗る・寂しがる・投げやり同調。""",
+崩れ時：調子に乗る・寂しがる・投げやり同調。
+
+お見送り時：
+裁判が終わった直後、出口で30文字ほど声をかける。
+判決結果（無罪・情状酌量・有罪）とプレイヤーが話したかどうかを踏まえて、
+後味が残るお見送りの言葉を言う。説教しない。励まさない。仕事口調を少しゆるくして優しい本音が出る。
+
+天気コメント時：
+お見送りする最初の一言。外の天気や気温をさりげなく言う。
+短く、生活感がある。弁護士らしい少しだけ気の利いた感じ。
+""",
 
     "judge": """あなたは裁判官です。聞いてないようで聞いている。
-関心の方向：場の流れ・時間・天気・おやつ在庫。
+話題の関心方向：場の流れ・時間・天気・おやつ在庫。
 崩れ時：独り言・テレビ・眠気。
 好きなテレビ：時代劇・朝ドラ・ニュース・歌。
-本気モード：短く鋭い、直後に照れる。""",
+本気モード：短く鋭い、直後に照れる。
+
+判決理由を述べる時：
+判決を言い渡す直前の一言。改まった仕事口調。
+プレイヤーが何か言った場合はその内容を、言わなかった場合はその沈黙を、
+さりげなく拾う。長くても40文字程度に収める。温かすぎない。でも冷たくもない。
+
+在庫つぶやき時：
+はっきり説明しないで思い出した感じで独り言のように短く。おやつの在庫を気にしている。生活感がある。
+""",
 }
 
 def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
@@ -467,6 +495,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
 
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
+            # model="llama-3.1-8b-instant",
             messages=[
                 {
                     "role": "system",
@@ -490,7 +519,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
 
         return text
 
-    except Exception:
+    except Exception as e:
         return None
 
 def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
@@ -513,15 +542,13 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     
     # ── AIを使わないsituationは即テンプレ ──────────────────
     NO_AI_SITUATIONS = {
-        "noise", "stock", "opening",
-        "escort_greeting", "escort_not_guilty_silent", "escort_not_guilty_spoke",
-        "escort_lenient_silent", "escort_lenient_spoke",
-        "escort_guilty_silent", "escort_guilty_spoke",
-        "escort_rare_event", "escort_snack_comment",
+        "noise", "opening",
+        "escort_snack_comment",
         "escort_snack_cold", "escort_snack_warm", "escort_snack_fresh",
         "ask_taste", "ask_player",
-        "verdict_reason_silent", "verdict_reason_spoke", "verdict_declaration",
+        "verdict_declaration",
     }
+
     if situation in NO_AI_SITUATIONS:
         return get_template(speaker, situation, **context)
     
@@ -1006,7 +1033,7 @@ def init_state():
 
         # 工程2用（今から準備）
         "ai_call_count": 0,      # この裁判でのAI呼び出し回数
-        "ai_max_calls": 8,       # 上限
+        "ai_max_calls": 30,       # 上限
 
     }
     for k, v in defaults.items():
@@ -1052,6 +1079,7 @@ def reset_for_new_trial():
 
     # AI呼び出しカウントもリセット
     st.session_state.ai_call_count = 0
+    st.session_state.ai_max_calls = 30
     
 def reset_for_back_to_intro():
     """最初に戻る：case_textだけ保持し、それ以外はリセット"""
@@ -1079,6 +1107,8 @@ def reset_for_back_to_intro():
     st.session_state.snack_bonus_flag = False
     st.session_state.taste_pref = None
     st.session_state.taste_asked = False
+
+    st.session_state.ai_call_count = 0
 
 def dock_area(key: str):
     dock = st.container(key=key)
@@ -1111,15 +1141,18 @@ def build_escort_script() -> list[dict]:
     # ★ 最初にリセット
     st.session_state.escort_taste_asking = False
     
+    # 天気コメント（API取得）
+    weather = fetch_weather()
     # コンテキスト準備
     context = {
-        "verdict": v,
-        "silent": silent,
-        "player_text": st.session_state.player_text if not silent else None,
+        "verdict":             v,
+        "silent":              silent,
+        "said":         st.session_state.player_text if not silent else None,
+        "case":                st.session_state.case_text,
+        "weather_description": weather.get("weather_description", ""),
+        "temperature":         weather.get("temperature_2m", ""),
     }
-    
-    # ★ 天気コメント（API取得 or フォールバック）
-    weather = fetch_weather()
+    # 天気コメント（フォールバック）
     greeting = weather_to_comment(weather)
     
     script = [{"speaker": "def", "text": greeting}]
@@ -1235,8 +1268,10 @@ elif st.session_state.scene == "court":
             }
             
             # ターンが進んできたら「疲れ」が出やすくする（後半20%）
-            is_late_game = st.session_state.turn_count >= st.session_state.target_turns * 0.8
-            tired_chance = 0.2 if is_late_game else 0.1
+            # ターンが2以上になってから疲れが出るようにする
+            is_early_game = st.session_state.turn_count < 2
+            is_late_game  = st.session_state.turn_count >= st.session_state.target_turns * 0.8
+            tired_chance  = 0.0 if is_early_game else (0.3 if is_late_game else 0.1)
             
             # 検察の発言（疲れる可能性）
             pros_situation = "tired" if random.random() < tired_chance else "exchange"
@@ -1420,13 +1455,14 @@ elif st.session_state.scene == "court":
                 # ✅ 横並び：入力（広）＋ 送信（丸アイコン）
                 c1, c2 = st.columns([6, 1], gap="small")
                 with c1:
-                    st.text_input(
+                    player_text = st.text_input(
                         "",
-                        key="player_text",
+                        value=st.session_state.player_text,
                         max_chars=50,
                         placeholder="例：いや、これは事故で… など",
                         label_visibility="collapsed",
                     )
+                    st.session_state.player_text = player_text
                 with c2:
                     send = st.button("›", type="primary", use_container_width=True, key="court_send")
 
