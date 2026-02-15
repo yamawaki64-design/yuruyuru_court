@@ -9,6 +9,7 @@ from streamlit_float import float_init
 import streamlit.components.v1 as components
 import html
 import requests
+import json
 from groq import Groq
 from msg_templates import get_template
 
@@ -520,6 +521,86 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         return text
 
     except Exception as e:
+        return None
+    
+
+def _generate_exchange_lines(case: str, target_turns: int, weather: dict) -> list[dict] | None:
+    """
+    応酬ターン分のセリフを1回のAPIコールでまとめて生成する。
+    失敗時は None を返す（呼び出し元でフォールバック）。
+    """
+    try:
+        api_key = st.secrets.get("GROQ_API_KEY", "")
+        if not api_key:
+            return None
+
+        client = Groq(api_key=api_key)
+
+        weather_desc = weather.get("weather_description", "")
+        temperature  = weather.get("temperature_2m", "")
+
+        # ターン数に応じてセリフ構成を決める
+        # 1ターン = 検察1 + 弁護1、たまに裁判官ノイズ
+        # 疲れは後半(80%以降)から出る
+        late_start = max(2, int(target_turns * 0.8))
+
+        prompt = f"""以下の条件で裁判の応酬セリフを生成してください。
+
+【事案】「{case}」
+【天気】{weather_desc}　【気温】{temperature}℃
+【応酬ターン数】{target_turns}ターン
+
+【出力ルール】
+- JSON配列のみ出力。説明・コードブロック・改行は不要。
+- 各要素は {{"speaker": "pros"|"def"|"judge", "text": "セリフ"}}
+- 1ターン = 検察(pros)1つ + 弁護(def)1つ が基本
+- 裁判官(judge)のノイズは全体で1〜2回、ランダムな位置に挟む
+- 序盤({late_start}ターン目まで)は通常の応酬のみ
+- 後半({late_start}ターン目以降)は検察か弁護のどちらかが1回だけ疲れた発言をする
+- セリフは1〜2文、最大80文字
+- 事案の内容を踏まえて話す（そのまま読み上げない）
+- 穏やかな仕事口調を維持する（乱暴な言葉・タメ口禁止）
+
+【キャラクター】
+- 検察(pros)：神経質で細部にこだわる。長引くと飽きる。
+- 弁護(def)：基本肯定。熱意にムラ。柴犬飼ってる。
+- 裁判官(judge)：聞いてないようで聞いている。生活感がある独り言。
+
+出力例（ターン数2の場合）：
+[{{"speaker":"pros","text":"本件、見過ごすと積み重なります。"}},{{"speaker":"def","text":"やむを得ない面もあったと思います。"}},{{"speaker":"judge","text":"……ペン、どこ行ったかな。"}},{{"speaker":"pros","text":"正直、疲れました。"}},{{"speaker":"def","text":"まあ、そういう日もありますね。"}}]"""
+
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            # model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": "あなたはJSON生成エンジンです。JSONのみ出力してください。説明・コードブロック・改行は不要です。"},
+                {"role": "user",   "content": prompt},
+            ],
+            max_tokens=1000,
+            temperature=0.85,
+        )
+
+        raw = response.choices[0].message.content.strip()
+
+        # コードブロックが混入した場合の除去
+        raw = raw.replace("```json", "").replace("```", "").strip()
+
+        lines = json.loads(raw)
+
+        # バリデーション
+        if not isinstance(lines, list):
+            return None
+        for item in lines:
+            if not isinstance(item, dict):
+                return None
+            if "speaker" not in item or "text" not in item:
+                return None
+            if item["speaker"] not in ("pros", "def", "judge"):
+                return None
+
+        return lines
+
+    except Exception:
         return None
 
 def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
@@ -1242,115 +1323,138 @@ elif st.session_state.scene == "court":
         phase = st.session_state.phase
 
         if phase == "opening":
-            case = st.session_state.case_text.strip()
-
-            context = {"case": case}
-
-            # 天気情報をcontextに追加（AI用）
+            case    = st.session_state.case_text.strip()
             weather = fetch_weather()
-            if weather:
-                context["weather_description"] = weather.get("weather_description", "")
-                context["temperature"]         = weather.get("temperature_2m", "")
-            
+            context = {
+                "case":                case,
+                "weather_description": weather.get("weather_description", ""),
+                "temperature":         weather.get("temperature_2m", ""),
+            }
+
+            # openingはテンプレ固定
             st.session_state.court_queue.extend([
-                {"speaker": "judge", "text": generate_line("judge", "opening", context)},
-                {"speaker": "pros",  "text": generate_line("pros", "opening", context)},
-                {"speaker": "def",   "text": generate_line("def", "opening", context)},
+                {"speaker": "judge", "text": get_template("judge", "opening", case=case)},
+                {"speaker": "pros",  "text": get_template("pros",  "opening")},
+                {"speaker": "def",   "text": get_template("def",   "opening")},
             ])
+
+            # exchange分を1回のAPIコールでまとめて生成してキューに積む
+            exchange_lines = _generate_exchange_lines(
+                case         = case,
+                target_turns = st.session_state.target_turns,
+                weather      = weather,
+            )
+
+            if exchange_lines:
+                # AI生成成功：全部キューに積む
+                st.session_state.court_queue.extend(exchange_lines)
+                st.session_state.ai_call_count += 1
+                # ターンカウントをtarget_turnsまで一気に進める
+                st.session_state.turn_count = st.session_state.target_turns
+            else:
+                # AI失敗：フォールバック（従来通り1ターンずつ生成）
+                st.session_state.turn_count = 0
 
             st.session_state.court_next_phase = "exchange"
 
         elif phase == "exchange":
-
-            context = {
-                "case": st.session_state.case_text,
-                "turn_count": st.session_state.turn_count,
-            }
-            
-            # ターンが進んできたら「疲れ」が出やすくする（後半20%）
-            # ターンが2以上になってから疲れが出るようにする
-            is_early_game = st.session_state.turn_count < 2
-            is_late_game  = st.session_state.turn_count >= st.session_state.target_turns * 0.8
-            tired_chance  = 0.0 if is_early_game else (0.3 if is_late_game else 0.1)
-            
-            # 検察の発言（疲れる可能性）
-            pros_situation = "tired" if random.random() < tired_chance else "exchange"
-            pros_text = generate_line("pros", pros_situation, context)
-            st.session_state.court_queue.append({
-                "speaker": "pros",
-                "text": pros_text
-            })
-            
-            # ★ レアイベント発火判定（疲れた直後に25%）
-            if (pros_situation == "tired" 
-                and st.session_state.rare_event_flag 
-                and not st.session_state.rare_event_triggered):
-                
-                if random.random() < 0.25:
-                    # レアイベント発生！
-                    st.session_state.rare_event_triggered = True
-                    st.session_state.snack_bonus_flag = True
-                    
-                    # 誰がツッコむか（弁護 or 裁判官）
-                    reactor = random.choice(["def", "judge"])
-                    
-                    # 鋭い一言
-                    st.session_state.court_queue.append({
-                        "speaker": reactor,
-                        "text": generate_line(reactor, "rare_sharp", context)
-                    })
-                    
-                    # 照れて逃げる
-                    st.session_state.court_queue.append({
-                        "speaker": reactor,
-                        "text": generate_line(reactor, "rare_shy", context)
-                    })
-            
-            # 裁判官のノイズ（20%、レアイベントが起きてない時だけ）
-            if random.random() < 0.2 and not st.session_state.rare_event_triggered:
-                st.session_state.court_queue.append({
-                    "speaker": "judge",
-                    "text": generate_line("judge", "noise", context)
-                })
-            
-            # 弁護の発言（疲れる可能性）
-            def_situation = "tired" if random.random() < tired_chance else "exchange"
-            def_text = generate_line("def", def_situation, context)
-            st.session_state.court_queue.append({
-                "speaker": "def",
-                "text": def_text
-            })
-            
-            # ★ 弁護が疲れた直後にもレアイベント判定
-            if (def_situation == "tired" 
-                and st.session_state.rare_event_flag 
-                and not st.session_state.rare_event_triggered):
-                
-                if random.random() < 0.25:
-                    st.session_state.rare_event_triggered = True
-                    st.session_state.snack_bonus_flag = True
-                    
-                    reactor = random.choice(["pros", "judge"])
-                    
-                    st.session_state.court_queue.append({
-                        "speaker": reactor,
-                        "text": generate_line(reactor, "rare_sharp", context)
-                    })
-                    
-                    st.session_state.court_queue.append({
-                        "speaker": reactor,
-                        "text": generate_line(reactor, "rare_shy", context)
-                    })
-
-            # ターン数は「ターンを積んだ時点」で増やす（表示は後追い）
-            st.session_state.turn_count += 1
-
-            if st.session_state.turn_count == st.session_state.ask_turn:
-                st.session_state.court_next_phase = "ask_player"
-            elif st.session_state.turn_count >= st.session_state.target_turns:
-                st.session_state.court_next_phase = "verdict_prep"
+            # まとめて生成済みの場合
+            if st.session_state.turn_count >= st.session_state.target_turns:
+                # ask_turnが設定されている場合はask_playerを挟む
+                if st.session_state.ask_turn <= st.session_state.target_turns:
+                    st.session_state.court_next_phase = "ask_player"
+                else:
+                    st.session_state.court_next_phase = "verdict_prep"
             else:
-                st.session_state.court_next_phase = "exchange"
+                context = {
+                    "case": st.session_state.case_text,
+                    "turn_count": st.session_state.turn_count,
+                }
+                
+                # ターンが進んできたら「疲れ」が出やすくする（後半20%）
+                # ターンが2以上になってから疲れが出るようにする
+                is_early_game = st.session_state.turn_count < 2
+                is_late_game  = st.session_state.turn_count >= st.session_state.target_turns * 0.8
+                tired_chance  = 0.0 if is_early_game else (0.3 if is_late_game else 0.1)
+                
+                # 検察の発言（疲れる可能性）
+                pros_situation = "tired" if random.random() < tired_chance else "exchange"
+                pros_text = generate_line("pros", pros_situation, context)
+                st.session_state.court_queue.append({
+                    "speaker": "pros",
+                    "text": pros_text
+                })
+                
+                # ★ レアイベント発火判定（疲れた直後に25%）
+                if (pros_situation == "tired" 
+                    and st.session_state.rare_event_flag 
+                    and not st.session_state.rare_event_triggered):
+                    
+                    if random.random() < 0.25:
+                        # レアイベント発生！
+                        st.session_state.rare_event_triggered = True
+                        st.session_state.snack_bonus_flag = True
+                        
+                        # 誰がツッコむか（弁護 or 裁判官）
+                        reactor = random.choice(["def", "judge"])
+                        
+                        # 鋭い一言
+                        st.session_state.court_queue.append({
+                            "speaker": reactor,
+                            "text": generate_line(reactor, "rare_sharp", context)
+                        })
+                        
+                        # 照れて逃げる
+                        st.session_state.court_queue.append({
+                            "speaker": reactor,
+                            "text": generate_line(reactor, "rare_shy", context)
+                        })
+                
+                # 裁判官のノイズ（20%、レアイベントが起きてない時だけ）
+                if random.random() < 0.2 and not st.session_state.rare_event_triggered:
+                    st.session_state.court_queue.append({
+                        "speaker": "judge",
+                        "text": generate_line("judge", "noise", context)
+                    })
+                
+                # 弁護の発言（疲れる可能性）
+                def_situation = "tired" if random.random() < tired_chance else "exchange"
+                def_text = generate_line("def", def_situation, context)
+                st.session_state.court_queue.append({
+                    "speaker": "def",
+                    "text": def_text
+                })
+                
+                # ★ 弁護が疲れた直後にもレアイベント判定
+                if (def_situation == "tired" 
+                    and st.session_state.rare_event_flag 
+                    and not st.session_state.rare_event_triggered):
+                    
+                    if random.random() < 0.25:
+                        st.session_state.rare_event_triggered = True
+                        st.session_state.snack_bonus_flag = True
+                        
+                        reactor = random.choice(["pros", "judge"])
+                        
+                        st.session_state.court_queue.append({
+                            "speaker": reactor,
+                            "text": generate_line(reactor, "rare_sharp", context)
+                        })
+                        
+                        st.session_state.court_queue.append({
+                            "speaker": reactor,
+                            "text": generate_line(reactor, "rare_shy", context)
+                        })
+
+                # ターン数は「ターンを積んだ時点」で増やす（表示は後追い）
+                st.session_state.turn_count += 1
+
+                if st.session_state.turn_count == st.session_state.ask_turn:
+                    st.session_state.court_next_phase = "ask_player"
+                elif st.session_state.turn_count >= st.session_state.target_turns:
+                    st.session_state.court_next_phase = "verdict_prep"
+                else:
+                    st.session_state.court_next_phase = "exchange"
 
         # ★ 新しいphase
         elif phase == "ask_taste":
