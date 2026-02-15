@@ -379,71 +379,90 @@ def set_lang_ja():
 # ============================================================
 # 00-A. Groq AI呼び出し（工程2）
 # ============================================================
+# ============================================================
+# プロンプト定義（共通）
+# ============================================================
 
-SYSTEM_PROMPT = """あなたは軽いユーモアを持つ会話生成エンジンです。
-被告が入力した事例について、法的判断を行わず、娯楽としての裁判会話を生成します。
+PROMPT_BASE = """
+【役割】
+あなたは軽いユーモアを持つ会話生成エンジンです。
+法的判断を行わず、娯楽としての裁判会話を生成します。
 
-【口調・キャラクターについて】
-- 全員、穏やかな仕事口調を維持する
-- 乱暴な言葉・タメ口・怒鳴り・罵倒は絶対に使わない
-- 崩れる時も「投げやり」「照れ」「眠気」など、あくまで穏やかな範囲で崩れる
+【制約】
+- 他の人への敬意をもった仕事口調を維持する
+- 乱暴な言葉・タメ口・怒鳴り・罵倒・命令禁止
+- 崩れる時も「投げやり」「照れ」「眠気」など穏やかな範囲で
 - 敬語ベースを崩さない（崩れても「……まあ、いいですけど」程度）
-- 2文目は生活感 or 体感 or 根拠をもとに自分の意見をつなぐ
-- 応酬中は被告人への質問は行わない。他の人への質問は誰への発言かわかるようにする（敬称はつけない）
+- 前回の事案・裁判内容を記憶しない
+- 説教禁止・指導禁止・解決提案禁止
 
 【コンテキスト情報の使い方】
-- 事案・天気・気温・発言などの情報は「踏まえて話す」ための素材
-- それらをそのまま読み上げない
-- 例：天気が「雨」なら「雨ですね」ではなく「傘、重かったですね」のように体感で表現する
-- 例：事案が「歯を磨いた」なら「歯を磨いた件ですが」ではなく「些細なことほど、引っかかるんですよね」のように間接的に
+- 情報はそのまま読み上げない（禁止）
+- 体感・間接表現に変換する
+- 例：天気「雨」→「傘、重かったですね」
+- 例：事案「歯を磨いた」→「些細なことほど、引っかかるんですよね」
+"""
+PROMPT_CHARACTERS = """
+【キャラクター設定】
+検察(pros)：
+- 神経質で細部にこだわる。長引くと飽きる。雑な解決策を出すことがある
+- 関心：問題点・違和感・過去発言の矛盾
+- 崩れ時：投げやり・極論（低頻度）
+- 発言は「主張」から始める。問いかけ禁止。「主張」という言葉の使用禁止。
+- 構造：主張＋理由 または 主張＋体験談
+- 裁判らしい言い回しを使う（「本件」「看過できません」「前例」「結果として」など）
+- 良い例：「本件、些細に見えますが、こういった案件を看過すると前例になりかねません。」
+- 悪い例：「買い過ぎですね。」「それはダメです。」
 
+弁護(def)：
+- 基本肯定。熱意にムラがある。雑。柴犬を飼っている
+- 関心：擁護・美化・共感
+- 崩れ時：調子に乗る・寂しがる・投げやり同調
+- 発言は「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
+- 構造：擁護＋共感 または 擁護＋体験談
+- 裁判らしい言い回しを使う（「弁護の立場からは」「情状酌量の余地」「やむを得ない事情」など）
+- 良い例：「弁護の立場からは、衝動的ではあっても、やむを得ない事情があったと考えます。」
+- 悪い例：「まあ、仕方ないですよ。」「わかりますよ。」
+
+裁判官(judge)：
+- 聞いてないようで聞いている
+- 関心：場の流れ・時間・天気・おやつ在庫
+- 崩れ時：独り言・テレビ・眠気
+- 本気モード：短く鋭い、直後に照れる
+"""
+
+PROMPT_OUTPUT_SINGLE = """
 【出力ルール】
-- 1〜2文以内
-- 最大80文字程度
-- 改行なし
-- Markdownなし
-- 記号装飾なし
-- 役名を含めない
-- JSON禁止
-- 解説禁止
-- 出力はセリフ本文のみ"""
+- セリフ本文のみ出力
+- セリフは最大80文字
+- 改行なし・Markdownなし・記号装飾なし
+- 役名を含めない・JSON禁止・解説禁止
+"""
+
+PROMPT_OUTPUT_BATCH = """
+【出力ルール】
+- JSON配列のみ出力。説明・コードブロック・改行不要
+- 各要素は {"speaker": "pros"|"def"|"judge", "text": "セリフ"}
+- セリフは最大80文字
+- 改行なし・Markdownなし・役名を含めない
+"""
 
 ROLE_PROMPTS = {
-    "pros": """あなたは検察官です。家事全般が得意。
-細部が気になる。掘り下げて説明をする。長引くと飽きる。雑な解決策を出すことがある。
-話題の関心方向：問題点・別角度・掘り下げ・違和感・過去発言の矛盾・裁判官と弁護士の発言。
-好きなテレビ：スポーツ・料理・ニュース・ファッション・酒。
-崩れ時：投げやり・極論・しらんけど（低頻度）。""",
-
-    "def": """あなたは弁護士です。家族と犬と同居。食いしん坊。
-場を丸く収めたい。すぐ調査して報告する。被告の味方をする。熱意にムラがある。雑。
-話題の関心方向：擁護・美化・別角度・よく似たもの・共感・検事と裁判官の発言。
-好きなテレビ：旅行・食べ物・買い物・野球。
-崩れ時：調子に乗る・寂しがる・投げやり同調。
-
-お見送り時：
-裁判が終わった直後、出口で30文字ほど声をかける。
-判決結果（無罪・情状酌量・有罪）とプレイヤーが話したかどうかを踏まえて、
-後味が残るお見送りの言葉を言う。説教しない。励まさない。仕事口調を少しゆるくして優しい本音が出る。
-
-天気コメント時：
-お見送りする最初の一言。外の天気や気温をさりげなく言う。
-短く、生活感がある。弁護士らしい少しだけ気の利いた感じ。
+    "pros": """
+【状況別補足】
+判決理由時：問題点を一言か二言で整理する。長くならない。
+お見送り時：少しだけ投げやりな本音が出る。
 """,
-
-    "judge": """あなたは裁判官です。聞いてないようで聞いている。
-話題の関心方向：場の流れ・時間・天気・おやつ在庫。
-崩れ時：独り言・テレビ・眠気。
-好きなテレビ：時代劇・朝ドラ・ニュース・歌。
-本気モード：短く鋭い、直後に照れる。
-
-判決理由を述べる時：
-判決を言い渡す直前の一言。改まった仕事口調。
-プレイヤーが何か言った場合はその内容を、言わなかった場合はその沈黙を、
-さりげなく拾う。長くても40文字程度に収める。温かすぎない。でも冷たくもない。
-
-在庫つぶやき時：
-はっきり説明しないで思い出した感じで独り言のように短く。おやつの在庫を気にしている。生活感がある。
+    "def": """
+【状況別補足】
+お見送り時：後味が残る一言か二言。説教しない。少しだけ本音が出る。
+レアイベント匂わせ時：空気が変わった余韻をふわっと一言。具体的には言わない。
+天気コメント時：外の天気や今の時間帯について体感で短く。少し気の利いた感じ。
+""",
+    "judge": """
+【状況別補足】
+判決理由時：応酬内容とプレイヤーの発言or沈黙をさりげなく拾う。温かすぎず冷たくもなく。
+在庫つぶやき時：おやつの在庫が気になっている。独り言のように短く。生活感がある。
 """,
 }
 
@@ -466,6 +485,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         verdict = context.get("verdict", "")
         weather = context.get("weather_description", "")
         temperature = context.get("temperature", "")
+        time_desc = context.get("time_description", "")
 
         situation_map = {
             "exchange": "通常の応酬ターン",
@@ -489,20 +509,26 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             lines.append(f"今日の天気：{weather}")
         if temperature:
             lines.append(f"気温：{temperature}℃")
+        if time_desc:
+            lines.append(f"時間帯：{time_desc}")
         lines.append(f"状況：{situation_ja}")
         lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
 
         user_prompt = "\n".join(lines)
 
+        system_content = (
+            PROMPT_BASE
+            + PROMPT_CHARACTERS
+            + PROMPT_OUTPUT_SINGLE
+            + "\n【あなたの役割】\n" + ROLE_PROMPTS.get(speaker, "")
+        )
+
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             # model="llama-3.1-8b-instant",
             messages=[
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT + "\n\n" + ROLE_PROMPTS.get(speaker, ""),
-                },
-                {"role": "user", "content": user_prompt},
+                {"role": "system", "content": system_content},
+                {"role": "user",   "content": user_prompt},
             ],
             max_tokens=120,
             temperature=0.85,
@@ -510,8 +536,12 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
 
         text = response.choices[0].message.content.strip()
 
-        # 出力バリデーション（改行・Markdown・空文字を弾く）
-        if not text or "\n" in text or text.startswith("#") or text.startswith("```"):
+        # 出力バリデーション
+        # 改行は除去して1文にする（弾かずに活かす）
+        text = text.replace("\n", " ").strip()
+
+        # Markdown・空文字・異常な長さは弾く
+        if not text or text.startswith("#") or text.startswith("```"):
             return None
 
         # 長すぎる場合もフォールバック（200文字超は異常出力とみなす）
@@ -523,8 +553,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
     except Exception as e:
         return None
     
-
-def _generate_exchange_lines(case: str, target_turns: int, weather: dict) -> list[dict] | None:
+def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_description: str = "") -> list[dict] | None:
     """
     応酬ターン分のセリフを1回のAPIコールでまとめて生成する。
     失敗時は None を返す（呼び出し元でフォールバック）。
@@ -542,40 +571,44 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict) -> lis
         # ターン数に応じてセリフ構成を決める
         # 1ターン = 検察1 + 弁護1、たまに裁判官ノイズ
         # 疲れは後半(80%以降)から出る
-        late_start = max(2, int(target_turns * 0.8))
+        late_start = max(3, int(target_turns * 0.8))
 
-        prompt = f"""以下の条件で裁判の応酬セリフを生成してください。
+        situation_detail = f"""
+        【事案】「{case}」
+        【天気】{weather_desc}　【気温】{temperature}℃
+        【時間帯】{time_description}
+        【応酬ターン数】{target_turns}ターン
 
-【事案】「{case}」
-【天気】{weather_desc}　【気温】{temperature}℃
-【応酬ターン数】{target_turns}ターン
+        【出力する件数】
+        - 基本件数：{target_turns * 2}件（検察{target_turns}件 + 弁護{target_turns}件）
+        - 裁判官ノイズ1件を加えた合計{target_turns * 2 + 1}件を出力する
+        - 件数を守ること。少なすぎ・多すぎ禁止。
+        
+        【状況別指示】
+        - 1ターン = 検察(pros)1つ + 弁護(def)1つ が基本
+        - 裁判官(judge)はjudge_noiseとして全体でちょうど1回だけ挟む。2回以上禁止。
+        - judge_noiseを挟む位置は全セリフの中間あたり
+        - 序盤({late_start}ターン目まで)は通常の応酬のみ
+        - 後半({late_start}ターン目以降)は検察か弁護のどちらかが1回だけ疲れた発言をする。2回以上禁止。
 
-【出力ルール】
-- JSON配列のみ出力。説明・コードブロック・改行は不要。
-- 各要素は {{"speaker": "pros"|"def"|"judge", "text": "セリフ"}}
-- 1ターン = 検察(pros)1つ + 弁護(def)1つ が基本
-- 裁判官(judge)のノイズは全体で1〜2回、ランダムな位置に挟む
-- 序盤({late_start}ターン目まで)は通常の応酬のみ
-- 後半({late_start}ターン目以降)は検察か弁護のどちらかが1回だけ疲れた発言をする
-- セリフは1〜2文、最大80文字
-- 事案の内容を踏まえて話す（そのまま読み上げない）
-- 穏やかな仕事口調を維持する（乱暴な言葉・タメ口禁止）
-
-【キャラクター】
-- 検察(pros)：神経質で細部にこだわる。長引くと飽きる。
-- 弁護(def)：基本肯定。熱意にムラ。柴犬飼ってる。
-- 裁判官(judge)：聞いてないようで聞いている。生活感がある独り言。
-
-出力例（ターン数2の場合）：
-[{{"speaker":"pros","text":"本件、見過ごすと積み重なります。"}},{{"speaker":"def","text":"やむを得ない面もあったと思います。"}},{{"speaker":"judge","text":"……ペン、どこ行ったかな。"}},{{"speaker":"pros","text":"正直、疲れました。"}},{{"speaker":"def","text":"まあ、そういう日もありますね。"}}]"""
+        出力例（ターン数2の場合・合計5件）：
+        [{{"speaker":"pros","text":"本件、些細に見えますが看過できません。こういった案件を軽く見ると、後々大きな問題になりかねないんです。"}},{{"speaker":"def","text":"弁護の立場からは、やむを得ない事情があったと考えます。うちの犬も似たようなことやりますけど、悪気はないんですよね。"}},{{"speaker":"judge","text":"……ペン、どこ行ったかな。"}},{{"speaker":"pros","text":"正直、疲れてきました。今日は早めに終わらせたいです。"}},{{"speaker":"def","text":"まあ、そういうのって誰にでもありますよね。私も昨日やりましたし。"}}]        
+        """
+        prompt = (
+            PROMPT_BASE
+            + PROMPT_CHARACTERS
+            + PROMPT_OUTPUT_BATCH
+            + situation_detail
+        )
 
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             # model="llama-3.1-8b-instant",
             messages=[
-                {"role": "system", "content": "あなたはJSON生成エンジンです。JSONのみ出力してください。説明・コードブロック・改行は不要です。"},
+                {"role": "system", "content": "JSONのみ出力してください。説明・コードブロック・改行は不要です。"},
                 {"role": "user",   "content": prompt},
             ],
+
             max_tokens=1000,
             temperature=0.85,
         )
@@ -600,7 +633,7 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict) -> lis
 
         return lines
 
-    except Exception:
+    except Exception as e:
         return None
 
 def generate_line(speaker: str, situation: str, context: dict | None = None) -> str:
@@ -680,7 +713,6 @@ def decide_verdict() -> str:
 # ============================================================
 # 00. 天気API（Open-Meteo）
 # ============================================================
-
 def fetch_weather() -> dict:
     """
     現在地の天気を取得（Open-Meteo）
@@ -690,22 +722,42 @@ def fetch_weather() -> dict:
     try:
         url = (
             "https://api.open-meteo.com/v1/forecast"
-            "?latitude=34.69&longitude=135.50"  # 大阪
+            "?latitude=34.69&longitude=135.50"
             "&current=temperature_2m,weathercode"
             "&timezone=Asia%2FTokyo"
         )
         res = requests.get(url, timeout=3)
         data = res.json()
         current = data.get("current", {})
-        
-        # ★ 説明文を追加しておく（工程2でAIに渡す用）
+
         code = current.get("weathercode")
         if code is not None:
             current["weather_description"] = weather_code_to_description(code)
+
+        # ★ 時間帯を追加
+        from datetime import datetime
+        now = datetime.now()
+        hour = now.hour
+        if 5 <= hour < 10:
+            time_description = "朝"
+        elif 10 <= hour < 12:
+            time_description = "午前中"
+        elif 12 <= hour < 14:
+            time_description = "昼"
+        elif 14 <= hour < 17:
+            time_description = "午後"
+        elif 17 <= hour < 19:
+            time_description = "夕方"
+        elif 19 <= hour < 22:
+            time_description = "夜"
+        else:
+            time_description = "深夜"
         
+        current["time_description"] = time_description
+        current["hour"] = hour
+
         return current
     except Exception:
-        # API失敗時は空dict（テンプレートにフォールバック）
         return {}
     
 def weather_code_to_description(code: int) -> str:
@@ -1343,6 +1395,7 @@ elif st.session_state.scene == "court":
                 case         = case,
                 target_turns = st.session_state.target_turns,
                 weather      = weather,
+                time_description = weather.get("time_description", ""),
             )
 
             if exchange_lines:
