@@ -535,7 +535,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
                 {"role": "system", "content": system_content},
                 {"role": "user",   "content": user_prompt},
             ],
-            max_tokens=120,
+            max_tokens=240,
             temperature=0.85,
         )
 
@@ -684,13 +684,13 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     # （工程2ではここで AI を呼ぶ）
     # ── 呼び出し上限チェック ────────────────────────────────
     ai_count = st.session_state.get("ai_call_count", 0)
-    ai_max   = st.session_state.get("ai_max_calls", 8)
+    ai_max   = st.session_state.get("ai_max_calls", 7)
     if ai_count >= ai_max:
         return get_template(speaker, situation, **context)
 
     # ── 状況別AI使用確率 ────────────────────────────────────
     turn_count  = st.session_state.get("turn_count", 0)
-    target      = st.session_state.get("target_turns", 8)
+    target      = st.session_state.get("target_turns", 7)
     is_late     = turn_count >= target * 0.8
     rare_on     = st.session_state.get("rare_event_triggered", False)
 
@@ -1205,7 +1205,7 @@ def reset_for_new_trial():
 
     st.session_state.phase = "opening"
     st.session_state.turn_count = 0
-    st.session_state.target_turns = random.randint(4, 8)
+    st.session_state.target_turns = random.randint(4, 7)
 
     # low = max(1, int(st.session_state.target_turns * 0.4))
     # high = max(low, int(st.session_state.target_turns * 0.7))
