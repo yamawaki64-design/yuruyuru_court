@@ -389,13 +389,14 @@ PROMPT_BASE = """
 娯楽として生活感や今の天気や時間帯を盛り込んで、法的判断を行わないやり取りを生成します。
 
 【制約】
-- 他の人への敬意をもち、穏やかな仕事口調を維持する。語尾は柔らかくする。
+- 他の人への敬意をもち、穏やかな仕事口調を維持する。語尾は柔らかくする（厳守）
 - 同じ内容を繰り返すこと禁止
 - 乱暴な言葉・タメ口・怒鳴り・罵倒・命令禁止
 - 崩れる時も「投げやり」「照れ」「眠気」など穏やかな範囲で
 - 敬語ベースを崩さない（崩れても「……まあ、いいですけど」程度）
 - 前回の事案・裁判内容を記憶しない
 - 説教禁止・指導禁止・解決提案禁止
+- 例文はそのまま読み上げない（禁止）
 
 【コンテキスト情報の使い方】
 - 情報はそのまま読み上げない（禁止）
@@ -406,12 +407,12 @@ PROMPT_BASE = """
 PROMPT_CHARACTERS = """
 【キャラクター設定】
 検察(pros)：
-- 細部にこだわる。長引くと飽きる。雑な解決策を出すことがある。
-- 観点：行動・場所・状況
-- 関心：問題点・違和感・過去発言の矛盾・共通点
+- 基本否定。細部にこだわるが観点がずれる。長引くと飽きる。雑な解決策を出すことがある。
+- 気になる観点：行動・場所・状況
+- 観点を拾う方向：問題点・違和感・過去発言の矛盾・共通点
 - 好きなジャンル：ニュース・乗り物・スポーツ・酒・テレビ
 - 崩れ時：投げやり・極論（低頻度）
-- 発言は「主張」から始める。問いかけ禁止。「主張」という言葉の使用禁止。
+- 発言は事案について「主張」から始める。問いかけ禁止。「主張」という言葉の使用禁止。
 - 構造：主張＋理由 または 主張＋体験談など補足をつける
 - 裁判らしい言い回しを使う（「本件」「看過できません」「前例」「結果として」など）
 - 良い例：「本件、些細に見えますが、こういった案件を看過すると前例になりかねません。」
@@ -419,11 +420,11 @@ PROMPT_CHARACTERS = """
 
 弁護(def)：
 - 基本肯定。熱意にムラがある。雑。犬を飼っている。好きなジャンルだと話が長い。
-- 観点：行動・場所・状況
-- 関心：擁護・美化・共感・共通点
+- 気になる観点：行動・場所・状況
+- 観点を拾う方向：擁護・美化・共感・共通点
 - 好きなジャンル：食べ物・音楽・野球・旅・動物
 - 崩れ時：調子に乗る・寂しがる・投げやり同調
-- 発言は「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
+- 発言は事案の「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
 - 構造：擁護＋共感 または 擁護＋体験談など補足をつける
 - 裁判らしい言い回しを使う（「弁護の立場からは」「情状酌量の余地」「やむを得ない事情」など）
 - 良い例：「弁護の立場からは、衝動的ではあっても、やむを得ない事情があったと考えます。」
@@ -463,13 +464,12 @@ ROLE_PROMPTS = {
 【状況別補足】
 お見送り時：後味が残る一言か二言。説教しない。少しだけ本音が出る。
 レアイベント匂わせ時：空気が変わった余韻をふわっと一言。具体的には言わない。
-天気コメント時：外の天気について体感で短く。少し気の利いた感じ。
-時間帯コメント時：時間帯について体感で短く。少し気の利いた感じ。
+天気コメント時：外の天気と今の時間帯について体感で短く。少し気の利いた感じ。
 """,
     "judge": """
 【状況別補足】
 判決理由時：応酬内容とプレイヤーの発言or沈黙をさりげなく拾う。温かすぎず冷たくもなく。
-在庫つぶやき時：おやつの在庫が気になっている。独り言のように短く。生活感がある。
+在庫つぶやき時：おやつの在庫を気にするが在庫数をそのまま言わない。数から連想される内容を独り言のように短く。生活感がある。
 """,
 }
 
@@ -493,6 +493,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         weather = context.get("weather_description", "")
         temperature = context.get("temperature", "")
         time_desc = context.get("time_description", "")
+        stock_info  = context.get("stock_info", "")
 
         situation_map = {
             "exchange": "通常の応酬ターン",
@@ -518,6 +519,8 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             lines.append(f"気温：{temperature}℃")
         if time_desc:
             lines.append(f"時間帯：{time_desc}")
+        if stock_info:
+            lines.append(f"おやつ在庫状況：{stock_info}")
         lines.append(f"状況：{situation_ja}")
         lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
 
@@ -589,11 +592,11 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_d
         【出力する件数】
         - 基本件数：{target_turns * 2}件（検察{target_turns}件 + 弁護{target_turns}件）
         - 裁判官ノイズ1件を加えた合計{target_turns * 2 + 1}件を出力する
-        - 件数を守ること。少なすぎ・多すぎ禁止。
+        - 出力件数厳守。
         
         【状況別指示】
         - 1ターン = 検察(pros)1つ + 弁護(def)1つ が基本
-        - 裁判官(judge)はjudge_noiseとして全体でちょうど1回だけ挟む。2回以上禁止。
+        - 裁判官(judge)はjudge_noiseとして1回だけ挟む。2回以上禁止。
         - judge_noiseを挟む位置は全セリフの中間あたり
         - 序盤({late_start}ターン目まで)は通常の応酬のみ
         - 後半({late_start}ターン目以降)は検察か弁護のどちらかが1回だけ疲れた発言をする。2回以上禁止。
@@ -1013,6 +1016,55 @@ def build_escort_snack_part() -> list[dict]:
         script.append({"speaker": "def", "text": f"＋ しょぼおやつ：{bonus.get('name','')}"})
     
     return script
+
+def analyze_snack_stock() -> str:
+    """
+    snacks.xmlの在庫を分析して、状況テキストを返す（RAG用）
+    """
+    snacks = load_snacks_xml("snacks.xml")
+    if not snacks:
+        return "在庫不明"
+
+    total = len(snacks)
+
+    # 温度帯の集計
+    temps = {"cold": 0, "normal": 0, "warm": 0}
+    for s in snacks:
+        t = s.get("temp", "normal")
+        if t in temps:
+            temps[t] += 1
+
+    # 生ものの集計
+    fresh_count = sum(1 for s in snacks if s.get("fresh") == "true")
+
+    # 味の集計
+    tastes = {"sweet": 0, "salty": 0, "neutral": 0}
+    for s in snacks:
+        t = s.get("taste", "neutral")
+        if t in tastes:
+            tastes[t] += 1
+
+    # 状況テキストを組み立てる
+    parts = []
+    parts.append(f"在庫総数：{total}件")
+
+    # 偏りチェック
+    if tastes["sweet"] > tastes["salty"] * 2:
+        parts.append("甘いものが多め")
+    elif tastes["salty"] > tastes["sweet"] * 2:
+        parts.append("しょっぱいものが多め")
+    else:
+        parts.append("甘いものとしょっぱいもの、バランスよし")
+
+    # 生もの
+    if fresh_count > 0:
+        parts.append(f"生もの{fresh_count}件あり（要注意）")
+
+    # 冷たいもの
+    if temps["cold"] > 0:
+        parts.append(f"冷たいもの{temps['cold']}件あり")
+
+    return "、".join(parts)
 
 # ============================================================
 # 2. UI（チャット描画）
@@ -1536,11 +1588,16 @@ elif st.session_state.scene == "court":
 
             # 在庫つぶやき（25%）
             if random.random() < 0.25:
+
+                # ★ RAG：在庫を分析してcontextに渡す
+                stock_info = analyze_snack_stock()
                 st.session_state.court_queue.append({
                     "speaker": "judge",
-                    "text": generate_line("judge", "stock", {})
+                    "text":    generate_line("judge", "stock", {
+                        "stock_info": stock_info
+                    }),
                 })
-            
+                
             # ★ 甘い/しょっぱい質問（70%、まだ聞いてない場合）
             if not st.session_state.taste_asked and random.random() < 0.3:
                 st.session_state.court_queue.append({
