@@ -501,6 +501,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         time_desc = context.get("time_description", "")
         stock_info  = context.get("stock_info", "")
         snack_name = context.get("snack_name", "")
+        candidate_names = context.get("candidate_names", "")
 
         situation_map = {
             "exchange": "通常の応酬ターン",
@@ -530,6 +531,8 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             lines.append(f"おやつ在庫状況：{stock_info}")
         if snack_name:
             lines.append(f"今日のおやつ：{snack_name}")
+        if candidate_names:
+            lines.append(f"候補にあがったおやつ：{candidate_names}")
         lines.append(f"状況：{situation_ja}")
         lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
 
