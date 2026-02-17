@@ -462,7 +462,13 @@ ROLE_PROMPTS = {
 """,
     "def": """
 【状況別補足】
-お見送り時：後味が残る一言か二言。説教しない。少しだけ本音が出る。
+お見送り時：後味が残る一言か二言。プレーヤーの味方。仕事モードをゆるめて少しだけ本音が出る。
+おやつコメント時：
+- 必ず snack_name のおやつについてコメントする。優しい口調。
+- snack_name 以外のおやつ名を言わない
+- candidate_names は「他にも候補があった」という文脈でのみ使う
+- 例：「今日の雰囲気から、{snack_name}を選んでみました。」
+- 例：「{candidate_names}と迷ったんですけど、{snack_name}にしました。」
 レアイベント匂わせ時：空気が変わった余韻をふわっと一言。具体的には言わない。
 天気コメント時：外の天気と今の時間帯について体感で短く。少し気の利いた感じ。
 """,
@@ -494,6 +500,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         temperature = context.get("temperature", "")
         time_desc = context.get("time_description", "")
         stock_info  = context.get("stock_info", "")
+        snack_name = context.get("snack_name", "")
 
         situation_map = {
             "exchange": "通常の応酬ターン",
@@ -521,6 +528,8 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             lines.append(f"時間帯：{time_desc}")
         if stock_info:
             lines.append(f"おやつ在庫状況：{stock_info}")
+        if snack_name:
+            lines.append(f"今日のおやつ：{snack_name}")
         lines.append(f"状況：{situation_ja}")
         lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
 
@@ -677,7 +686,6 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     # ── AIを使わないsituationは即テンプレ ──────────────────
     NO_AI_SITUATIONS = {
         "noise", "opening",
-        "escort_snack_comment",
         "escort_snack_cold", "escort_snack_warm", "escort_snack_fresh",
         "ask_taste", "ask_player",
         "verdict_declaration",
@@ -689,7 +697,7 @@ def generate_line(speaker: str, situation: str, context: dict | None = None) -> 
     # （工程2ではここで AI を呼ぶ）
     # ── 呼び出し上限チェック ────────────────────────────────
     ai_count = st.session_state.get("ai_call_count", 0)
-    ai_max   = st.session_state.get("ai_max_calls", 4)
+    ai_max   = st.session_state.get("ai_max_calls", 30)
     if ai_count >= ai_max:
         return get_template(speaker, situation, **context)
 
@@ -934,19 +942,21 @@ def snack_attr_text(s: dict) -> str:
         parts.append("生" if fresh == "true" else "日持ち")
     return " / ".join(parts)
 
-def lawyer_snack_comment(snack: dict, taste_pref: str | None) -> str:
+def lawyer_snack_comment(snack: dict, taste_pref: str | None, candidate_names: str = "") -> str:
     """おやつコメント生成"""
-    name = snack.get("name", "")
-    temp = snack.get("temp")
+    name  = snack.get("name", "")
+    temp  = snack.get("temp")
     fresh = snack.get("fresh")
-    taste = snack.get("taste")  # ← 追加
+    taste = snack.get("taste")
 
     context = {
-        "snack_name": name,
-        "temp": temp,
-        "fresh": fresh,
-        "taste": taste,
-        "taste_pref": taste_pref,
+        "snack_name":      name,
+        "temp":            temp,
+        "fresh":           fresh,
+        "taste":           taste,
+        "taste_pref":      taste_pref,
+        "candidate_names": candidate_names,  # ★ 候補名を追加
+    #    "case":            st.session_state.case_text,  # ★ 事案も追加
     }
     
     # 基本コメント
@@ -982,19 +992,29 @@ def lawyer_snack_comment(snack: dict, taste_pref: str | None) -> str:
     return base + (" " + " ".join(extras) if extras else "")
 
 def build_escort_snack_part() -> list[dict]:
-    """おやつ部分だけを生成"""
-    snacks = load_snacks_xml("snacks.xml")
     cheap_snacks = load_snacks_xml("cheap_snacks.xml")
-    
-    # 好みに合わせて選ぶ
-    snack = pick_one_by_taste(snacks, st.session_state.taste_pref) or {
+
+    # ★ 簡易版RAG：事案に関連するおやつ上位3件を取得
+    candidates = search_snack_by_case(
+        case       = st.session_state.case_text,
+        taste_pref = st.session_state.taste_pref,
+    )
+
+    # 上位3件の中からランダムに1件選ぶ
+    snack = random.choice(candidates) if candidates else {
         "maker": "不明",
-        "name": "水",
-        "temp": "normal",
+        "name":  "水",
+        "temp":  "normal",
         "fresh": "false",
         "taste": "neutral",
     }
-    
+
+    # ★ 候補リストをコンテキスト用に文字列化
+    candidate_names = "、".join([
+        c.get("name", "") for c in candidates
+        if c.get("name") != snack.get("name")
+    ])
+
     # しょぼおやつ
     bonus = None
     if st.session_state.snack_bonus_flag and random.random() < 0.7:
@@ -1010,7 +1030,8 @@ def build_escort_snack_part() -> list[dict]:
     script.append({"speaker": "def", "text": main_line})
     if attrs:
         script.append({"speaker": "def", "text": f"（{attrs}）"})
-    script.append({"speaker": "def", "text": lawyer_snack_comment(snack, st.session_state.taste_pref)})
+    
+    script.append({"speaker": "def", "text": lawyer_snack_comment(snack, st.session_state.taste_pref, candidate_names)})
     
     if bonus is not None:
         script.append({"speaker": "def", "text": f"＋ しょぼおやつ：{bonus.get('name','')}"})
@@ -1065,6 +1086,47 @@ def analyze_snack_stock() -> str:
         parts.append(f"冷たいもの{temps['cold']}件あり")
 
     return "、".join(parts)
+
+def search_snack_by_case(case: str, taste_pref: str | None = None) -> list[dict]:
+    """
+    簡易版RAG：事案テキストと関連するおやつを上位3件返す
+    
+    1. おやつ名・メーカーを1つのテキストに結合
+    2. 事案テキストと共通する文字を数える
+    3. スコアが高い順に返す（同スコアはランダム）
+    """
+    snacks = load_snacks_xml("snacks.xml")
+    if not snacks:
+        return []
+
+    case_chars = set(case)  # 事案の文字セット
+
+    scored = []
+    for s in snacks:
+        # おやつの情報を1つのテキストに結合
+        snack_text = " ".join([
+            s.get("name",  ""),
+            s.get("maker", ""),
+            s.get("taste", ""),
+            s.get("tags",  ""),  # ★ 追加
+        ])
+        snack_chars = set(snack_text)
+
+        # 共通文字数をスコアとする
+        score = len(case_chars & snack_chars)
+
+        # 好みと一致したらスコア加算
+        if taste_pref and s.get("taste") == taste_pref:
+            score += 3
+
+        scored.append((score, random.random(), s))
+
+    # スコア降順でソート（同スコアはrandom.random()で順番をシャッフル）
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
+
+    # 上位3件を返す
+    return [s for _, _, s in scored[:3]]
+
 
 # ============================================================
 # 2. UI（チャット描画）
@@ -1410,7 +1472,7 @@ if st.session_state.scene == "intro":
         "事案",
         value=st.session_state.case_text,
         max_chars=50,
-        placeholder="歯を磨いた / コーヒーをこぼした / エレベーターがギュウギュウだった",
+        placeholder="あったかい黒豆茶を飲んだ / コープで玉ねぎ買ってきた など",
         label_visibility="collapsed",
     )
     st.session_state.case_text = case_text

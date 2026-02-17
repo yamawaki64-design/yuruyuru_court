@@ -1,110 +1,120 @@
 <snacks>
-  <snack><maker>明治</maker><name>ミルクチョコレート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>カルビー</maker><name>ポテトチップス うすしお味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>亀田製菓</maker><name>柿の種</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>江崎グリコ</maker><name>ポッキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ロッテ</maker><name>コアラのマーチ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永製菓</maker><name>チョコボール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>明治</maker><name>たけのこの里</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>明治</maker><name>きのこの山</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ブルボン</maker><name>ルマンド</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>カルビー</maker><name>じゃがりこ サラダ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <!-- 常温・日持ち・甘い -->
+  <snack><maker>明治</maker><name>ミルクチョコレート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>疲れた,癒し,チョコ,定番,贈り物,もらった,残業,仕事</tags></snack>
+  <snack><maker>カルビー</maker><name>ポテトチップス うすしお味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,つい食べすぎ,テレビ,休日,ぼーっとした,後悔,買いすぎ</tags></snack>
+  <snack><maker>亀田製菓</maker><name>柿の種</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,残業,仕事,夜,会議,止まらない,分けた,職場</tags></snack>
+  <snack><maker>江崎グリコ</maker><name>ポッキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>シェア,分けた,友達,学校,手土産,コンビニ,定番,遠足</tags></snack>
+  <snack><maker>ロッテ</maker><name>コアラのマーチ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,懐かしい,遠足,可愛い,ついつい,学校,休憩,癒し</tags></snack>
+  <snack><maker>森永製菓</maker><name>チョコボール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,駄菓子,当たり,外れ,運,くじ,ドキドキ</tags></snack>
+  <snack><maker>明治</maker><name>たけのこの里</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>派閥,論争,きのこ,好み,言い合い,定番,職場,休憩</tags></snack>
+  <snack><maker>明治</maker><name>きのこの山</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>派閥,論争,たけのこ,好み,言い合い,定番,職場,休憩</tags></snack>
+  <snack><maker>ブルボン</maker><name>ルマンド</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,崩れる,食べにくい,パリパリ,こぼした,散らかった,丁寧,おやつ</tags></snack>
+  <snack><maker>カルビー</maker><name>じゃがりこ サラダ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>コンビニ,手軽,一人,昼,外出,止まらない,音がうるさい,電車</tags></snack>
 
-  <snack><maker>赤城乳業</maker><name>ガリガリ君</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ロッテ</maker><name>雪見だいふく</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永乳業</maker><name>ピノ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ハーゲンダッツ</maker><name>バニラ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>井村屋</maker><name>あずきバー</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>明治</maker><name>エッセルスーパーカップ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>江崎グリコ</maker><name>ジャイアントコーン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永製菓</maker><name>チョコモナカジャンボ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <!-- 冷たい・甘い -->
+  <snack><maker>赤城乳業</maker><name>ガリガリ君</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>夏,暑い,外,公園,子供,懐かしい,安い,当たり</tags></snack>
+  <snack><maker>ロッテ</maker><name>雪見だいふく</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>冬,こたつ,家,癒し,丸い,のんびり,休日,一人</tags></snack>
+  <snack><maker>森永乳業</maker><name>ピノ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>シェア,分けた,最後の一個,取り合い,少ない,上品,映画,家</tags></snack>
+  <snack><maker>ハーゲンダッツ</maker><name>バニラ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>ご褒美,高い,奮発,落ち込んだ,疲れた,一人,贅沢,癒し</tags></snack>
+  <snack><maker>井村屋</maker><name>あずきバー</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>硬い,歯,夏,定番,懐かしい,昔,外,公園</tags></snack>
+  <snack><maker>明治</maker><name>エッセルスーパーカップ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>大盛り,コスパ,疲れた,ご褒美,深夜,残業,一人,食べすぎ</tags></snack>
+  <snack><maker>江崎グリコ</maker><name>ジャイアントコーン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>外,歩きながら,夏,こぼした,溶けた,急いだ,コンビニ,手軽</tags></snack>
+  <snack><maker>森永製菓</maker><name>チョコモナカジャンボ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>パリパリ,崩れる,こぼした,散らかった,夏,ご褒美,家,テレビ</tags></snack>
+  <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>夏,さっぱり,暑い,外,レモン,さわやか,スポーツ,疲れた</tags></snack>
+  <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>和風,懐かしい,夏,祖父母,縁側,のんびり,休日,癒し</tags></snack>
 
-  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ローソン</maker><name>からあげクン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste></snack>
-  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <!-- 温かい・生もの・しょっぱい -->
+  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>冬,寒い,通勤,コンビニ,温まった,手が温かい,帰り道,ほっとした</tags></snack>
+  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,衝動買い,つい,昼,帰り道,ジューシー,後悔,満足</tags></snack>
+  <snack><maker>ローソン</maker><name>からあげクン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,手軽,昼,つまみ食い,歩きながら,衝動買い,定番,揚げ物</tags></snack>
+  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>塩分,止まらない,Lサイズ,食べすぎ,後悔,衝動,ジャンク,満足</tags></snack>
+  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>熱い,やけど,口の中,急いだ,待てなかった,衝動,甘い,ほくほく</tags></snack>
+  <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>もちもち,休憩,カフェ,友達,おしゃべり,休日,手土産,定番</tags></snack>
+  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>熱い,やけど,外,祭り,並んだ,待った,こぼした,ソース</tags></snack>
+  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,衝動買い,揚げ物,塩分,止まらない,後悔,昼,手軽</tags></snack>
+  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>ご馳走,クリスマス,特別,並んだ,待った,奮発,家族,イベント</tags></snack>
+  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>冬,外,歩きながら,温まった,懐かしい,祭り,並んだ,あんこ</tags></snack>
 
-  <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>銀座コージーコーナー</maker><name>ジャンボシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <!-- 冷たい・生もの・甘い -->
+  <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>誕生日,特別,ご褒美,記念日,ケーキ,買いすぎ,奮発,嬉しい</tags></snack>
+  <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>安い,コスパ,ご褒美,帰り道,衝動買い,手軽,一人,癒し</tags></snack>
+  <snack><maker>銀座コージーコーナー</maker><name>ジャンボシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>大きい,こぼした,クリーム,手が汚れた,食べにくい,ご褒美,奮発,癒し</tags></snack>
+  <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>上品,贈り物,手土産,職場,年配,かしこまった,定番,お茶</tags></snack>
+  <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>贈り物,手土産,職場,懐かしい,しっとり,お茶,定番,ゆっくり</tags></snack>
+  <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>重い,甘すぎ,もらった,食べきれない,職場,手土産,特別,外国</tags></snack>
+  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>冬,外,並んだ,温まった,懐かしい,商店街,帰り道,ほっとした</tags></snack>
+  <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>お土産,旅行,伊勢,もらった,職場,特別,和風,お茶</tags></snack>
+  <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>懐かしい,浅草,お土産,素朴,シンプル,お茶,年配,癒し</tags></snack>
+  <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>懐かしい,漫画,のんびり,お茶,手土産,職場,定番,癒し</tags></snack>
 
-  <snack><maker>なとり</maker><name>チータラ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>おやつカンパニー</maker><name>ベビースターラーメン</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>天乃屋</maker><name>歌舞伎揚</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>岩塚製菓</maker><name>黒豆せんべい</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>三幸製菓</maker><name>雪の宿</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>カルビー</maker><name>かっぱえびせん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>東ハト</maker><name>キャラメルコーン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>湖池屋</maker><name>ポテトチップス のり塩</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>ヤガイ</maker><name>おやつカルパス</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>春日井製菓</maker><name>グリーン豆</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <!-- 常温・日持ち・しょっぱい -->
+  <snack><maker>なとり</maker><name>チータラ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,デスク,止まらない,残業,手軽</tags></snack>
+  <snack><maker>おやつカンパニー</maker><name>ベビースターラーメン</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,子供,懐かしい,手軽,安い,止まらない,食べすぎ,罪悪感</tags></snack>
+  <snack><maker>天乃屋</maker><name>歌舞伎揚</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,油,食べすぎ,後悔,定番,職場,休憩,しょっぱい</tags></snack>
+  <snack><maker>岩塚製菓</maker><name>黒豆せんべい</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>上品,お茶,年配,落ち着いた,職場,手土産,定番,贈り物</tags></snack>
+  <snack><maker>三幸製菓</maker><name>雪の宿</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘じょっぱい,止まらない,定番,職場,休憩,お茶,懐かしい,癒し</tags></snack>
+  <snack><maker>カルビー</maker><name>かっぱえびせん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,定番,子供,懐かしい,海老,シェア,職場,休憩</tags></snack>
+  <snack><maker>東ハト</maker><name>キャラメルコーン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘い,止まらない,子供,懐かしい,ベタベタ,手が汚れた,食べすぎ,後悔</tags></snack>
+  <snack><maker>湖池屋</maker><name>ポテトチップス のり塩</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,テレビ,休日,後悔,食べすぎ,ぼーっとした,一人,のんびり</tags></snack>
+  <snack><maker>ヤガイ</maker><name>おやつカルパス</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,残業,夜,デスク,手軽,止まらない,仕事</tags></snack>
+  <snack><maker>春日井製菓</maker><name>グリーン豆</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>硬い,歯,止まらない,職場,休憩,お茶,定番,懐かしい</tags></snack>
 
-  <snack><maker>ブルボン</maker><name>アルフォート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ブルボン</maker><name>エリゼ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>サンリツ</maker><name>源氏パイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>東ハト</maker><name>ハーベスト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>不二家</maker><name>ホームパイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永製菓</maker><name>マリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永製菓</maker><name>ムーンライト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ギンビス</maker><name>たべっ子どうぶつ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ヤマザキビスケット</maker><name>ノアール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ロッテ</maker><name>パイの実</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <!-- クッキー・ビスケット系 -->
+  <snack><maker>ブルボン</maker><name>アルフォート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>チョコ,定番,職場,休憩,手土産,シェア,ティータイム,癒し</tags></snack>
+  <snack><maker>ブルボン</maker><name>エリゼ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,細い,食べにくい,折れた,崩れた,ティータイム,贈り物,職場</tags></snack>
+  <snack><maker>サンリツ</maker><name>源氏パイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,定番,サクサク,崩れた,こぼした,散らかった,お茶</tags></snack>
+  <snack><maker>東ハト</maker><name>ハーベスト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>薄い,サクサク,上品,ティータイム,職場,シェア,定番,癒し</tags></snack>
+  <snack><maker>不二家</maker><name>ホームパイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,定番,サクサク,崩れた,散らかった,お茶,癒し</tags></snack>
+  <snack><maker>森永製菓</maker><name>マリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>定番,シンプル,お茶,懐かしい,素朴,職場,休憩,癒し</tags></snack>
+  <snack><maker>森永製菓</maker><name>ムーンライト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>しっとり,上品,お茶,ティータイム,職場,休憩,贈り物,定番</tags></snack>
+  <snack><maker>ギンビス</maker><name>たべっ子どうぶつ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,可愛い,懐かしい,動物,学校,遠足,シェア,癒し</tags></snack>
+  <snack><maker>ヤマザキビスケット</maker><name>ノアール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>チョコ,定番,重ねた,分解した,遊んだ,子供,懐かしい,お茶</tags></snack>
+  <snack><maker>ロッテ</maker><name>パイの実</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>止まらない,サクサク,チョコ,食べすぎ,後悔,定番,職場,休憩</tags></snack>
 
-  <snack><maker>カンロ</maker><name>ピュレグミ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>明治</maker><name>果汁グミ ぶどう</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>UHA味覚糖</maker><name>シゲキックス</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ノーベル製菓</maker><name>男梅キャンデー</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>ロッテ</maker><name>キシリトールガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>森永製菓</maker><name>ハイチュウ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>不二家</maker><name>ミルキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>春日井製菓</maker><name>花のくちづけ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>三菱食品</maker><name>かむかむレモン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>クラシエ</maker><name>フリスク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <!-- グミ・キャンディ・ガム系 -->
+  <snack><maker>カンロ</maker><name>ピュレグミ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,びっくり,手が汚れた,色がついた,食べすぎ,止まらない,若い,元気</tags></snack>
+  <snack><maker>明治</maker><name>果汁グミ ぶどう</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,懐かしい,グミ,止まらない,柔らかい,学校,シェア,定番</tags></snack>
+  <snack><maker>UHA味覚糖</maker><name>シゲキックス</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,刺激,びっくり,顔がゆがんだ,挑戦,子供,元気,遊んだ</tags></snack>
+  <snack><maker>ノーベル製菓</maker><name>男梅キャンデー</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>酸っぱい,しょっぱい,癖になる,止まらない,通勤,眠気覚まし,仕事,集中</tags></snack>
+  <snack><maker>ロッテ</maker><name>キシリトールガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>歯,口臭,会議前,緊張,通勤,電車,マナー,仕事</tags></snack>
+  <snack><maker>森永製菓</maker><name>ハイチュウ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>柔らかい,歯にくっつく,子供,懐かしい,止まらない,シェア,学校,癒し</tags></snack>
+  <snack><maker>不二家</maker><name>ミルキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,ミルク,子供,優しい,癒し,のんびり,定番,お茶</tags></snack>
+  <snack><maker>春日井製菓</maker><name>花のくちづけ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,昭和,上品,飴,のんびり,お茶,年配,癒し</tags></snack>
+  <snack><maker>三菱食品</maker><name>かむかむレモン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,レモン,元気,眠気覚まし,仕事,通勤,健康,集中</tags></snack>
+  <snack><maker>クラシエ</maker><name>フリスク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>眠気覚まし,会議,口臭,仕事,通勤,緊張,集中,電車</tags></snack>
 
-  <snack><maker>やおきん</maker><name>うまい棒 めんたい味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>菓道</maker><name>蒲焼さん太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>菓道</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>チロルチョコ</maker><name>チロルチョコ ミルク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>よっちゃん食品工業</maker><name>カットよっちゃん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
+  <!-- 駄菓子系 -->
+  <snack><maker>やおきん</maker><name>うまい棒 めんたい味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>安い,駄菓子,子供,懐かしい,学校,帰り道,コスパ,定番</tags></snack>
+  <snack><maker>菓道</maker><name>蒲焼さん太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,懐かしい,子供,安い,学校,帰り道,タレ,手が汚れた</tags></snack>
+  <snack><maker>菓道</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,懐かしい,子供,安い,学校,帰り道,止まらない,手が汚れた</tags></snack>
+  <snack><maker>チロルチョコ</maker><name>チロルチョコ ミルク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>安い,駄菓子,子供,懐かしい,小さい,一口,学校,定番</tags></snack>
+  <snack><maker>よっちゃん食品工業</maker><name>カットよっちゃん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>酸っぱい,駄菓子,懐かしい,子供,学校,帰り道,手が汚れた,癖になる</tags></snack>
+  <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,遊んだ,学校,定番,ごっこ遊び,帰り道</tags></snack>
+  <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,音が出た,遊んだ,学校,定番,帰り道</tags></snack>
+  <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,学校,帰り道,丸い,定番,風船</tags></snack>
+  <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>安い,コスパ,衝動買い,まとめ買い,買いすぎ,罪悪感,定番,チョコ</tags></snack>
 
-  <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>大塚製薬</maker><name>SOYJOY ストロベリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>アサヒグループ食品</maker><name>一本満足バー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>共立食品</maker><name>ミックスナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>カルビー</maker><name>フルグラ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>亀田製菓</maker><name>ハッピーターン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>カンロ</maker><name>茎わかめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>なとり</maker><name>あたりめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>扇屋食品</maker><name>チーたら</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>デルタインターナショナル</maker><name>ロカボナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
+  <!-- 栄養補助・ナッツ系 -->
+  <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>仕事,忙しい,食事抜き,罪悪感,健康,パサパサ,デスク,残業</tags></snack>
+  <snack><maker>大塚製薬</maker><name>SOYJOY ストロベリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>健康,ダイエット,我慢,仕事,忙しい,デスク,罪悪感,食事抜き</tags></snack>
+  <snack><maker>アサヒグループ食品</maker><name>一本満足バー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>忙しい,食事抜き,仕事,デスク,健康,罪悪感,満足,手軽</tags></snack>
+  <snack><maker>共立食品</maker><name>ミックスナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,止まらない,仕事,デスク,手軽,つまみ,お酒,食べすぎ</tags></snack>
+  <snack><maker>カルビー</maker><name>フルグラ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>健康,朝,食事抜き,ダイエット,ざらざら,こぼした,散らかった,罪悪感</tags></snack>
+  <snack><maker>亀田製菓</maker><name>ハッピーターン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘じょっぱい,止まらない,粉,手が汚れた,食べすぎ,後悔,定番,癒し</tags></snack>
+  <snack><maker>カンロ</maker><name>茎わかめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,ダイエット,我慢,仕事,デスク,海藻,体にいい,罪悪感なし</tags></snack>
+  <snack><maker>なとり</maker><name>あたりめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,デスク,硬い,顎が疲れた,止まらない</tags></snack>
+  <snack><maker>扇屋食品</maker><name>チーたら</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,手軽,止まらない,デスク,残業</tags></snack>
+  <snack><maker>デルタインターナショナル</maker><name>ロカボナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,ダイエット,仕事,デスク,手軽,つまみ,止まらない,罪悪感なし</tags></snack>
 
-  <snack><maker>石屋製菓</maker><name>白い恋人</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>六花亭</maker><name>マルセイバターサンド</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>カルビー</maker><name>じゃがポックル</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>ガトーフェスタ・ハラダ</maker><name>グーテ・デ・ロワ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>ロイズ</maker><name>生チョコレート</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste></snack>
-  <snack><maker>鎌倉紅谷</maker><name>クルミッ子</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>坂角総本舗</maker><name>ゆかり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste></snack>
-  <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste></snack>
-  <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste></snack>
+  <!-- ご当地・お土産系 -->
+  <snack><maker>石屋製菓</maker><name>白い恋人</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>北海道,お土産,もらった,職場,特別,贈り物,上品,定番</tags></snack>
+  <snack><maker>六花亭</maker><name>マルセイバターサンド</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>北海道,お土産,もらった,職場,特別,贈り物,上品,ご褒美</tags></snack>
+  <snack><maker>カルビー</maker><name>じゃがポックル</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>北海道,お土産,もらった,職場,特別,止まらない,定番,人気</tags></snack>
+  <snack><maker>ガトーフェスタ・ハラダ</maker><name>グーテ・デ・ロワ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,お土産,贈り物,職場,特別,サクサク,ティータイム,もらった</tags></snack>
+  <snack><maker>ロイズ</maker><name>生チョコレート</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>北海道,お土産,特別,贈り物,もらった,溶けた,上品,ご褒美</tags></snack>
+  <snack><maker>鎌倉紅谷</maker><name>クルミッ子</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>鎌倉,お土産,もらった,リス,可愛い,特別,職場,贈り物</tags></snack>
+  <snack><maker>坂角総本舗</maker><name>ゆかり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>海老,上品,お土産,贈り物,職場,もらった,サクサク,定番</tags></snack>
+  <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,お土産,贈り物,職場,特別,サクサク,ティータイム,もらった</tags></snack>
+  <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お土産,もらった,職場,定番,和風,お茶,贈り物,せんべい</tags></snack>
+  <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>お土産,もらった,職場,特別,贈り物,和風,お茶,しっとり</tags></snack>
 </snacks>
