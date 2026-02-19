@@ -13,6 +13,8 @@ import json
 from groq import Groq
 from msg_templates import get_template
 
+import base64
+
 
 
 # ============================================================
@@ -53,7 +55,7 @@ CHAT_CSS = """
     position: sticky;      /* ← fixed じゃなく sticky が安全 */
     top: 0;
     z-index: 9998;         /* ドックより少し下でもOK。上にしたければ99999 */
-    background: rgba(255, 140, 0, 0.95); /* オレンジ */
+    background: rgba(255, 140, 0, 0.75); /* オレンジ */
     color: #fff;
     text-align: center;
     font-size: 14px;       /* チャットと同じにしたいならここ */
@@ -108,7 +110,7 @@ html, body{
         overflow-x: visible;  /* 横は切らない */
         border: 1px solid rgba(0,0,0,0.06);
         border-radius: 12px;
-        background: rgba(255,255,255,0.55);
+        background: rgba(255,255,255,0.30);
         backdrop-filter: blur(6px);
         scroll-behavior: auto;
 
@@ -195,7 +197,7 @@ html, body{
 .st-key-escort_dock{
   padding: 10px 12px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.70); /* 半透明 */
+  background: rgba(255,255,255,0.3); /* 半透明 */
   backdrop-filter: blur(6px);
   border: 1px solid rgba(0,0,0,0.08);
   box-shadow: 0 10px 26px rgba(0,0,0,0.14);
@@ -279,6 +281,36 @@ html, body{
 }
 
 
+/* ボタンの配色を暗い背景用に調整 */
+    /* ボタン通常状態 */
+    .stButton button {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* ホバー時（マウスを乗せたとき） */
+    .stButton button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* フォーカス時（クリックしたとき） */
+    .stButton button:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+    }
+
+    /* アクティブ時（押し込んでいる瞬間） */
+    .stButton button:active {
+    background-color: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    }
+
+
   @media (max-width: 520px){
     .chat-wrap{ max-height: 68vh; }
     .row{ gap: 8px; }
@@ -349,8 +381,49 @@ html, body{
 """
 # CSS呼び出し関数定義
 def inject_global_css():
-    st.markdown(CHAT_CSS, unsafe_allow_html=True)
+    # 背景画像をbase64化
+    bg_image = get_base64_image("assets/rooftop_bg_ultralight_1600x900.jpg")
+    
+    # 背景CSS
+    bg_css = f"""
+    <style>
+    .stApp {{
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.35) 0%,
+          rgba(0,0,0,0.55) 45%,
+          rgba(0,0,0,0.70) 100%
+        ),
+        radial-gradient(
+          ellipse at center,
+          rgba(0,0,0,0.35) 0%,
+          rgba(0,0,0,0.55) 55%,
+          rgba(0,0,0,0.78) 100%
+        ),
+        url("data:image/jpeg;base64,{bg_image}");
+      
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
 
+      color: #f0f0f0;  /* 全体的に明るいグレー */
+    }}
+    
+    </style>
+    """
+    
+    # 既存のCSSと背景CSSを両方出力
+    st.markdown(CHAT_CSS, unsafe_allow_html=True)
+    st.markdown(bg_css, unsafe_allow_html=True)
+
+def get_base64_image(image_path):
+    """画像をbase64エンコードして返す"""
+    import base64
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
 # ============================================================
 # 00. 毎回走らせるもの
@@ -407,7 +480,7 @@ PROMPT_BASE = """
 PROMPT_CHARACTERS = """
 【キャラクター設定】
 検察(pros)：
-- 基本否定。観点コロコロ変わる。長引くと飽きる。雑な解決策を出すことがある。
+- 基本否定。でも押されると弱気になる。雑な解決策を出す。
 - 気になる観点：行動・場所・状況
 - 観点を拾う方向：問題点・違和感・過去発言の矛盾・共通点
 - 好きなジャンル：ニュース・乗り物・スポーツ・酒・テレビ
@@ -424,7 +497,7 @@ PROMPT_CHARACTERS = """
 - 観点を拾う方向：擁護・美化・共感・共通点
 - 好きなジャンル：食べ物・音楽・野球・旅・動物
 - 崩れ時：調子に乗る・寂しがる・投げやり同調
-- 発言は事案の「擁護・肯定」から始める。問いかけ禁止。「養護」という言葉の使用禁止。
+- 発言は事案の「擁護・肯定」から始める。問いかけ禁止。「擁護」という言葉の使用禁止。
 - 構造：擁護＋共感 または 擁護＋体験談など補足をつけたセリフにする。一言のみ禁止
 - 裁判らしい言い回しを使う（「弁護の立場からは」「情状酌量の余地」「やむを得ない事情」など）
 - 良い例：「弁護の立場からは、衝動的ではあっても、やむを得ない事情があったと考えます。」
