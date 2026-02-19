@@ -360,7 +360,7 @@ html, body{
     }
 
     .hint{ font-size:10px; }
-    .chat-wrap{ padding: 4px 2px; }
+    .chat-wrap{ padding: 4px 2px 20px; }
 
     .st-key-court_dock,
     .st-key-escort_dock{
@@ -1550,7 +1550,7 @@ if st.session_state.scene == "intro":
         "事案",
         value=st.session_state.case_text,
         max_chars=50,
-        placeholder="あったかい黒豆茶を飲んだ / コープで玉ねぎ買ってきた など",
+        placeholder="コンビニでから揚げ弁当を買った など",
         label_visibility="collapsed",
     )
     st.session_state.case_text = case_text
