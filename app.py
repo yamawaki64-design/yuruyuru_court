@@ -337,6 +337,9 @@ html, body{
   /* 📱 スマホ最適化（375px想定） */
   /* ============================= */
   @media (max-width: 420px){
+    header.stAppHeader {
+        position: relative !important;
+    }
     .chat-wrap:not(.chat-escort) .row{
         display:grid;
         grid-template-columns: 6% 15% 28% 38%;
