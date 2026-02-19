@@ -51,6 +51,22 @@ CHAT_CSS = """
     margin-bottom: 0 !important;
   }
 
+  /* ヘッダーを上に詰める */
+    header.stAppHeader {
+        padding-top: 0 !important;
+    margin-top: 0 !important;
+    }
+
+    /* メインコンテンツも上に詰める */
+    .stMain {
+        padding-top: 0 !important;
+    }
+
+    /* Main全体の上余白も削除 */
+    section.main > div {
+        padding-top: 0 !important;
+    }
+
   .titlebar{
     position: sticky;      /* ← fixed じゃなく sticky が安全 */
     top: 0;
