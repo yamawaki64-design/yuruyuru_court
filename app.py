@@ -54,12 +54,14 @@ CHAT_CSS = """
   /* ヘッダーを上に詰める */
     header.stAppHeader {
         padding-top: 0 !important;
-    margin-top: 0 !important;
+        margin-top: 0 !important;
+        top: 0 !important;
     }
 
     /* メインコンテンツも上に詰める */
     .stMain {
         padding-top: 0 !important;
+        margin-top: 0 !important;
     }
 
     /* Main全体の上余白も削除 */
@@ -326,6 +328,14 @@ html, body{
     color: #ffffff;
     }
 
+    /* スマホでVerticalBlockの余白を削除 */
+    @media (max-width: 768px) {
+        div[class*="stVerticalBlock"] {
+            gap: 0.8rem !important;
+            padding: 0 !important;
+        }
+
+    }
 
   @media (max-width: 520px){
     .chat-wrap{ max-height: 68vh; }
@@ -337,9 +347,7 @@ html, body{
   /* 📱 スマホ最適化（375px想定） */
   /* ============================= */
   @media (max-width: 420px){
-    header.stAppHeader {
-        position: relative !important;
-    }
+
     .chat-wrap:not(.chat-escort) .row{
         display:grid;
         grid-template-columns: 6% 15% 28% 38%;
@@ -478,7 +486,8 @@ def set_lang_ja():
 PROMPT_BASE = """
 【役割】
 あなたは軽いユーモアを持つ会話生成エンジンです。
-娯楽として生活感や今の天気や時間帯を盛り込んで、法的判断を行わないやり取りを生成します。
+依頼内容から連想して、娯楽として生活感や今の天気や時間帯を盛り込んだ、のんきなやり取りを生成します。
+依頼内容に異議を唱えるときは柔らかく言うこと（厳守）
 
 【制約】
 - 他の人への敬意をもち、穏やかな仕事口調を維持する。語尾は柔らかくする（厳守）
@@ -554,7 +563,7 @@ ROLE_PROMPTS = {
 """,
     "def": """
 【状況別補足】
-お見送り時：後味が残る一言か二言。プレーヤーの味方。仕事モードをゆるめて少しだけ本音が出る。
+お見送り時：後味が残る一言か二言。依頼人の味方。仕事モードをゆるめて少しだけ本音が出る。
 おやつコメント時：
 - 必ず snack_name のおやつについてコメントする。優しい口調。
 - snack_name 以外のおやつ名を言わない（禁止）
