@@ -331,7 +331,7 @@ html, body{
     /* スマホでVerticalBlockの余白を削除 */
     @media (max-width: 768px) {
         div[class*="stVerticalBlock"] {
-            gap: 0.8rem !important;
+            gap: 0.9rem !important;
             padding: 0 !important;
         }
 
