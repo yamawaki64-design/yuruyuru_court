@@ -14,6 +14,8 @@ from groq import Groq
 from msg_templates import get_template
 
 import base64
+import chromadb
+from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
 
 
@@ -328,6 +330,22 @@ html, body{
     color: #ffffff;
     }
 
+    /* スピナー全体のコンテナ（背景を透明にする） */
+    /* stCacheSpinnerクラスを持つスピナー本体を透明に */
+    [data-testid="stSpinner"].stCacheSpinner {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    /* スピナー内のテキスト（色をグレー、サイズを小さく） */
+    div[data-testid="stSpinner"] p {
+        color: #f0f0f0 !important;
+        font-size: 0.8rem !important; /* 小さめ */
+    }
+    /* くるくる回る円の色 */
+    div[data-testid="stSpinner"] > div {
+        border-top-color: #f0f0f0 !important;
+    }
+
     /* スマホでVerticalBlockの余白を削除 */
     @media (max-width: 768px) {
         div[class*="stVerticalBlock"] {
@@ -568,8 +586,9 @@ ROLE_PROMPTS = {
 - 必ず snack_name のおやつについてコメントする。優しい口調。
 - snack_name 以外のおやつ名を言わない（禁止）
 - candidate_names は「他にも候補があった」という文脈でのみ使う。全部読み上げない（禁止）
-- 例：「今日の雰囲気から、{snack_name}を選んでみました。」
-- 例：「他のと迷ったんですけど、{snack_name}にしました。」
+- snack_desc は「なぜこれを選んだか」の理由としてcaseと関連する点をさりげなく滲ませる。そのまま読み上げない（禁止）
+- 例：「（理由を説明）なので、今日は{snack_name}を選んでみました。」 
+- 例：「他のと迷ったんですけど、{snack_name}にしました。（理由を説明）」 
 レアイベント匂わせ時：空気が変わった余韻をふわっと一言。具体的には言わない。
 天気コメント時：外の天気と今の時間帯について体感で短く。少し気の利いた感じ。
 """,
@@ -579,6 +598,7 @@ ROLE_PROMPTS = {
 在庫つぶやき時：
 - おやつの在庫を気にするが在庫数をそのまま言わない。
 - 数から連想される内容を独り言のように短く。生活感がある。
+- おやつの背景をヒントに、事案と結びつけた独り言を言う。descをそのまま読まない（禁止）
 """,
 }
 
@@ -605,6 +625,7 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
         stock_info  = context.get("stock_info", "")
         snack_name = context.get("snack_name", "")
         candidate_names = context.get("candidate_names", "")
+        snack_desc = context.get("snack_desc", "")   # ← 追加
 
         situation_map = {
             "exchange": "通常の応酬ターン",
@@ -636,6 +657,8 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             lines.append(f"今日のおやつ：{snack_name}")
         if candidate_names:
             lines.append(f"候補にあがったおやつ：{candidate_names}")
+        if snack_desc:
+            lines.append(f"このおやつを選んだ背景：{snack_desc}")   # ← 追加
         lines.append(f"状況：{situation_ja}")
         lines.append("上記の状況で、あなたのセリフを1〜2文で生成してください。")
 
@@ -1012,7 +1035,7 @@ def load_snacks_xml(filename: str) -> list[dict]:
     items = []
     for node in root.findall("snack"):
         d = {}
-        for key in ["maker", "name", "temp", "fresh", "taste"]:
+        for key in ["maker", "name", "temp", "fresh", "taste", "desc"]:
             child = node.find(key)
             if child is not None and child.text is not None:
                 d[key] = child.text.strip()
@@ -1062,7 +1085,8 @@ def lawyer_snack_comment(snack: dict, taste_pref: str | None, candidate_names: s
         "taste":           taste,
         "taste_pref":      taste_pref,
         "candidate_names": candidate_names,  # ★ 候補名を追加
-    #    "case":            st.session_state.case_text,  # ★ 事案も追加
+        "case":            st.session_state.case_text,  # ★ 事案も追加
+        "snack_desc":      snack.get("desc", ""),  # ← おやつ説明 追加
     }
     
     # 基本コメント
@@ -1144,95 +1168,106 @@ def build_escort_snack_part() -> list[dict]:
     
     return script
 
-def analyze_snack_stock() -> str:
+# ── ベクトルDBに変更後（3つの関数に置き換え）──────────────────────────
+
+# ★新規追加：起動時に1回だけ走るDB構築
+@st.cache_resource(show_spinner="おやつを準備中… 🍪")
+def build_snack_collection():
     """
-    snacks.xmlの在庫を分析して、状況テキストを返す（RAG用）
+    snacks.xmlをベクトル化してインメモリDBに格納。
+    @st.cache_resource により、起動後の最初の1回だけ実行される。
+    rerunのたびに再実行されないのがポイント。
     """
     snacks = load_snacks_xml("snacks.xml")
     if not snacks:
-        return "在庫不明"
+        return None, []
 
-    total = len(snacks)
+    # 日本語対応の軽量モデルを使う
+    ef = SentenceTransformerEmbeddingFunction(
+        model_name="paraphrase-multilingual-MiniLM-L12-v2"
+    )
 
-    # 温度帯の集計
-    temps = {"cold": 0, "normal": 0, "warm": 0}
-    for s in snacks:
-        t = s.get("temp", "normal")
-        if t in temps:
-            temps[t] += 1
+    # インメモリDB（ファイル書き込み不要。Community Cloudでも動く）
+    client = chromadb.Client()
+    collection = client.create_collection(
+        name="snacks",
+        embedding_function=ef,
+        metadata={"hnsw:space": "cosine"}  # コサイン類似度で比較
+    )
 
-    # 生ものの集計
-    fresh_count = sum(1 for s in snacks if s.get("fresh") == "true")
+    # 各おやつのdescをベクトル化してDBに登録
+    documents = []
+    ids = []
+    metadatas = []
+    for i, s in enumerate(snacks):
+        documents.append(s.get("desc", ""))   # ← これがベクトル化される文章
+        ids.append(f"snack_{i}")
+        metadatas.append({                     # ← 検索結果と一緒に返ってくる属性
+            "name":  s.get("name",  ""),
+            "maker": s.get("maker", ""),
+            "taste": s.get("taste", ""),
+            "temp":  s.get("temp",  ""),
+            "fresh": s.get("fresh", ""),
+            "desc":  s.get("desc",  ""),
+        })
 
-    # 味の集計
-    tastes = {"sweet": 0, "salty": 0, "neutral": 0}
-    for s in snacks:
-        t = s.get("taste", "neutral")
-        if t in tastes:
-            tastes[t] += 1
+    collection.add(documents=documents, ids=ids, metadatas=metadatas)
+    return collection, snacks
 
-    # 状況テキストを組み立てる
-    parts = []
-    parts.append(f"在庫総数：{total}件")
 
-    # 偏りチェック
-    if tastes["sweet"] > tastes["salty"] * 2:
-        parts.append("甘いものが多め")
-    elif tastes["salty"] > tastes["sweet"] * 2:
-        parts.append("しょっぱいものが多め")
-    else:
-        parts.append("甘いものとしょっぱいもの、バランスよし")
-
-    # 生もの
-    if fresh_count > 0:
-        parts.append(f"生もの{fresh_count}件あり（要注意）")
-
-    # 冷たいもの
-    if temps["cold"] > 0:
-        parts.append(f"冷たいもの{temps['cold']}件あり")
-
-    return "、".join(parts)
-
+# ★search_snack_by_case：文字マッチング → ベクトル検索に置き換え
 def search_snack_by_case(case: str, taste_pref: str | None = None) -> list[dict]:
     """
-    簡易版RAG：事案テキストと関連するおやつを上位3件返す
-    
-    1. おやつ名・メーカーを1つのテキストに結合
-    2. 事案テキストと共通する文字を数える
-    3. スコアが高い順に返す（同スコアはランダム）
+    chromadb版RAG：事案テキストで類似検索して上位3件返す。
+    呼び出し方は今と同じなので、他のコードは変更不要。
     """
-    snacks = load_snacks_xml("snacks.xml")
-    if not snacks:
+    collection, _ = build_snack_collection()
+    if collection is None:
         return []
 
-    case_chars = set(case)  # 事案の文字セット
+    # taste_prefがあれば「甘い/しょっぱい」でフィルタしてから検索
+    where = {"taste": taste_pref} if taste_pref else None
 
-    scored = []
-    for s in snacks:
-        # おやつの情報を1つのテキストに結合
-        snack_text = " ".join([
-            s.get("name",  ""),
-            s.get("maker", ""),
-            s.get("taste", ""),
-            s.get("tags",  ""),  # ★ 追加
-        ])
-        snack_chars = set(snack_text)
+    try:
+        results = collection.query(
+            query_texts=[case],   # ← 事案テキストをベクトル化して近いものを探す
+            n_results=3,
+            where=where,
+        )
+    except Exception:
+        # フィルタ後の件数が3未満だと例外が出ることがある → フィルタなしで再試行
+        results = collection.query(query_texts=[case], n_results=3)
 
-        # 共通文字数をスコアとする
-        score = len(case_chars & snack_chars)
+    # 検索結果（metadata）を既存コードと同じ形式のdictに変換して返す
+    return [
+        {k: meta[k] for k in ["name", "maker", "taste", "temp", "fresh", "desc"]}
+        for meta in results["metadatas"][0]
+    ]
 
-        # 好みと一致したらスコア加算
-        if taste_pref and s.get("taste") == taste_pref:
-            score += 3
 
-        scored.append((score, random.random(), s))
+# ★analyze_snack_stock：集計テキスト → 事案関連おやつを含む情報に変更
+def analyze_snack_stock(case: str = "") -> str:
+    """
+    在庫つぶやき用のコンテキストを作る。
+    caseを受け取るようになったのが今との違い。
+    """
+    parts = []
 
-    # スコア降順でソート（同スコアはrandom.random()で順番をシャッフル）
-    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    # 事案が渡されたとき → ベクトル検索で関連おやつを探す
+    if case:
+        related = search_snack_by_case(case, taste_pref=None)
+        if related:
+            top = related[0]  # 一番近いおやつだけ使う
+            parts.append(f"事案に関連しそうなおやつ：{top.get('name', '')}")
+            parts.append(f"そのおやつの背景：{top.get('desc', '')}")
 
-    # 上位3件を返す
-    return [s for _, _, s in scored[:3]]
+    # 生ものの件数だけ残す（裁判官らしいつぶやきのヒントとして）
+    snacks = load_snacks_xml("snacks.xml")
+    fresh_count = sum(1 for s in snacks if s.get("fresh") == "true")
+    if fresh_count > 0:
+        parts.append(f"生もの{fresh_count}件あり")
 
+    return "、".join(parts) if parts else "在庫普通"
 
 # ============================================================
 # 2. UI（チャット描画）
@@ -1583,6 +1618,9 @@ if st.session_state.scene == "intro":
     )
     st.session_state.case_text = case_text
 
+    # ★ここで「おやつ準備中...」（おやつDB作成処理）
+    build_snack_collection()
+
     can_start = len(case_text.strip()) >= 1
     if st.button("開廷", disabled=not can_start):
         reset_for_new_trial()
@@ -1758,7 +1796,7 @@ elif st.session_state.scene == "court":
             if random.random() < 0.25:
 
                 # ★ RAG：在庫を分析してcontextに渡す
-                stock_info = analyze_snack_stock()
+                stock_info = analyze_snack_stock(case=st.session_state.get("case_text", ""))
                 st.session_state.court_queue.append({
                     "speaker": "judge",
                     "text":    generate_line("judge", "stock", {

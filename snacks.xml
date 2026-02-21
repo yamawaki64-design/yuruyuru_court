@@ -1,120 +1,120 @@
 <snacks>
   <!-- 常温・日持ち・甘い -->
-  <snack><maker>明治</maker><name>ミルクチョコレート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>疲れた,癒し,チョコ,定番,贈り物,もらった,残業,仕事</tags></snack>
-  <snack><maker>カルビー</maker><name>ポテトチップス うすしお味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,つい食べすぎ,テレビ,休日,ぼーっとした,後悔,買いすぎ</tags></snack>
-  <snack><maker>亀田製菓</maker><name>柿の種</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,残業,仕事,夜,会議,止まらない,分けた,職場</tags></snack>
-  <snack><maker>江崎グリコ</maker><name>ポッキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>シェア,分けた,友達,学校,手土産,コンビニ,定番,遠足</tags></snack>
-  <snack><maker>ロッテ</maker><name>コアラのマーチ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,懐かしい,遠足,可愛い,ついつい,学校,休憩,癒し</tags></snack>
-  <snack><maker>森永製菓</maker><name>チョコボール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,駄菓子,当たり,外れ,運,くじ,ドキドキ</tags></snack>
-  <snack><maker>明治</maker><name>たけのこの里</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>派閥,論争,きのこ,好み,言い合い,定番,職場,休憩</tags></snack>
-  <snack><maker>明治</maker><name>きのこの山</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>派閥,論争,たけのこ,好み,言い合い,定番,職場,休憩</tags></snack>
-  <snack><maker>ブルボン</maker><name>ルマンド</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,崩れる,食べにくい,パリパリ,こぼした,散らかった,丁寧,おやつ</tags></snack>
-  <snack><maker>カルビー</maker><name>じゃがりこ サラダ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>コンビニ,手軽,一人,昼,外出,止まらない,音がうるさい,電車</tags></snack>
+  <snack><maker>明治</maker><name>ミルクチョコレート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>残業が続いて気力が尽きかけたとき、引き出しの奥から出てきた。一口食べると、なぜか少しだけ頑張れる気がした。誰かにもらったものを大事にとっておいたのに、結局自分で食べてしまった。</desc></snack>
+  <snack><maker>カルビー</maker><name>ポテトチップス うすしお味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>なんとなくテレビをつけて、なんとなく袋を開けた。気づいたら中身が空になっていて、後悔とも満足とも言えない気持ちが残った。休日の午後にやりがちな、あの感じ。</desc></snack>
+  <snack><maker>亀田製菓</maker><name>柿の種</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>会議の合間に誰かが机に置いていった。お酒のつまみのはずなのに、なぜかオフィスにいつもある。夜遅くまで残っているとき、これがあるとないとでは大違いだ。</desc></snack>
+  <snack><maker>江崎グリコ</maker><name>ポッキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>遠足のおやつ交換で必ず誰かが持ってきた。折れやすいのに、それでも選ばれ続ける不思議な定番。友達と半分こしようとして、どちらが多いかで揉めたことがある。</desc></snack>
+  <snack><maker>ロッテ</maker><name>コアラのマーチ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>ひとつひとつ絵柄が違うのが気になって、食べる前についつい確認してしまう。子供の頃から変わらない、あの可愛さ。疲れたときに眺めていると少し癒される。</desc></snack>
+  <snack><maker>森永製菓</maker><name>チョコボール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>銀のエンゼルが出るかもしれないと思いながら開ける。当たったためしはほとんどないのに、それでもちょっとドキドキする。駄菓子屋の帰り道を思い出す味。</desc></snack>
+  <snack><maker>明治</maker><name>たけのこの里</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>職場の休憩室に置いてあると、必ず「きのこ派」との争いが始まる。自分はたけのこ派だと思っていたが、最近確信が揺らいできた。この論争に終わりは来ない。</desc></snack>
+  <snack><maker>明治</maker><name>きのこの山</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>軸のビスケット部分とチョコ部分のバランスが絶妙だと思っている。たけのこ派の人には申し訳ないが、これが正解だと確信している。職場での発言は控えているが。</desc></snack>
+  <snack><maker>ブルボン</maker><name>ルマンド</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>食べようとするたびに崩れて、膝の上にパリパリが散らかる。上品なお菓子のはずなのに、食べ終わるころには周りが惨状になっている。それでも選んでしまう。</desc></snack>
+  <snack><maker>カルビー</maker><name>じゃがりこ サラダ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>電車の中で食べると音が気になって、結局カバンにしまった経験が一度はあるはず。コンビニで一人のときについ買ってしまう。食べ始めると止まらないのが困る。</desc></snack>
 
   <!-- 冷たい・甘い -->
-  <snack><maker>赤城乳業</maker><name>ガリガリ君</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>夏,暑い,外,公園,子供,懐かしい,安い,当たり</tags></snack>
-  <snack><maker>ロッテ</maker><name>雪見だいふく</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>冬,こたつ,家,癒し,丸い,のんびり,休日,一人</tags></snack>
-  <snack><maker>森永乳業</maker><name>ピノ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>シェア,分けた,最後の一個,取り合い,少ない,上品,映画,家</tags></snack>
-  <snack><maker>ハーゲンダッツ</maker><name>バニラ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>ご褒美,高い,奮発,落ち込んだ,疲れた,一人,贅沢,癒し</tags></snack>
-  <snack><maker>井村屋</maker><name>あずきバー</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>硬い,歯,夏,定番,懐かしい,昔,外,公園</tags></snack>
-  <snack><maker>明治</maker><name>エッセルスーパーカップ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>大盛り,コスパ,疲れた,ご褒美,深夜,残業,一人,食べすぎ</tags></snack>
-  <snack><maker>江崎グリコ</maker><name>ジャイアントコーン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>外,歩きながら,夏,こぼした,溶けた,急いだ,コンビニ,手軽</tags></snack>
-  <snack><maker>森永製菓</maker><name>チョコモナカジャンボ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>パリパリ,崩れる,こぼした,散らかった,夏,ご褒美,家,テレビ</tags></snack>
-  <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>夏,さっぱり,暑い,外,レモン,さわやか,スポーツ,疲れた</tags></snack>
-  <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><tags>和風,懐かしい,夏,祖父母,縁側,のんびり,休日,癒し</tags></snack>
+  <snack><maker>赤城乳業</maker><name>ガリガリ君</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>炎天下を歩き回って汗だくになったとき、これを見つけると救われた気持ちになる。安くて気軽なのに、夏になると無性に食べたくなる。当たりが出たことは今のところない。</desc></snack>
+  <snack><maker>ロッテ</maker><name>雪見だいふく</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>こたつに入ってぼんやりしている冬の休日、これ以上合うものはないと思う。丸くてやわらかい見た目が愛おしい。一人で食べていると少し贅沢な気持ちになれる。</desc></snack>
+  <snack><maker>森永乳業</maker><name>ピノ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>6粒しか入っていないのに、必ず最後の一個で揉める。一人で食べるときは順番を気にしなくていいので少し気楽だ。映画を見ながら食べると、気づいたら終わっている。</desc></snack>
+  <snack><maker>ハーゲンダッツ</maker><name>バニラ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>仕事で疲れ果てた夜、少し高くても自分へのご褒美として買った。これくらいは許されるはずだと思いながらスプーンを進める。落ち込んだときほど食べたくなる。</desc></snack>
+  <snack><maker>井村屋</maker><name>あずきバー</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>とにかく硬い。油断すると歯に響く。それでも夏になると食べたくなる、不思議な定番。祖父母の家の冷凍庫に必ず入っていた記憶がある。</desc></snack>
+  <snack><maker>明治</maker><name>エッセルスーパーカップ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>深夜に一人でこれを食べるとき、罪悪感と満足感が同時にやってくる。大容量なのにコスパがよくて、疲れたときほど選んでしまう。残業の後のご褒美として定着している。</desc></snack>
+  <snack><maker>江崎グリコ</maker><name>ジャイアントコーン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>歩きながら食べようとして、溶けたクリームが手に垂れた経験が何度もある。コンビニで衝動的に買ってしまい、急いで食べようとして失敗するパターンが繰り返される。</desc></snack>
+  <snack><maker>森永製菓</maker><name>チョコモナカジャンボ</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>パリッと割れた瞬間が気持ちいいのに、必ずどこかにかけらが飛んでいく。テレビを見ながら食べると、ソファがひどいことになる。それでも夏のご褒美として外せない。</desc></snack>
+  <snack><maker>フタバ食品</maker><name>サクレ レモン</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>暑い日にスポーツした後、さっぱりしたものが食べたくてこれを選んだ。レモンの酸味が疲れた体に染み渡る感じがする。見た目も涼しくて、夏に似合う一本。</desc></snack>
+  <snack><maker>丸永製菓</maker><name>あいすまんじゅう</name><temp>cold</temp><fresh>false</fresh><taste>sweet</taste><desc>縁側でぼんやりしながら食べると似合いそうな、懐かしい雰囲気がある。祖父母の家に遊びに行くと、必ず冷凍庫に入っていた。和風の見た目と冷たさのギャップが好きだ。</desc></snack>
 
   <!-- 温かい・生もの・しょっぱい -->
-  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>冬,寒い,通勤,コンビニ,温まった,手が温かい,帰り道,ほっとした</tags></snack>
-  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,衝動買い,つい,昼,帰り道,ジューシー,後悔,満足</tags></snack>
-  <snack><maker>ローソン</maker><name>からあげクン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,手軽,昼,つまみ食い,歩きながら,衝動買い,定番,揚げ物</tags></snack>
-  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>塩分,止まらない,Lサイズ,食べすぎ,後悔,衝動,ジャンク,満足</tags></snack>
-  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>熱い,やけど,口の中,急いだ,待てなかった,衝動,甘い,ほくほく</tags></snack>
-  <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>もちもち,休憩,カフェ,友達,おしゃべり,休日,手土産,定番</tags></snack>
-  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>熱い,やけど,外,祭り,並んだ,待った,こぼした,ソース</tags></snack>
-  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>コンビニ,衝動買い,揚げ物,塩分,止まらない,後悔,昼,手軽</tags></snack>
-  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><tags>ご馳走,クリスマス,特別,並んだ,待った,奮発,家族,イベント</tags></snack>
-  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>冬,外,歩きながら,温まった,懐かしい,祭り,並んだ,あんこ</tags></snack>
+  <snack><maker>セブン-イレブン</maker><name>肉まん</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>寒い日の帰り道、コンビニに入ったら温かい香りが漂ってきた。両手で包むとじんわりと温かくて、外の寒さが少し遠のく。食べながら歩くと少し贅沢な気持ちになる。</desc></snack>
+  <snack><maker>ファミリーマート</maker><name>ファミチキ</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>レジ横で目が合ってしまったら、もう買うしかない。昼ごはんのつもりじゃなかったのに、気づいたら手に持っている。ジューシーさと罪悪感が同時にやってくる。</desc></snack>
+  <snack><maker>ローソン</maker><name>からあげクン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>歩きながらつまめる手軽さが好きで、コンビニに寄るとつい買ってしまう。揚げたての香りに負けて衝動買いし、帰り道に全部食べてしまうことがある。</desc></snack>
+  <snack><maker>マクドナルド</maker><name>マックフライポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>Lサイズにするつもりじゃなかったのに、なぜかいつもLになっている。塩分が強くて止まらないのに、食べ終わると少し後悔する。それでも次も頼んでしまうのが不思議だ。</desc></snack>
+  <snack><maker>マクドナルド</maker><name>ホットアップルパイ</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><desc>熱いと分かっているのに待てなくて、口の中をやけどした経験が何度もある。甘くてほくほくした中身が好きで、冷めるのを待つ忍耐力がどうしても持てない。</desc></snack>
+  <snack><maker>ミスタードーナツ</maker><name>ポン・デ・リング</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>友達とカフェがわりに入って、おしゃべりしながら食べた記憶がある。もちもちとした食感が独特で、ついもう一個頼みたくなってしまう。休日の午前中に似合うおやつ。</desc></snack>
+  <snack><maker>銀だこ</maker><name>ぜったいうまい!! たこ焼</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>熱々なのに急いで食べようとして、口の中をやけどした。祭りの屋台で並んで買った記憶と、ソースの香りが結びついて離れない。外で食べるから余計においしく感じる。</desc></snack>
+  <snack><maker>ミニストップ</maker><name>Xフライドポテト</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>コンビニの揚げ物コーナーを素通りするつもりだったのに、気づいたら手に取っていた。塩分と油の組み合わせに負けて、昼食のつもりが間食になってしまうことがある。</desc></snack>
+  <snack><maker>ケンタッキー</maker><name>オリジナルチキン</name><temp>warm</temp><fresh>true</fresh><taste>salty</taste><desc>クリスマスに家族で並んで買いに行ったことを思い出す。特別な日のご馳走という印象が強くて、普段食べると少しだけ特別な気持ちになれる。あの独特のスパイスが忘れられない。</desc></snack>
+  <snack><maker>日本たこ焼き</maker><name>屋台のたい焼き</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><desc>冬の商店街を歩いていて、甘い香りにつられて並んだ。焼きたてを手で持つと熱くて、急いで食べようとしてあんこが口からこぼれた。懐かしい味がする、あの感じ。</desc></snack>
 
   <!-- 冷たい・生もの・甘い -->
-  <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>誕生日,特別,ご褒美,記念日,ケーキ,買いすぎ,奮発,嬉しい</tags></snack>
-  <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>安い,コスパ,ご褒美,帰り道,衝動買い,手軽,一人,癒し</tags></snack>
-  <snack><maker>銀座コージーコーナー</maker><name>ジャンボシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>大きい,こぼした,クリーム,手が汚れた,食べにくい,ご褒美,奮発,癒し</tags></snack>
-  <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>上品,贈り物,手土産,職場,年配,かしこまった,定番,お茶</tags></snack>
-  <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>贈り物,手土産,職場,懐かしい,しっとり,お茶,定番,ゆっくり</tags></snack>
-  <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>重い,甘すぎ,もらった,食べきれない,職場,手土産,特別,外国</tags></snack>
-  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><tags>冬,外,並んだ,温まった,懐かしい,商店街,帰り道,ほっとした</tags></snack>
-  <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>お土産,旅行,伊勢,もらった,職場,特別,和風,お茶</tags></snack>
-  <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>懐かしい,浅草,お土産,素朴,シンプル,お茶,年配,癒し</tags></snack>
-  <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>懐かしい,漫画,のんびり,お茶,手土産,職場,定番,癒し</tags></snack>
+  <snack><maker>不二家</maker><name>苺のショートケーキ</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>誕生日に必ず登場するような、特別感がある。自分へのご褒美で一人用を買って帰ると、少しだけ気持ちが上向く。記念日でもない日に食べると、なんだか得した気分になれる。</desc></snack>
+  <snack><maker>シャトレーゼ</maker><name>ダブルシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>値段のわりにボリュームがあって、帰り道に衝動買いしやすい。クリームがたっぷり入っていて、一個食べると満足感がある。一人の夜のご褒美にちょうどいい。</desc></snack>
+  <snack><maker>銀座コージーコーナー</maker><name>ジャンボシュークリーム</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>名前の通り大きくて、食べようとするとクリームがはみ出してくる。手が汚れるのに、それでも奮発して買いたくなる瞬間がある。ご褒美感があって、少し贅沢な気持ちになれる。</desc></snack>
+  <snack><maker>とらや</maker><name>羊羹</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>職場への手土産として持っていくと、なんとなく品がある人に見られる気がする。もらったとき、どのタイミングで食べるか少し迷う。お茶と一緒だとしっくりくる。</desc></snack>
+  <snack><maker>文明堂</maker><name>カステラ</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>贈り物としてもらうと、切り分けるのが少し面倒だと思いながらも、しっとりとした食感を楽しんでいる。お茶のお供として、ゆっくりした午後に食べると落ち着く。</desc></snack>
+  <snack><maker>新宿中村屋</maker><name>月餅</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>もらったはいいが、ずっしり重くて甘みが強くて、一人では食べきれなかった。職場に持っていくと、意外と好きな人がいて助かった。特別感はあるのだが量が多い。</desc></snack>
+  <snack><maker>御座候</maker><name>今川焼き（赤あん）</name><temp>warm</temp><fresh>true</fresh><taste>sweet</taste><desc>商店街の端っこでいつも行列ができていた。冬の寒い日に温かいものを両手で持って、ふうふう冷ましながら食べる。あんこの甘さと生地のもちもちが、帰り道を少し楽しくしてくれる。</desc></snack>
+  <snack><maker>赤福</maker><name>赤福餅</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>伊勢に行った人がお土産に買ってきてくれた。もらうと少し特別な気持ちになる。柔らかいお餅とこしあんの組み合わせが、お茶と一緒に食べるとよく合う。</desc></snack>
+  <snack><maker>舟和</maker><name>芋ようかん</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>浅草のお土産として渡すと、年配の方に喜ばれることが多い。素朴な甘さで、冷やして食べるとさっぱりしている。懐かしい感じがして、のんびりした午後に似合う。</desc></snack>
+  <snack><maker>たねや</maker><name>どらやき</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>漫画のキャラクターが好物にしていたので、子供の頃から特別な印象がある。あんこたっぷりのどらやきを、お茶を飲みながらのんびり食べると落ち着く。手土産にしても喜ばれる。</desc></snack>
 
   <!-- 常温・日持ち・しょっぱい -->
-  <snack><maker>なとり</maker><name>チータラ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,デスク,止まらない,残業,手軽</tags></snack>
-  <snack><maker>おやつカンパニー</maker><name>ベビースターラーメン</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,子供,懐かしい,手軽,安い,止まらない,食べすぎ,罪悪感</tags></snack>
-  <snack><maker>天乃屋</maker><name>歌舞伎揚</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,油,食べすぎ,後悔,定番,職場,休憩,しょっぱい</tags></snack>
-  <snack><maker>岩塚製菓</maker><name>黒豆せんべい</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>上品,お茶,年配,落ち着いた,職場,手土産,定番,贈り物</tags></snack>
-  <snack><maker>三幸製菓</maker><name>雪の宿</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘じょっぱい,止まらない,定番,職場,休憩,お茶,懐かしい,癒し</tags></snack>
-  <snack><maker>カルビー</maker><name>かっぱえびせん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,定番,子供,懐かしい,海老,シェア,職場,休憩</tags></snack>
-  <snack><maker>東ハト</maker><name>キャラメルコーン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘い,止まらない,子供,懐かしい,ベタベタ,手が汚れた,食べすぎ,後悔</tags></snack>
-  <snack><maker>湖池屋</maker><name>ポテトチップス のり塩</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>止まらない,テレビ,休日,後悔,食べすぎ,ぼーっとした,一人,のんびり</tags></snack>
-  <snack><maker>ヤガイ</maker><name>おやつカルパス</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,残業,夜,デスク,手軽,止まらない,仕事</tags></snack>
-  <snack><maker>春日井製菓</maker><name>グリーン豆</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>硬い,歯,止まらない,職場,休憩,お茶,定番,懐かしい</tags></snack>
+  <snack><maker>なとり</maker><name>チータラ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>夜遅くまでデスクに向かっているとき、これがあると少し報われる気がする。お酒のつまみのつもりが、気づいたら全部食べてしまっていることがある。止まらないのが困る。</desc></snack>
+  <snack><maker>おやつカンパニー</maker><name>ベビースターラーメン</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>子供の頃、駄菓子屋で必ず買っていた記憶がある。大人になってもたまに食べたくなる、懐かしい味。安くてサクサクしていて、気づいたら袋の底まで手が届いている。</desc></snack>
+  <snack><maker>天乃屋</maker><name>歌舞伎揚</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>ひとつ食べると止まらなくなる。油としょっぱさの組み合わせが後を引いて、気づいたら袋が軽くなっている。後悔するのは分かっているのに、また買ってしまう。</desc></snack>
+  <snack><maker>岩塚製菓</maker><name>黒豆せんべい</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>贈り物として渡すと、なんとなく落ち着いた印象を与えられる気がする。お茶と一緒にゆっくり食べると、日常の喧騒から少し離れた気持ちになれる。</desc></snack>
+  <snack><maker>三幸製菓</maker><name>雪の宿</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>甘じょっぱいのが不思議とあとを引く。職場の休憩室に置いてあると、気づいたらみんなで食べてしまっている定番のひとつ。お茶との相性がいい。</desc></snack>
+  <snack><maker>カルビー</maker><name>かっぱえびせん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>子供の頃から変わらない、あの海老の香りと塩味。みんなで分けながら食べると、自然と会話が生まれる。止まらなくなるので、大袋を開けるときは覚悟が必要だ。</desc></snack>
+  <snack><maker>東ハト</maker><name>キャラメルコーン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>甘くてさくさくしていて、気づいたら手がべたべたになっている。子供の頃から好きだったのに、大人になっても変わらず食べ続けている。袋の底のピーナッツが好きだ。</desc></snack>
+  <snack><maker>湖池屋</maker><name>ポテトチップス のり塩</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>テレビを見ながらぼーっとしていると、気づいたら袋が空になっている。のりの香りとしょっぱさがやみつきになる。休日の昼下がり、一人でのんびり過ごすときに似合う。</desc></snack>
+  <snack><maker>ヤガイ</maker><name>おやつカルパス</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>夜のデスクワークのお供として定着している。一本ずつ食べられる手軽さがよくて、気づいたら何本も食べていることがある。お酒とも合うが、仕事中でもつい手が伸びる。</desc></snack>
+  <snack><maker>春日井製菓</maker><name>グリーン豆</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>硬くてかみごたえがあるのに、止まらなくなる不思議なお菓子。職場の休憩室に置いてあると、誰かがつまんでいることが多い。顎が疲れても、手が止まらない。</desc></snack>
 
   <!-- クッキー・ビスケット系 -->
-  <snack><maker>ブルボン</maker><name>アルフォート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>チョコ,定番,職場,休憩,手土産,シェア,ティータイム,癒し</tags></snack>
-  <snack><maker>ブルボン</maker><name>エリゼ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,細い,食べにくい,折れた,崩れた,ティータイム,贈り物,職場</tags></snack>
-  <snack><maker>サンリツ</maker><name>源氏パイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,定番,サクサク,崩れた,こぼした,散らかった,お茶</tags></snack>
-  <snack><maker>東ハト</maker><name>ハーベスト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>薄い,サクサク,上品,ティータイム,職場,シェア,定番,癒し</tags></snack>
-  <snack><maker>不二家</maker><name>ホームパイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,子供,定番,サクサク,崩れた,散らかった,お茶,癒し</tags></snack>
-  <snack><maker>森永製菓</maker><name>マリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>定番,シンプル,お茶,懐かしい,素朴,職場,休憩,癒し</tags></snack>
-  <snack><maker>森永製菓</maker><name>ムーンライト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>しっとり,上品,お茶,ティータイム,職場,休憩,贈り物,定番</tags></snack>
-  <snack><maker>ギンビス</maker><name>たべっ子どうぶつ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,可愛い,懐かしい,動物,学校,遠足,シェア,癒し</tags></snack>
-  <snack><maker>ヤマザキビスケット</maker><name>ノアール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>チョコ,定番,重ねた,分解した,遊んだ,子供,懐かしい,お茶</tags></snack>
-  <snack><maker>ロッテ</maker><name>パイの実</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>止まらない,サクサク,チョコ,食べすぎ,後悔,定番,職場,休憩</tags></snack>
+  <snack><maker>ブルボン</maker><name>アルフォート</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>チョコの船の絵が気になって、食べる前についつい眺めてしまう。職場の手土産として持っていくと、ほとんどの場合喜ばれる定番。ティータイムのお供にちょうどいい。</desc></snack>
+  <snack><maker>ブルボン</maker><name>エリゼ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>細くて上品な見た目なのに、取り出すときに折れてしまうことがある。贈り物として渡すと、少し品のある雰囲気が出る。ティータイムに一本ずつ食べるのが好きだ。</desc></snack>
+  <snack><maker>サンリツ</maker><name>源氏パイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>ハート型のパイ生地がサクサクしていて、食べると必ずこぼれる。子供の頃からの定番で、お茶の時間に欠かせない存在だった。散らかるのに、それでも好きだ。</desc></snack>
+  <snack><maker>東ハト</maker><name>ハーベスト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>薄くてサクサクしていて、一枚食べると次が食べたくなる。上品な甘さで、職場のティータイムに出すと少し雰囲気が上がる気がする。軽いのに何枚でも食べられてしまう。</desc></snack>
+  <snack><maker>不二家</maker><name>ホームパイ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>さくさくとした食感で、食べると必ずパリパリとかけらが落ちる。子供の頃から変わらない味で、お茶と一緒に食べると落ち着く。懐かしい気持ちになれるお菓子のひとつ。</desc></snack>
+  <snack><maker>森永製菓</maker><name>マリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>シンプルな見た目と素朴な甘さが、どんな場面でも邪魔にならない。職場の休憩室に置いてあると、誰でも手が伸びやすい。お茶のお供として、長年愛されている定番。</desc></snack>
+  <snack><maker>森永製菓</maker><name>ムーンライト</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>しっとりとした食感が上品で、ティータイムに出すと場の雰囲気が少し和む。贈り物にしても嫌みがなく、幅広い年代に受け入れられる落ち着いた存在。</desc></snack>
+  <snack><maker>ギンビス</maker><name>たべっ子どうぶつ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>動物の形のビスケットを、種類を確認しながら一枚ずつ食べていた。子供の頃の遠足に必ず持っていった記憶がある。大人になっても見かけると懐かしくなって買ってしまう。</desc></snack>
+  <snack><maker>ヤマザキビスケット</maker><name>ノアール</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>黒いビスケットを分解して中のクリームだけ食べる遊びをしていた。大人になっても、ついやってしまうことがある。チョコとクリームのバランスが好きで、お茶によく合う。</desc></snack>
+  <snack><maker>ロッテ</maker><name>パイの実</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>小さいのに一粒ひとつぶチョコとパイ生地のバランスがよくて、気づいたら箱が空になっている。職場の休憩に一粒つまむつもりが、結局半分食べてしまっていることがある。</desc></snack>
 
   <!-- グミ・キャンディ・ガム系 -->
-  <snack><maker>カンロ</maker><name>ピュレグミ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,びっくり,手が汚れた,色がついた,食べすぎ,止まらない,若い,元気</tags></snack>
-  <snack><maker>明治</maker><name>果汁グミ ぶどう</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>子供,懐かしい,グミ,止まらない,柔らかい,学校,シェア,定番</tags></snack>
-  <snack><maker>UHA味覚糖</maker><name>シゲキックス</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,刺激,びっくり,顔がゆがんだ,挑戦,子供,元気,遊んだ</tags></snack>
-  <snack><maker>ノーベル製菓</maker><name>男梅キャンデー</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>酸っぱい,しょっぱい,癖になる,止まらない,通勤,眠気覚まし,仕事,集中</tags></snack>
-  <snack><maker>ロッテ</maker><name>キシリトールガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>歯,口臭,会議前,緊張,通勤,電車,マナー,仕事</tags></snack>
-  <snack><maker>森永製菓</maker><name>ハイチュウ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>柔らかい,歯にくっつく,子供,懐かしい,止まらない,シェア,学校,癒し</tags></snack>
-  <snack><maker>不二家</maker><name>ミルキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,ミルク,子供,優しい,癒し,のんびり,定番,お茶</tags></snack>
-  <snack><maker>春日井製菓</maker><name>花のくちづけ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>懐かしい,昭和,上品,飴,のんびり,お茶,年配,癒し</tags></snack>
-  <snack><maker>三菱食品</maker><name>かむかむレモン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>酸っぱい,レモン,元気,眠気覚まし,仕事,通勤,健康,集中</tags></snack>
-  <snack><maker>クラシエ</maker><name>フリスク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>眠気覚まし,会議,口臭,仕事,通勤,緊張,集中,電車</tags></snack>
+  <snack><maker>カンロ</maker><name>ピュレグミ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>袋を開けたら手が真っ赤になってしまって、慌ててティッシュを探した。酸っぱさに思わず顔がゆがむのに、次の一粒に手が伸びる。若い頃の元気な感じがする味。</desc></snack>
+  <snack><maker>明治</maker><name>果汁グミ ぶどう</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>柔らかくてジューシーで、一粒食べると止まらなくなる。子供の頃から変わらないぶどうの味が好きで、袋を開けるといつの間にか全部なくなっている。</desc></snack>
+  <snack><maker>UHA味覚糖</maker><name>シゲキックス</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>口に入れた瞬間の刺激的な酸っぱさに、思わず変な顔をしてしまう。子供の頃、友達と誰が平気な顔でいられるか競い合いながら食べた。挑戦したくなる不思議な魅力がある。</desc></snack>
+  <snack><maker>ノーベル製菓</maker><name>男梅キャンデー</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>通勤中に眠気が来たとき、これを口に入れると少しシャキッとする。酸っぱくてしょっぱいのに癖になって、仕事中のデスクに常備している人を何人か知っている。</desc></snack>
+  <snack><maker>ロッテ</maker><name>キシリトールガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>大事な会議の前に慌ててポケットから取り出すことが多い。電車の中でも噛んでいると、なんとなく落ち着く気がする。歯のためにと言い訳しながら、ほぼ習慣になっている。</desc></snack>
+  <snack><maker>森永製菓</maker><name>ハイチュウ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>柔らかくて歯にくっつくのに、食べ始めると止まらない。子供の頃、どの味が好きか友達と交換しながら食べた。懐かしい甘さで、疲れたときについ手が伸びる。</desc></snack>
+  <snack><maker>不二家</maker><name>ミルキー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>優しいミルクの甘さが、疲れたときに不思議と落ち着かせてくれる。子供の頃から変わらない味で、のんびりしたい午後のお供にちょうどいい。包み紙の絵が可愛い。</desc></snack>
+  <snack><maker>春日井製菓</maker><name>花のくちづけ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>上品な飴で、年配の方が持っていることが多い印象がある。昭和の雰囲気がして、のんびりしたお茶の時間に口に入れると落ち着く。懐かしい気持ちになれるお菓子。</desc></snack>
+  <snack><maker>三菱食品</maker><name>かむかむレモン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>仕事中に眠くなったとき、レモンの酸っぱさで少し目が覚める気がして常備している。健康にいいと思いながら食べると、少しだけ罪悪感が薄れる。通勤のお供にも便利だ。</desc></snack>
+  <snack><maker>クラシエ</maker><name>フリスク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>会議前に慌ててポケットから取り出すことが多い。スースーする刺激が眠気を少し飛ばしてくれる気がして、仕事のお供として定着している。ケースのパチッという音が好きだ。</desc></snack>
 
   <!-- 駄菓子系 -->
-  <snack><maker>やおきん</maker><name>うまい棒 めんたい味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>安い,駄菓子,子供,懐かしい,学校,帰り道,コスパ,定番</tags></snack>
-  <snack><maker>菓道</maker><name>蒲焼さん太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,懐かしい,子供,安い,学校,帰り道,タレ,手が汚れた</tags></snack>
-  <snack><maker>菓道</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>駄菓子,懐かしい,子供,安い,学校,帰り道,止まらない,手が汚れた</tags></snack>
-  <snack><maker>チロルチョコ</maker><name>チロルチョコ ミルク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>安い,駄菓子,子供,懐かしい,小さい,一口,学校,定番</tags></snack>
-  <snack><maker>よっちゃん食品工業</maker><name>カットよっちゃん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>酸っぱい,駄菓子,懐かしい,子供,学校,帰り道,手が汚れた,癖になる</tags></snack>
-  <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,遊んだ,学校,定番,ごっこ遊び,帰り道</tags></snack>
-  <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,音が出た,遊んだ,学校,定番,帰り道</tags></snack>
-  <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>駄菓子,懐かしい,子供,学校,帰り道,丸い,定番,風船</tags></snack>
-  <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>安い,コスパ,衝動買い,まとめ買い,買いすぎ,罪悪感,定番,チョコ</tags></snack>
+  <snack><maker>やおきん</maker><name>うまい棒 めんたい味</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>10円という価格が信じられなくて、駄菓子屋で何本も買った記憶がある。大人になっても懐かしくなって手が伸びる。めんたい味が一番好きだという人は意外と多い。</desc></snack>
+  <snack><maker>菓道</maker><name>蒲焼さん太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>食べると必ず手がタレでベタベタになって、慌ててティッシュを探す。駄菓子屋の帰り道に食べながら歩いた記憶がある。大人になってから食べると、甘辛さが懐かしい。</desc></snack>
+  <snack><maker>菓道</maker><name>キャベツ太郎</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>何の味なのか説明が難しいのに、食べると確かにおいしい不思議なお菓子。袋を開けるとあの独特の香りがして、一気に子供の頃の記憶が蘇る。止まらなくなるのが困る。</desc></snack>
+  <snack><maker>チロルチョコ</maker><name>チロルチョコ ミルク</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>小さいのに一粒で満足感がある不思議なチョコ。駄菓子屋で一個ずつ大事に選んでいた。今でもレジ横に並んでいるとつい手が伸びる、懐かしいあの感じ。</desc></snack>
+  <snack><maker>よっちゃん食品工業</maker><name>カットよっちゃん</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>食べると必ず口のまわりと手が酢でべたべたになる。それでも酸っぱさが癖になって、駄菓子屋では必ず買っていた。大人になってから食べると、あの懐かしい刺激がよみがえる。</desc></snack>
+  <snack><maker>オリオン</maker><name>ココアシガレット</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>大人の真似をして口にくわえるごっこ遊びをしながら食べた記憶がある。ほんのりとしたcocoa味が懐かしくて、今見かけると思わず手が伸びる。子供の頃の定番駄菓子。</desc></snack>
+  <snack><maker>コリス</maker><name>フエガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>食べながら音を出そうとして、うまくできなくて悔しかった記憶がある。駄菓子屋で友達と競いながら吹いていた。甘さよりも遊び道具としての印象が強いお菓子。</desc></snack>
+  <snack><maker>丸川製菓</maker><name>オレンジマーブルガム</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>丸いガムを口に入れて風船を膨らませようとして、うまく膨らまなかった記憶がある。あのオレンジの香りと甘さは、子供の頃の駄菓子屋の空気ごと思い出させてくれる。</desc></snack>
+  <snack><maker>有楽製菓</maker><name>ブラックサンダー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>コスパがよくてついまとめ買いしてしまう。買いすぎたと思いながら、気づいたら全部食べていることがある。罪悪感はあるが、値段と満足感のバランスがとれているので許している。</desc></snack>
 
   <!-- 栄養補助・ナッツ系 -->
-  <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>仕事,忙しい,食事抜き,罪悪感,健康,パサパサ,デスク,残業</tags></snack>
-  <snack><maker>大塚製薬</maker><name>SOYJOY ストロベリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>健康,ダイエット,我慢,仕事,忙しい,デスク,罪悪感,食事抜き</tags></snack>
-  <snack><maker>アサヒグループ食品</maker><name>一本満足バー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>忙しい,食事抜き,仕事,デスク,健康,罪悪感,満足,手軽</tags></snack>
-  <snack><maker>共立食品</maker><name>ミックスナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,止まらない,仕事,デスク,手軽,つまみ,お酒,食べすぎ</tags></snack>
-  <snack><maker>カルビー</maker><name>フルグラ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>健康,朝,食事抜き,ダイエット,ざらざら,こぼした,散らかった,罪悪感</tags></snack>
-  <snack><maker>亀田製菓</maker><name>ハッピーターン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>甘じょっぱい,止まらない,粉,手が汚れた,食べすぎ,後悔,定番,癒し</tags></snack>
-  <snack><maker>カンロ</maker><name>茎わかめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,ダイエット,我慢,仕事,デスク,海藻,体にいい,罪悪感なし</tags></snack>
-  <snack><maker>なとり</maker><name>あたりめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,デスク,硬い,顎が疲れた,止まらない</tags></snack>
-  <snack><maker>扇屋食品</maker><name>チーたら</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お酒,つまみ,夜,仕事,手軽,止まらない,デスク,残業</tags></snack>
-  <snack><maker>デルタインターナショナル</maker><name>ロカボナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>健康,ダイエット,仕事,デスク,手軽,つまみ,止まらない,罪悪感なし</tags></snack>
+  <snack><maker>大塚製薬</maker><name>カロリーメイト チョコレート味</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>昼ごはんを食べる時間がなくて、デスクでこれを食べてごまかした。パサパサしているのに、忙しいときは不思議とありがたい。体に悪いことはしていないと言い聞かせながら食べる。</desc></snack>
+  <snack><maker>大塚製薬</maker><name>SOYJOY ストロベリー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>ダイエット中のおやつとして選んでいるが、本当においしいのか自分でもよく分からない。デスクの引き出しに常備していると、健康に気を使っている気分になれる。</desc></snack>
+  <snack><maker>アサヒグループ食品</maker><name>一本満足バー</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>食事を抜いたときの罪悪感を少し薄めるために食べることが多い。本当に満足しているかは微妙だが、忙しい日のデスクには欠かせない存在になっている。</desc></snack>
+  <snack><maker>共立食品</maker><name>ミックスナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>健康にいいと分かっているのに、止まらなくなるのが困る。仕事中のつまみとして始めたのに、気づいたら袋が半分以上なくなっている。お酒との相性がよすぎる。</desc></snack>
+  <snack><maker>カルビー</maker><name>フルグラ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>健康のために朝食として食べ始めたが、こぼれやすくて毎回テーブルが散らかる。ダイエット目的で買ったのに、気づいたら食べすぎていることがある。</desc></snack>
+  <snack><maker>亀田製菓</maker><name>ハッピーターン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>甘じょっぱい粉が手についてベタベタになるのに、それでも止まらない。食べ終わると指についた粉をなめてしまうのは、やっている人が多いはずだ。後悔するのに次も食べたくなる。</desc></snack>
+  <snack><maker>カンロ</maker><name>茎わかめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>健康にいいと分かっているから、罪悪感なく食べられる数少ないおやつ。デスクに置いておいても周りの目が気にならない。噛みごたえがあって、意外と満足感がある。</desc></snack>
+  <snack><maker>なとり</maker><name>あたりめ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>顎が疲れるのに止まらない、不思議な魅力がある。夜遅くまで仕事しているとき、お酒と一緒に少しずつ食べるのが好きだ。硬さと噛みごたえがかえって気持ちいい。</desc></snack>
+  <snack><maker>扇屋食品</maker><name>チーたら</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>チーズとたらの組み合わせが絶妙で、デスクに置いておくとつい手が伸びる。残業の夜に少しずつ食べると、気持ちが少し紛れる。お酒にも合うが、仕事中でも食べてしまう。</desc></snack>
+  <snack><maker>デルタインターナショナル</maker><name>ロカボナッツ</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>糖質を気にしながら選んだのに、気づいたら全部食べてしまっていた。健康にいいと思いながら食べると罪悪感が薄れる。仕事のデスクに置きやすくて、食べやすいのが助かる。</desc></snack>
 
   <!-- ご当地・お土産系 -->
-  <snack><maker>石屋製菓</maker><name>白い恋人</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>北海道,お土産,もらった,職場,特別,贈り物,上品,定番</tags></snack>
-  <snack><maker>六花亭</maker><name>マルセイバターサンド</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>北海道,お土産,もらった,職場,特別,贈り物,上品,ご褒美</tags></snack>
-  <snack><maker>カルビー</maker><name>じゃがポックル</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>北海道,お土産,もらった,職場,特別,止まらない,定番,人気</tags></snack>
-  <snack><maker>ガトーフェスタ・ハラダ</maker><name>グーテ・デ・ロワ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,お土産,贈り物,職場,特別,サクサク,ティータイム,もらった</tags></snack>
-  <snack><maker>ロイズ</maker><name>生チョコレート</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><tags>北海道,お土産,特別,贈り物,もらった,溶けた,上品,ご褒美</tags></snack>
-  <snack><maker>鎌倉紅谷</maker><name>クルミッ子</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>鎌倉,お土産,もらった,リス,可愛い,特別,職場,贈り物</tags></snack>
-  <snack><maker>坂角総本舗</maker><name>ゆかり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>海老,上品,お土産,贈り物,職場,もらった,サクサク,定番</tags></snack>
-  <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><tags>上品,お土産,贈り物,職場,特別,サクサク,ティータイム,もらった</tags></snack>
-  <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><tags>お土産,もらった,職場,定番,和風,お茶,贈り物,せんべい</tags></snack>
-  <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><tags>お土産,もらった,職場,特別,贈り物,和風,お茶,しっとり</tags></snack>
+  <snack><maker>石屋製菓</maker><name>白い恋人</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>北海道に行った人がお土産に持ってきてくれると、職場がほんの少し華やぐ。もらうたびに特別感があって、箱のデザインも含めて贈り物らしい雰囲気がある。</desc></snack>
+  <snack><maker>六花亭</maker><name>マルセイバターサンド</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>北海道土産の定番で、もらうたびにバターの豊かな香りに少し幸せな気持ちになる。冷やして食べると、サクサクのビスケットとバタークリームの組み合わせが絶妙だ。</desc></snack>
+  <snack><maker>カルビー</maker><name>じゃがポックル</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>北海道限定という特別感があって、もらうと少し嬉しい気持ちになる。サクサクとした食感と塩気が止まらなくて、気づいたら一袋全部食べてしまっていることがある。</desc></snack>
+  <snack><maker>ガトーフェスタ・ハラダ</maker><name>グーテ・デ・ロワ</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>贈り物として持っていくと、箱のデザインが上品で少し格式のある印象を与えられる。サクサクとしたラスクの食感と甘さが、ティータイムにちょうどいい。</desc></snack>
+  <snack><maker>ロイズ</maker><name>生チョコレート</name><temp>cold</temp><fresh>true</fresh><taste>sweet</taste><desc>北海道土産として持ってきてくれると、職場でちょっとした話題になる。滑らかな口溶けが本当においしくて、もらうたびに少し特別な気持ちになれる。溶けやすいので持ち運びに気を使う。</desc></snack>
+  <snack><maker>鎌倉紅谷</maker><name>クルミッ子</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>リスのキャラクターが可愛くて、もらった瞬間に少し顔がほころぶ。鎌倉土産として手渡すと、贈った側も喜んでもらえる嬉しさがある。キャラメルとクルミの組み合わせが好きだ。</desc></snack>
+  <snack><maker>坂角総本舗</maker><name>ゆかり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>海老の香りと上品な塩味が、お茶と一緒に食べるとよく合う。贈り物として持っていくと、年配の方に特に喜ばれることが多い。サクサクとした薄さが食べやすい。</desc></snack>
+  <snack><maker>千鳥屋</maker><name>チロリアン</name><temp>normal</temp><fresh>false</fresh><taste>sweet</taste><desc>長細い形のウエハースに入ったクリームが、ティータイムに一本ずつ食べるのにちょうどいい。贈り物として渡すと、缶の見た目も含めて上品な印象を与えられる。</desc></snack>
+  <snack><maker>もち吉</maker><name>餅のおまつり</name><temp>normal</temp><fresh>false</fresh><taste>salty</taste><desc>職場へのお土産として渡すと、幅広い年代に受け入れてもらいやすい。お茶と一緒に食べると落ち着く。せんべいの硬さとしょっぱさが、のんびりした午後に似合う。</desc></snack>
+  <snack><maker>青木屋</maker><name>武蔵野日誌</name><temp>normal</temp><fresh>true</fresh><taste>sweet</taste><desc>しっとりとした和菓子で、職場へのお土産として持っていくと「どこのですか」と聞かれることがある。お茶と一緒にいただくと、少し落ち着いた気持ちになれる。</desc></snack>
 </snacks>
