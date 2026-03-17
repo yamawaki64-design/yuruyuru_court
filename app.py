@@ -53,22 +53,21 @@ CHAT_CSS = """
     margin-bottom: 0 !important;
   }
 
-  /* ヘッダーを上に詰める */
+  /* Streamlitヘッダーバー（メニュー含む）を非表示 */
     header.stAppHeader {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-        top: 0 !important;
+        display: none !important;
+        height: 0 !important;
     }
 
-    /* メインコンテンツも上に詰める */
-    .stMain {
+    /* メインコンテンツを最上部から表示 */
+    .stMain, section.main > div {
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
 
-    /* Main全体の上余白も削除 */
-    section.main > div {
-        padding-top: 0 !important;
+    /* header非表示後も親divが確保するheader分の余白を打ち消す */
+    [data-testid="stMain"] > div:first-child {
+        margin-top: -58px !important;
     }
 
   .titlebar{
@@ -97,6 +96,7 @@ html, body{
 [data-testid="stMain"]{
   height: 100% !important;
   overflow: hidden !important;
+  padding-top: 0 !important;
 }
 
 /* flex子がスクロールできるようにする定番 */
@@ -1590,6 +1590,8 @@ def build_escort_script() -> list[dict]:
 # ============================================================
 # 5. 画面：intro / court / escort / end
 # ============================================================
+
+st.set_page_config(page_title="ゆるゆる裁判所", page_icon="⚖️", layout="wide")
 
 init_state()
 float_init()
