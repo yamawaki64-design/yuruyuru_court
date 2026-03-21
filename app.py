@@ -112,7 +112,7 @@ html, body{
 
 /* chat-wrap に「確実な高さ」を与える（タイトルバー＋ドック分を引く） */
 #chatwrap-court, #chatwrap-escort{
-    height: calc(100vh - 64px - 110px - 16px) !important;
+    height: calc(100vh - 64px - 100px - 8px) !important;
     overflow-y: auto !important;
     max-height: none !important;
 
@@ -139,7 +139,7 @@ html, body{
         scroll-behavior: auto;
 
         /* 下部固定（次へ）に被らないための余白 */
-        padding-bottom: 140px; /* 下部固定ドック分（入力欄も載せるなら） */
+        padding-bottom: 90px; /* 下部固定ドック分（入力欄も載せるなら） */
     
     }
 
