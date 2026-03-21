@@ -28,7 +28,12 @@ CHAT_CSS = """
     [data-testid="stMarkdownContainer"]{ overflow: visible !important; }
 /*    [data-testid="stVerticalBlock"]{ overflow: visible !important; } */
 
-    [data-testid="stMainBlockContainer"]{ padding: 0 16px !important; }
+    [data-testid="stMainBlockContainer"]{
+        padding: 0 16px !important;
+        max-width: 980px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 
     /* ============================= */
     /* components.html (st.iframe) の余白を潰す */
@@ -125,7 +130,6 @@ html, body{
         max-width: 980px;
         margin: 0 auto;
         padding: 6px 4px;
-        max-height: 72vh;
         overflow-y: auto !important;     /* 縦スクロール */
         overflow-x: visible;  /* 横は切らない */
         border: 1px solid rgba(0,0,0,0.06);
