@@ -675,18 +675,30 @@ def _call_groq_api(speaker: str, situation: str, context: dict) -> str | None:
             + "\n【あなたの役割】\n" + ROLE_PROMPTS.get(speaker, "")
         )
 
+        import time as _time
+        _t0 = _time.time()
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            # model="llama-3.1-8b-instant",
+            model="openai/gpt-oss-120b",
+            # model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": system_content},
                 {"role": "user",   "content": user_prompt},
             ],
-            max_tokens=240,
+            max_tokens=1024,
             temperature=0.85,
         )
+        _elapsed = _time.time() - _t0
+        print(f"[DEBUG single] speaker={speaker!r} situation={situation!r}  elapsed={_elapsed:.1f}s  finish_reason={response.choices[0].finish_reason!r}  usage={response.usage}")
 
-        text = response.choices[0].message.content.strip()
+        raw_text = response.choices[0].message.content.strip()
+        print(f"[DEBUG single] raw={raw_text[:120]!r}")
+
+        # thinkingブロック・コードブロック除去（推論モデル対応）
+        import re as _re
+        raw_text = _re.sub(r"<think(?:ing)?>.*?</think(?:ing)?>", "", raw_text, flags=_re.DOTALL)
+        raw_text = _re.sub(r"```(?:json)?\s*", "", raw_text)
+        raw_text = raw_text.replace("```", "").strip()
+        text = raw_text
 
         # 出力バリデーション
         # 改行は除去して1文にする（弾かずに活かす）
@@ -753,21 +765,28 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_d
             + situation_detail
         )
 
+        import time as _time
+        _t0 = _time.time()
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            # model="llama-3.1-8b-instant",
+            model="openai/gpt-oss-120b",
+            # model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "JSONのみ出力してください。説明・コードブロック・改行は不要です。"},
                 {"role": "user",   "content": prompt},
             ],
 
-            max_tokens=2000,
+            max_tokens=4000,
             temperature=0.85,
         )
+        _elapsed = _time.time() - _t0
+        print(f"[DEBUG batch] elapsed={_elapsed:.1f}s  finish_reason={response.choices[0].finish_reason!r}  usage={response.usage}")
 
         raw = response.choices[0].message.content.strip()
+        print(f"[DEBUG batch] raw_len={len(raw)}  raw_head={raw[:200]!r}")
 
-        # コードブロックが混入した場合の除去
+        # thinkingブロック・コードブロック・jsonプレフィックス除去（推論モデル対応）
+        import re as _re
+        raw = _re.sub(r"<think(?:ing)?>.*?</think(?:ing)?>", "", raw, flags=_re.DOTALL)
         raw = raw.replace("```json", "").replace("```", "").strip()
         # AIが途中で配列を閉じて再開する不正パターンを修正
         # 例: ],"{ → ,{
@@ -776,11 +795,14 @@ def _generate_exchange_lines(case: str, target_turns: int, weather: dict, time_d
         raw = re.sub(r'\][\s]*,[\s]*\{', ',{', raw)
         # 末尾が切れている場合の修復
         # 最後の完全な } を探して、そこで閉じる
-        last_brace = raw.rfind("}") 
+        last_brace = raw.rfind("}")
         if last_brace != -1 and not raw.strip().endswith("]"):
             raw = raw[:last_brace + 1] + "]"
 
         lines = json.loads(raw)
+        print(f"[DEBUG batch] parsed {len(lines)} lines:")
+        for _i, _item in enumerate(lines):
+            print(f"  [{_i}] speaker={_item.get('speaker')!r}  text={_item.get('text', '')[:60]!r}")
 
         # バリデーション
         if not isinstance(lines, list):

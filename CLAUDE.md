@@ -6,7 +6,7 @@
 お見送りでは弁護士が事案にベクトル検索で選んだおやつを渡してくれる。
 
 - **フレームワーク**: Streamlit + streamlit-float
-- **AI**: Groq API（llama-3.3-70b-versatile）
+- **AI**: Groq API（openai/gpt-oss-120b）
 - **ベクトル検索**: ChromaDB + sentence-transformers（paraphrase-multilingual-MiniLM-L12-v2）
 - **天気API**: Open-Meteo（登録不要・無料）
 - **Python**: 3.11（chromadb互換性のため）
@@ -76,6 +76,18 @@ intro → court → escort → end → intro（リセット）
 
 - 1裁判あたりAI呼び出し上限：**30回**（`ai_call_count` / `ai_max_calls`）
 - 応酬は1回のAPIコールで複数ターン分を一括生成（`_generate_exchange_lines`）
+
+### 推論モデル（openai/gpt-oss-120b）の注意事項
+
+`openai/gpt-oss-*` は推論モデルのため通常モデルと挙動が異なる。
+
+- **レスポンス遅延**: 内部推論フェーズがあり、バッチ生成で4〜10秒程度かかる（仕様）
+- **reasoning_tokens**: completion_tokensの大半が推論に消費される（実測で約80%）
+  - バッチ生成（`_generate_exchange_lines`）の `max_tokens=4000`
+  - 単発生成（`_call_groq_api`）の `max_tokens=1024`
+  - 小さい値（200等）だと推論だけでトークンを使い切り `content` が空になるため注意
+- **`<think>` タグ除去**: レスポンスに混入する可能性があるため両関数で除去処理済み
+- **詳細**: `docs/GROQ_MODEL_MIGRATION.md` 参照（ゆるゆるシリーズ共通ドキュメント）
 
 ### AIプロンプト構成
 
